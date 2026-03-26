@@ -1,0 +1,23 @@
+{
+  "name": "x-1966129-transparen-see-dpri",
+  "version": "1.0.0",
+  "description": "Bridging the gap between patients and affordable medicine. This app provides real-time access to the Drug Price Reference Index (DPRI), ensuring no citizen overpays for essential drugs.",
+  "license": "UNLICENSED",
+  "scripts": {
+    "build": "now-sdk build",
+    "deploy": "now-sdk install",
+    "transform": "now-sdk transform",
+    "types": "now-sdk dependencies"
+  },
+  "devDependencies": {
+    "@servicenow/sdk": "4.4.1",
+    "@servicenow/glide": "26.0.1",
+    "eslint": "8.50.0",
+    "@servicenow/eslint-plugin-sdk-app-plugin": "4.4.1",
+    "@servicenow/isomorphic-rollup": "^1.2.3"
+  },
+  "dependencies": {
+    "react": "19.x",
+    "react-dom": "19.x"
+  }
+}
