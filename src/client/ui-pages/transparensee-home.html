@@ -4,12 +4,511 @@
 <html ng-app="TransparenSeeApp">
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <link rel="stylesheet" href="/x_1966129_transpar_theme.cssdo"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&amp;family=DM+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
   <link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&amp;display=swap" rel="stylesheet"/>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
   <title>TransparenSee — Affordable Medicine Finder</title>
+  
+  <!-- INLINE CRITICAL CSS -->
+  <style>
+    :root {
+      --ts-teal: #009688;
+      --ts-teal-deep: #007A72;
+      --ts-teal-bright: #00BFA5;
+      --ts-teal-light: #E0F2F1;
+      --ts-teal-ghost: #F0FAFA;
+      --ts-navy: #0D1F4E;
+      --ts-navy-mid: #1A2B5E;
+      --ts-gold: #F59E0B;
+      --ts-surface: #F8FAFB;
+      --ts-border: #E2EAEB;
+      --ts-shadow: 0 4px 24px rgba(0,122,114,0.08);
+      --ts-radius-card: 20px;
+      --ts-radius-pill: 9999px;
+      --ts-font-display: 'Clash Display', 'Plus Jakarta Sans', sans-serif;
+      --ts-font-body: 'Plus Jakarta Sans', sans-serif;
+      --ts-font-mono: 'DM Mono', monospace;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: var(--ts-font-body);
+      background: var(--ts-surface);
+      color: var(--ts-navy);
+    }
+
+    /* NAVBAR */
+    .ts-navbar {
+      position: sticky;
+      top: 0;
+      background: rgba(255,255,255,0.88);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--ts-border);
+      z-index: 100;
+    }
+
+    .ts-navbar-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 24px;
+    }
+
+    .ts-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--ts-font-display);
+      font-weight: 600;
+      font-size: 18px;
+      color: var(--ts-navy);
+    }
+
+    .ts-logo-icon {
+      font-size: 24px;
+    }
+
+    .ts-nav-links {
+      display: flex;
+      list-style: none;
+      gap: 32px;
+    }
+
+    .ts-nav-links a {
+      text-decoration: none;
+      color: var(--ts-navy);
+      font-weight: 500;
+      padding-bottom: 4px;
+      transition: all 0.2s;
+    }
+
+    .ts-nav-links a.active,
+    .ts-nav-links a:hover {
+      color: var(--ts-teal);
+      border-bottom: 2px solid var(--ts-teal);
+    }
+
+    /* HERO SECTION */
+    .ts-hero {
+      background: linear-gradient(135deg, var(--ts-navy) 0%, var(--ts-teal-deep) 100%);
+      padding: 120px 24px;
+      text-align: center;
+      color: white;
+    }
+
+    .ts-hero-content {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .ts-eyebrow {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.9);
+      padding: 8px 16px;
+      border-radius: var(--ts-radius-pill);
+      font-size: 12px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 24px;
+    }
+
+    .ts-hero-headline {
+      font-family: var(--ts-font-display);
+      font-size: 48px;
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 24px;
+    }
+
+    .ts-highlight {
+      color: var(--ts-teal-bright);
+    }
+
+    .ts-hero-sub {
+      font-size: 18px;
+      opacity: 0.9;
+      margin-bottom: 48px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* SEARCH BAR */
+    .ts-search-wrap {
+      position: relative;
+      max-width: 600px;
+      margin: 0 auto 32px auto;
+    }
+
+    .ts-search-bar {
+      display: flex;
+      align-items: center;
+      background: white;
+      border-radius: var(--ts-radius-pill);
+      box-shadow: 0 8px 32px rgba(0,122,114,0.15);
+      overflow: hidden;
+      transition: all 0.2s;
+    }
+
+    .ts-search-focused {
+      transform: scale(1.02);
+      box-shadow: 0 12px 40px rgba(0,122,114,0.25);
+    }
+
+    .ts-search-icon {
+      padding: 0 20px;
+      font-size: 18px;
+      color: var(--ts-teal);
+    }
+
+    .ts-search-input {
+      flex: 1;
+      border: none;
+      padding: 18px 0;
+      font-size: 16px;
+      outline: none;
+      background: transparent;
+    }
+
+    .ts-search-btn {
+      background: var(--ts-teal);
+      color: white;
+      border: none;
+      padding: 18px 24px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .ts-search-btn:hover {
+      background: var(--ts-teal-deep);
+    }
+
+    /* AUTOCOMPLETE */
+    .ts-autocomplete {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: white;
+      border-radius: var(--ts-radius-card);
+      box-shadow: var(--ts-shadow);
+      margin-top: 8px;
+      overflow: hidden;
+      z-index: 50;
+    }
+
+    .ts-suggestion-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--ts-border);
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .ts-suggestion-item:hover {
+      background: var(--ts-teal-ghost);
+    }
+
+    .ts-sug-name {
+      font-weight: 600;
+      flex: 1;
+    }
+
+    .ts-sug-price {
+      font-family: var(--ts-font-mono);
+      color: var(--ts-teal-deep);
+      font-weight: 500;
+    }
+
+    .ts-sug-cat {
+      background: var(--ts-teal-light);
+      color: var(--ts-teal-deep);
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    /* POPULAR SEARCHES */
+    .ts-popular {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .ts-popular-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.7);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .ts-chip {
+      background: rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.9);
+      border: none;
+      padding: 8px 16px;
+      border-radius: var(--ts-radius-pill);
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .ts-chip:hover {
+      background: rgba(255,255,255,0.25);
+      transform: translateY(-1px);
+    }
+
+    /* CONTAINER */
+    .ts-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* STATS SECTION */
+    .ts-stats-section {
+      padding: 80px 24px;
+    }
+
+    .ts-bento-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .ts-stat-card {
+      background: white;
+      padding: 32px 24px;
+      border-radius: var(--ts-radius-card);
+      text-align: center;
+      box-shadow: var(--ts-shadow);
+      transition: all 0.2s;
+    }
+
+    .ts-stat-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 40px rgba(0,122,114,0.16);
+    }
+
+    .ts-stat-teal {
+      background: linear-gradient(135deg, var(--ts-teal) 0%, var(--ts-teal-bright) 100%);
+      color: white;
+    }
+
+    .ts-stat-gold {
+      background: linear-gradient(135deg, var(--ts-gold) 0%, #F97316 100%);
+      color: white;
+    }
+
+    .ts-stat-navy {
+      background: linear-gradient(135deg, var(--ts-navy) 0%, var(--ts-navy-mid) 100%);
+      color: white;
+    }
+
+    .ts-stat-icon {
+      font-size: 32px;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .ts-stat-value {
+      display: block;
+      font-family: var(--ts-font-display);
+      font-size: 36px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .ts-stat-label {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      opacity: 0.9;
+    }
+
+    /* TWO COLUMN SECTION */
+    .ts-two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      padding: 80px 24px;
+    }
+
+    .ts-card {
+      background: white;
+      padding: 32px;
+      border-radius: var(--ts-radius-card);
+      box-shadow: var(--ts-shadow);
+    }
+
+    .ts-card-glass-gold {
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid rgba(245, 158, 11, 0.2);
+    }
+
+    .ts-card-title {
+      font-family: var(--ts-font-display);
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 24px;
+      color: var(--ts-navy);
+    }
+
+    .ts-recent-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--ts-border);
+    }
+
+    .ts-recent-item:last-child {
+      border-bottom: none;
+    }
+
+    .ts-recent-name {
+      font-weight: 600;
+      color: var(--ts-navy);
+    }
+
+    .ts-recent-time {
+      font-size: 12px;
+      color: #888;
+    }
+
+    .ts-btn-ghost {
+      background: none;
+      border: none;
+      color: var(--ts-teal);
+      font-size: 18px;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 50%;
+      transition: background 0.2s;
+    }
+
+    .ts-btn-ghost:hover {
+      background: var(--ts-teal-ghost);
+    }
+
+    .ts-tip-label {
+      display: inline-block;
+      background: var(--ts-gold);
+      color: white;
+      padding: 4px 12px;
+      border-radius: var(--ts-radius-pill);
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 16px;
+    }
+
+    .ts-tip-text {
+      font-size: 16px;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .ts-btn-ghost-teal {
+      color: var(--ts-teal);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      transition: color 0.2s;
+    }
+
+    .ts-btn-ghost-teal:hover {
+      color: var(--ts-teal-deep);
+    }
+
+    /* HOW IT WORKS */
+    .ts-how-it-works {
+      padding: 80px 24px 120px 24px;
+      text-align: center;
+    }
+
+    .ts-section-title {
+      font-family: var(--ts-font-display);
+      font-size: 36px;
+      font-weight: 600;
+      color: var(--ts-navy);
+      margin-bottom: 48px;
+    }
+
+    .ts-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 40px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .ts-step {
+      text-align: center;
+    }
+
+    .ts-step-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 60px;
+      height: 60px;
+      background: var(--ts-teal);
+      color: white;
+      border-radius: 50%;
+      font-family: var(--ts-font-display);
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .ts-step h3 {
+      font-family: var(--ts-font-display);
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--ts-navy);
+      margin-bottom: 12px;
+    }
+
+    .ts-step p {
+      color: #666;
+      line-height: 1.6;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .ts-hero-headline {
+        font-size: 32px;
+      }
+      
+      .ts-two-col {
+        grid-template-columns: 1fr;
+      }
+      
+      .ts-nav-links {
+        display: none;
+      }
+    }
+  </style>
 </head>
 <body ng-controller="HomeController">
 
@@ -61,10 +560,10 @@
           <div class="ts-suggestion-item"
                ng-repeat="drug in suggestions"
                ng-click="selectSuggestion(drug)">
-            <span class="ts-sug-name">{{ drug.generic_name }}</span>
-            <span class="ts-sug-dosage">{{ drug.dosage_strength }}</span>
-            <span class="ts-sug-price">₱{{ drug.dpri_price }}</span>
-            <span class="ts-sug-cat">{{ drug.category }}</span>
+            <span class="ts-sug-name" ng-bind="drug.generic_name"></span>
+            <span class="ts-sug-dosage" ng-bind="drug.dosage_strength"></span>
+            <span class="ts-sug-price">₱<span ng-bind="drug.dpri_price"></span></span>
+            <span class="ts-sug-cat" ng-bind="drug.category"></span>
           </div>
         </div>
       </div>
@@ -72,8 +571,7 @@
       <!-- POPULAR SEARCHES -->
       <div class="ts-popular">
         <span class="ts-popular-label">POPULAR SEARCHES:</span>
-        <button class="ts-chip" ng-repeat="term in popularTerms" ng-click="quickSearch(term)">
-          {{ term }}
+        <button class="ts-chip" ng-repeat="term in popularTerms" ng-click="quickSearch(term)" ng-bind="term">
         </button>
       </div>
     </div>
@@ -84,7 +582,7 @@
     <div class="ts-bento-row">
       <div class="ts-stat-card ts-stat-teal">
         <span class="ts-stat-icon">💊</span>
-        <span class="ts-stat-value">{{ stats.totalDrugs }}</span>
+        <span class="ts-stat-value" ng-bind="stats.totalDrugs"></span>
         <span class="ts-stat-label">DRUGS IN DPRI 2025</span>
       </div>
       <div class="ts-stat-card ts-stat-gold">
@@ -94,7 +592,7 @@
       </div>
       <div class="ts-stat-card ts-stat-navy">
         <span class="ts-stat-icon">🏪</span>
-        <span class="ts-stat-value">{{ stats.totalPharmacies }}</span>
+        <span class="ts-stat-value" ng-bind="stats.totalPharmacies"></span>
         <span class="ts-stat-label">ACCREDITED PHARMACIES</span>
       </div>
     </div>
@@ -107,8 +605,8 @@
       <div class="ts-recent-item" ng-repeat="item in recentSearches">
         <span class="ts-recent-icon">💊</span>
         <div>
-          <div class="ts-recent-name">{{ item.search_term }}</div>
-          <div class="ts-recent-time">{{ item.time_ago }}</div>
+          <div class="ts-recent-name" ng-bind="item.search_term"></div>
+          <div class="ts-recent-time" ng-bind="item.time_ago"></div>
         </div>
         <button class="ts-btn-ghost" ng-click="quickSearch(item.search_term)">›</button>
       </div>
