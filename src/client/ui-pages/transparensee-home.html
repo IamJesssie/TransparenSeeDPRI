@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+<!DOCTYPE html>
+<html ng-app="TransparenSeeApp">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="/x_1966129_transpar_theme.cssdo"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&amp;family=DM+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+  <link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&amp;display=swap" rel="stylesheet"/>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+  <title>TransparenSee — Affordable Medicine Finder</title>
+</head>
+<body ng-controller="HomeController">
+
+  <!-- NAVBAR -->
+  <nav class="ts-navbar">
+    <div class="ts-navbar-inner">
+      <div class="ts-logo">
+        <div class="ts-logo-icon">💊</div>
+        <span>TransparenSee</span>
+      </div>
+      <ul class="ts-nav-links">
+        <li><a href="/x_1966129_transpar_home.do" class="active">Home</a></li>
+        <li><a href="/x_1966129_transpar_search.do">Search</a></li>
+        <li><a href="/x_1966129_transpar_map.do">Map</a></li>
+        <li><a href="/x_1966129_transpar_profile.do">Profile</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <section class="ts-hero">
+    <div class="ts-hero-content">
+      <span class="ts-eyebrow">DPRI 2025 · Department of Health</span>
+      <h1 class="ts-hero-headline">
+        Bridging the gap between<br/>
+        patients and <span class="ts-highlight">affordable medicine.</span>
+      </h1>
+      <p class="ts-hero-sub">Real-time DPRI pricing, clinical insights, and financial transparency at your fingertips.</p>
+
+      <!-- SEARCH BAR -->
+      <div class="ts-search-wrap">
+        <div class="ts-search-bar" ng-class="{'ts-search-focused': searchFocused}">
+          <span class="ts-search-icon">🔍</span>
+          <input
+            type="text"
+            ng-model="searchQuery"
+            ng-change="onSearchChange()"
+            ng-focus="searchFocused=true"
+            ng-blur="onSearchBlur()"
+            placeholder="Search Drug Name (e.g., Amoxicillin...)"
+            class="ts-search-input"
+            autocomplete="off"
+          />
+          <button class="ts-search-btn" ng-click="goToResults()">Search</button>
+        </div>
+
+        <!-- AUTOCOMPLETE DROPDOWN -->
+        <div class="ts-autocomplete" ng-show="suggestions.length > 0 &amp;&amp; showSuggestions">
+          <div class="ts-suggestion-item"
+               ng-repeat="drug in suggestions"
+               ng-click="selectSuggestion(drug)">
+            <span class="ts-sug-name">{{ drug.generic_name }}</span>
+            <span class="ts-sug-dosage">{{ drug.dosage_strength }}</span>
+            <span class="ts-sug-price">₱{{ drug.dpri_price }}</span>
+            <span class="ts-sug-cat">{{ drug.category }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- POPULAR SEARCHES -->
+      <div class="ts-popular">
+        <span class="ts-popular-label">POPULAR SEARCHES:</span>
+        <button class="ts-chip" ng-repeat="term in popularTerms" ng-click="quickSearch(term)">
+          {{ term }}
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- BENTO STATS ROW -->
+  <section class="ts-stats-section ts-container">
+    <div class="ts-bento-row">
+      <div class="ts-stat-card ts-stat-teal">
+        <span class="ts-stat-icon">💊</span>
+        <span class="ts-stat-value">{{ stats.totalDrugs }}</span>
+        <span class="ts-stat-label">DRUGS IN DPRI 2025</span>
+      </div>
+      <div class="ts-stat-card ts-stat-gold">
+        <span class="ts-stat-icon">💰</span>
+        <span class="ts-stat-value">65%</span>
+        <span class="ts-stat-label">AVG SAVINGS VS HOSPITAL</span>
+      </div>
+      <div class="ts-stat-card ts-stat-navy">
+        <span class="ts-stat-icon">🏪</span>
+        <span class="ts-stat-value">{{ stats.totalPharmacies }}</span>
+        <span class="ts-stat-label">ACCREDITED PHARMACIES</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- RECENT ACTIVITY + SAVINGS TIP -->
+  <section class="ts-container ts-two-col">
+    <div class="ts-recent-card ts-card">
+      <h3 class="ts-card-title">🕐 Recent Activity</h3>
+      <div class="ts-recent-item" ng-repeat="item in recentSearches">
+        <span class="ts-recent-icon">💊</span>
+        <div>
+          <div class="ts-recent-name">{{ item.search_term }}</div>
+          <div class="ts-recent-time">{{ item.time_ago }}</div>
+        </div>
+        <button class="ts-btn-ghost" ng-click="quickSearch(item.search_term)">›</button>
+      </div>
+    </div>
+    <div class="ts-tip-card ts-card ts-card-glass-gold">
+      <span class="ts-tip-label">SAVINGS TIP</span>
+      <p class="ts-tip-text">Generic alternatives for common medicines can save you up to 65% this month.</p>
+      <a href="/x_1966129_transpar_search.do" class="ts-btn-ghost-teal">LEARN MORE →</a>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="ts-container ts-how-it-works">
+    <h2 class="ts-section-title">How It Works</h2>
+    <div class="ts-steps">
+      <div class="ts-step">
+        <div class="ts-step-icon">1</div>
+        <h3>Search Drug</h3>
+        <p>Type any medicine name to see DPRI fair pricing</p>
+      </div>
+      <div class="ts-step">
+        <div class="ts-step-icon">2</div>
+        <h3>Compare Prices</h3>
+        <p>See potential savings vs hospital pharmacy</p>
+      </div>
+      <div class="ts-step">
+        <div class="ts-step-icon">3</div>
+        <h3>Find Nearest Pharmacy</h3>
+        <p>Locate accredited pharmacies near you</p>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>
+</j:jelly>

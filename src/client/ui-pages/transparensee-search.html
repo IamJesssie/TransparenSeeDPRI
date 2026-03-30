@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+<!DOCTYPE html>
+<html ng-app="TransparenSeeSearchApp">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="/x_1966129_transpar_theme.cssdo"/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&amp;family=DM+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+  <link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&amp;display=swap" rel="stylesheet"/>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+  <title>Search Results - TransparenSee</title>
+</head>
+<body ng-controller="SearchController">
+
+  <!-- NAVBAR -->
+  <nav class="ts-navbar">
+    <div class="ts-navbar-inner">
+      <div class="ts-logo">
+        <div class="ts-logo-icon">💊</div>
+        <span>TransparenSee</span>
+      </div>
+      <ul class="ts-nav-links">
+        <li><a href="/x_1966129_transpar_home.do">Home</a></li>
+        <li><a href="/x_1966129_transpar_search.do" class="active">Search</a></li>
+        <li><a href="/x_1966129_transpar_map.do">Map</a></li>
+        <li><a href="/x_1966129_transpar_profile.do">Profile</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- SEARCH BAR (STICKY) -->
+  <section class="ts-search-sticky">
+    <div class="ts-container">
+      <div class="ts-search-bar-results">
+        <span class="ts-search-icon">🔍</span>
+        <input
+          type="text"
+          ng-model="searchQuery"
+          ng-change="onSearchChange()"
+          placeholder="Search Drug Name..."
+          class="ts-search-input"
+        />
+        <button class="ts-search-btn" ng-click="performSearch()">Search</button>
+      </div>
+      <div class="ts-results-meta">
+        <span class="ts-result-count">{{ filteredResults().length }} results</span>
+        <button class="ts-filter-btn" ng-click="toggleFilters()">
+          Filters {{ filterOpen ? '✕' : '⚙️' }}
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN CONTENT -->
+  <div class="ts-search-layout">
+    <!-- FILTER SIDEBAR -->
+    <aside class="ts-filter-sidebar" ng-class="{'ts-filter-open': filterOpen}">
+      <div class="ts-filter-section">
+        <h3>Drug Category</h3>
+        <label ng-repeat="cat in categories">
+          <input type="checkbox" ng-model="filters.categories[cat.name]"/>
+          <span class="ts-filter-pill" style="background: {{cat.color}}20; color: {{cat.color}}">
+            {{ cat.name }}
+          </span>
+        </label>
+      </div>
+
+      <div class="ts-filter-section">
+        <h3>Dosage Form</h3>
+        <label ng-repeat="form in dosageForms">
+          <input type="checkbox" ng-model="filters.forms[form]"/>
+          <span>{{ form | titleCase }}</span>
+        </label>
+      </div>
+
+      <div class="ts-filter-section">
+        <h3>Price Range (₱)</h3>
+        <div class="ts-price-range">
+          <input type="range" ng-model="filters.maxPrice" min="0" max="1000" step="10"/>
+          <span>Up to ₱{{ filters.maxPrice }}</span>
+        </div>
+      </div>
+
+      <div class="ts-filter-section">
+        <label class="ts-toggle">
+          <input type="checkbox" ng-model="filters.genericOnly"/>
+          <span class="ts-toggle-slider"></span>
+          Generic medicines only
+        </label>
+      </div>
+    </aside>
+
+    <!-- RESULTS AREA -->
+    <main class="ts-results-main">
+      <!-- LOADING STATE -->
+      <div ng-show="isLoading" class="ts-loading">
+        <div class="ts-loading-spinner"></div>
+        <p>Searching DPRI database...</p>
+      </div>
+
+      <!-- CLINICAL RECOMMENDATION (Injected at position 3) -->
+      <div ng-show="showClinicalTip &amp;&amp; results.length > 2" class="ts-clinical-card">
+        <div class="ts-clinical-header">
+          <span class="ts-clinical-icon">🩺</span>
+          <h3>Clinical Recommendation</h3>
+        </div>
+        <p>Consider generic alternatives for {{ searchQuery }} - they contain the same active ingredients at significantly lower costs (average 65% savings).</p>
+        <button class="ts-btn-clinical" ng-click="showGenericsOnly()">Show Generic Options</button>
+      </div>
+
+      <!-- RESULTS LIST -->
+      <div ng-show="!isLoading &amp;&amp; filteredResults().length > 0">
+        <div class="ts-drug-card" ng-repeat="drug in filteredResults()" ng-click="goToDetail(drug.sys_id)">
+          <div class="ts-drug-info">
+            <h3 class="ts-drug-name">{{ drug.generic_name }}</h3>
+            <p class="ts-drug-brands" ng-show="drug.brand_names">{{ drug.brand_names }}</p>
+            <div class="ts-drug-tags">
+              <span class="ts-tag ts-tag-dosage">{{ drug.dosage_strength }} {{ drug.dosage_form }}</span>
+              <span class="ts-tag ts-tag-route">{{ drug.route }}</span>
+              <span class="ts-tag ts-tag-category" style="background: {{ getCategoryColor(drug.category) }}20; color: {{ getCategoryColor(drug.category) }}">
+                {{ drug.category }}
+              </span>
+              <span ng-show="drug.is_generic" class="ts-tag ts-tag-generic">Generic</span>
+              <span ng-show="drug.limited_stock" class="ts-tag ts-tag-warning">Limited Stock</span>
+            </div>
+          </div>
+          
+          <div class="ts-drug-pricing">
+            <div class="ts-dpri-price">
+              <span class="ts-price-label">DPRI Fair Price</span>
+              <span class="ts-price-value">₱{{ drug.dpri_price | number:2 }}</span>
+            </div>
+            <div class="ts-hospital-comparison" ng-show="drug.hospital_avg > 0">
+              <span class="ts-comparison-label">vs Hospital: ₱{{ drug.hospital_avg | number:2 }}</span>
+            </div>
+          </div>
+
+          <div class="ts-drug-savings" ng-show="drug.savings_percent > 0">
+            <div class="ts-savings-badge">
+              <span class="ts-savings-icon">💰</span>
+              <span class="ts-savings-text">Save {{ drug.savings_percent }}%</span>
+              <span class="ts-savings-amount">₱{{ (drug.hospital_avg - drug.dpri_price) | number:0 }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- EMPTY STATE -->
+      <div ng-show="!isLoading &amp;&amp; filteredResults().length === 0 &amp;&amp; searchQuery" class="ts-empty-state">
+        <div class="ts-empty-icon">🔍</div>
+        <h3>No medicines found for "{{ searchQuery }}"</h3>
+        <p>Try searching with different terms or check spelling.</p>
+        <button class="ts-btn-secondary" ng-click="clearFilters()">Clear Filters</button>
+      </div>
+    </main>
+  </div>
+
+  <!-- FLOATING COMPARE CTA -->
+  <div class="ts-floating-cta" ng-show="selectedDrugs.length > 0">
+    <button class="ts-cta-btn" ng-click="compareSelected()">
+      ✨ Compare {{ selectedDrugs.length }} Medicine{{ selectedDrugs.length > 1 ? 's' : '' }}
+    </button>
+  </div>
+
+</body>
+</html>
+</j:jelly>

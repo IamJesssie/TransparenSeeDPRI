@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+<!DOCTYPE html>
+<html ng-app="TransparenSeeMapApp">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="/x_1966129_transpar_theme.cssdo"/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&amp;family=DM+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+  <link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&amp;display=swap" rel="stylesheet"/>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <title>Pharmacy Map - TransparenSee</title>
+</head>
+<body ng-controller="MapController">
+
+  <!-- NAVBAR -->
+  <nav class="ts-navbar">
+    <div class="ts-navbar-inner">
+      <div class="ts-logo">
+        <div class="ts-logo-icon">💊</div>
+        <span>TransparenSee</span>
+      </div>
+      <ul class="ts-nav-links">
+        <li><a href="/x_1966129_transpar_home.do">Home</a></li>
+        <li><a href="/x_1966129_transpar_search.do">Search</a></li>
+        <li><a href="/x_1966129_transpar_map.do" class="active">Map</a></li>
+        <li><a href="/x_1966129_transpar_profile.do">Profile</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- MAP LAYOUT: FULL SCREEN MAP + FLOATING SIDEBAR -->
+  <div class="ts-map-layout">
+    
+    <!-- LEAFLET MAP CONTAINER -->
+    <div id="pharmacyMap" class="ts-map-container"></div>
+
+    <!-- FLOATING PHARMACY LIST SIDEBAR -->
+    <aside class="ts-map-sidebar" ng-class="{'ts-sidebar-collapsed': sidebarCollapsed}">
+      <div class="ts-sidebar-header">
+        <h2>🏪 Nearby Pharmacies</h2>
+        <div class="ts-sidebar-controls">
+          <button class="ts-locate-btn" ng-click="locateUser()" ng-disabled="locating">
+            {{ locating ? '📍...' : '📍 Find Me' }}
+          </button>
+          <button class="ts-collapse-btn" ng-click="toggleSidebar()">
+            {{ sidebarCollapsed ? '→' : '←' }}
+          </button>
+        </div>
+      </div>
+
+      <!-- SORT OPTIONS -->
+      <div class="ts-sort-options">
+        <label>
+          <input type="radio" ng-model="sortBy" value="distance" ng-change="sortPharmacies()"/>
+          <span>Sort by Distance</span>
+        </label>
+        <label>
+          <input type="radio" ng-model="sortBy" value="name" ng-change="sortPharmacies()"/>
+          <span>Sort by Name</span>
+        </label>
+      </div>
+
+      <!-- PHARMACY LIST -->
+      <div class="ts-pharmacy-list">
+        <div ng-show="loadingPharmacies" class="ts-loading-pharmacies">
+          <div class="ts-loading-spinner"></div>
+          <p>Loading pharmacies...</p>
+        </div>
+
+        <div ng-show="!loadingPharmacies &amp;&amp; pharmacies.length === 0" class="ts-no-pharmacies">
+          <p>🔍 No pharmacies found in this area.</p>
+          <button class="ts-btn-secondary" ng-click="loadPharmacies()">Try Again</button>
+        </div>
+
+        <div class="ts-pharmacy-card" 
+             ng-repeat="pharmacy in pharmacies" 
+             ng-click="selectPharmacy(pharmacy)"
+             ng-class="{'ts-pharmacy-selected': selectedPharmacy.sys_id === pharmacy.sys_id}">
+          
+          <div class="ts-pharmacy-header">
+            <h3>{{ pharmacy.name }}</h3>
+            <span class="ts-chain-badge ts-chain-{{ pharmacy.chain }}">{{ pharmacy.chain | titleCase }}</span>
+          </div>
+          
+          <p class="ts-pharmacy-address">{{ pharmacy.address }}</p>
+          
+          <div class="ts-pharmacy-meta">
+            <span class="ts-distance" ng-show="pharmacy.distance">
+              📍 {{ pharmacy.distance }}km away
+            </span>
+            <span class="ts-phone" ng-show="pharmacy.phone">
+              📞 {{ pharmacy.phone }}
+            </span>
+          </div>
+
+          <div class="ts-pharmacy-actions">
+            <button class="ts-btn-directions" ng-click="getDirections(pharmacy, $event)">
+              🗺️ Directions
+            </button>
+            <button class="ts-btn-call" ng-click="callPharmacy(pharmacy, $event)" ng-show="pharmacy.phone">
+              📞 Call
+            </button>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAP CONTROLS -->
+    <div class="ts-map-controls">
+      <button class="ts-map-control-btn" ng-click="centerOnUser()" ng-show="userLocation">
+        📍 Center on Me
+      </button>
+      <button class="ts-map-control-btn" ng-click="showAllPharmacies()">
+        🏪 Show All
+      </button>
+    </div>
+
+    <!-- SELECTED PHARMACY POPUP -->
+    <div class="ts-pharmacy-popup" ng-show="selectedPharmacy.sys_id" ng-click="closePopup()">
+      <div class="ts-popup-content" ng-click="$event.stopPropagation()">
+        <div class="ts-popup-header">
+          <h3>{{ selectedPharmacy.name }}</h3>
+          <button class="ts-close-popup" ng-click="closePopup()">✕</button>
+        </div>
+        
+        <div class="ts-popup-body">
+          <p><strong>Address:</strong> {{ selectedPharmacy.address }}</p>
+          <p ng-show="selectedPharmacy.phone"><strong>Phone:</strong> {{ selectedPharmacy.phone }}</p>
+          <p ng-show="selectedPharmacy.distance"><strong>Distance:</strong> {{ selectedPharmacy.distance }}km</p>
+          
+          <div class="ts-popup-actions">
+            <button class="ts-btn-primary" ng-click="getDirections(selectedPharmacy, $event)">
+              Get Directions
+            </button>
+            <button class="ts-btn-secondary" ng-click="callPharmacy(selectedPharmacy, $event)" ng-show="selectedPharmacy.phone">
+              Call Now
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- LOCATION PERMISSION MODAL -->
+  <div class="ts-location-modal" ng-show="showLocationModal">
+    <div class="ts-modal-content">
+      <h3>📍 Enable Location Access</h3>
+      <p>Allow TransparenSee to access your location to show the nearest pharmacies and calculate distances.</p>
+      <div class="ts-modal-actions">
+        <button class="ts-btn-primary" ng-click="requestLocation()">Allow Location</button>
+        <button class="ts-btn-ghost" ng-click="skipLocation()">Skip for now</button>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
+</j:jelly>

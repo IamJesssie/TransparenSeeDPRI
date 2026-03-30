@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+<!DOCTYPE html>
+<html ng-app="TransparenSeeDetailApp">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="/x_1966129_transpar_theme.cssdo"/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&amp;family=DM+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+  <link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&amp;display=swap" rel="stylesheet"/>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+  <title>{{ drug.generic_name }} - TransparenSee</title>
+</head>
+<body ng-controller="DetailController">
+
+  <!-- NAVBAR -->
+  <nav class="ts-navbar">
+    <div class="ts-navbar-inner">
+      <div class="ts-logo">
+        <div class="ts-logo-icon">💊</div>
+        <span>TransparenSee</span>
+      </div>
+      <ul class="ts-nav-links">
+        <li><a href="/x_1966129_transpar_home.do">Home</a></li>
+        <li><a href="/x_1966129_transpar_search.do">Search</a></li>
+        <li><a href="/x_1966129_transpar_map.do">Map</a></li>
+        <li><a href="/x_1966129_transpar_profile.do">Profile</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- MAIN LAYOUT: DRUG INFO (LEFT) + AI PANEL (RIGHT) -->
+  <div class="ts-detail-layout">
+    
+    <!-- DRUG INFORMATION COLUMN -->
+    <main class="ts-drug-column">
+      
+      <!-- DRUG HEADER CARD -->
+      <section class="ts-drug-header-card">
+        <div class="ts-drug-header-content">
+          <div class="ts-drug-title-row">
+            <h1 class="ts-drug-title">{{ drug.generic_name }}</h1>
+            <span class="ts-drug-category-pill" style="background: {{ categoryColor }}20; color: {{ categoryColor }}">
+              {{ drug.category }}
+            </span>
+          </div>
+          
+          <p class="ts-drug-brands" ng-show="drug.brand_names">
+            <strong>Brand names:</strong> {{ drug.brand_names }}
+          </p>
+          
+          <div class="ts-drug-specs">
+            <span class="ts-spec">{{ drug.dosage_strength }}</span>
+            <span class="ts-spec-divider">•</span>
+            <span class="ts-spec">{{ drug.dosage_form | titleCase }}</span>
+            <span class="ts-spec-divider">•</span>
+            <span class="ts-spec">{{ drug.route | titleCase }}</span>
+            <span ng-show="drug.is_generic" class="ts-spec ts-spec-generic">Generic</span>
+          </div>
+        </div>
+
+        <!-- PRICE COMPARISON SECTION -->
+        <div class="ts-price-comparison">
+          <div class="ts-dpri-price-lg">
+            <span class="ts-price-label">DPRI Fair Price</span>
+            <span class="ts-price-amount">₱{{ drug.dpri_price | number:2 }}</span>
+          </div>
+          
+          <div class="ts-vs-hospital" ng-show="drug.hospital_avg > 0">
+            <div class="ts-comparison-bar">
+              <div class="ts-bar-dpri" style="width: {{ getBarWidth('dpri') }}%">
+                <span>DPRI ₱{{ drug.dpri_price | number:0 }}</span>
+              </div>
+              <div class="ts-bar-hospital" style="width: {{ getBarWidth('hospital') }}%">
+                <span>Hospital ₱{{ drug.hospital_avg | number:0 }}</span>
+              </div>
+            </div>
+            <div class="ts-savings-highlight">
+              <span class="ts-savings-icon">💰</span>
+              <span>You save ₱{{ drug.hospital_avg - drug.dpri_price | number:0 }} ({{ drug.savings_percent }}%)</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- DRUG INFORMATION BENTO GRID -->
+      <section class="ts-drug-bento">
+        <div class="ts-bento-tile ts-indications-tile">
+          <h3>💊 What it treats</h3>
+          <p>{{ drug.indications || 'Information not available' }}</p>
+        </div>
+        
+        <div class="ts-bento-tile ts-warnings-tile">
+          <h3>⚠️ Warnings &amp; Safety</h3>
+          <p>{{ drug.warnings || 'Consult your doctor or pharmacist for safety information' }}</p>
+        </div>
+        
+        <div class="ts-bento-tile ts-dpri-tile">
+          <h3>📋 DPRI Reference</h3>
+          <p><strong>Code:</strong> {{ drug.dpri_ref_code || 'N/A' }}</p>
+          <p class="ts-dpri-note">This is the official government-mandated maximum retail price as per DOH DPRI 2025.</p>
+        </div>
+        
+        <div class="ts-bento-tile ts-classification-tile">
+          <h3>🔬 Classification</h3>
+          <div class="ts-classification-tags">
+            <span class="ts-class-tag">{{ drug.category }}</span>
+            <span class="ts-class-tag">{{ drug.route | titleCase }} route</span>
+            <span class="ts-class-tag ts-class-tag-form">{{ drug.dosage_form | titleCase }}</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- NEAREST PHARMACIES PREVIEW -->
+      <section class="ts-pharmacies-preview">
+        <div class="ts-section-header">
+          <h2>🏪 Nearest Pharmacies</h2>
+          <button class="ts-btn-ghost" ng-click="viewFullMap()">View Full Map →</button>
+        </div>
+        
+        <div class="ts-pharmacy-list-preview">
+          <div class="ts-pharmacy-item" ng-repeat="pharmacy in nearbyPharmacies.slice(0, 3)">
+            <div class="ts-pharmacy-info">
+              <h4>{{ pharmacy.name }}</h4>
+              <p class="ts-pharmacy-address">{{ pharmacy.address }}</p>
+              <span class="ts-pharmacy-chain">{{ pharmacy.chain | titleCase }}</span>
+            </div>
+            <div class="ts-pharmacy-distance">
+              <span class="ts-distance">{{ pharmacy.distance }}km</span>
+              <button class="ts-btn-directions" ng-click="getDirections(pharmacy)">📍</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- AI CONCIERGE PANEL -->
+    <aside class="ts-ai-panel">
+      <div class="ts-ai-card">
+        <div class="ts-ai-header">
+          <div class="ts-ai-avatar">🤖</div>
+          <div class="ts-ai-title">
+            <h3>AI Pharmacist</h3>
+            <p>TransparenSee Concierge</p>
+          </div>
+        </div>
+
+        <div class="ts-ai-chat" id="aiChatContainer">
+          <!-- Loading State -->
+          <div ng-show="aiLoading" class="ts-ai-message ts-ai-loading">
+            <div class="ts-typing-indicator">
+              <span></span><span></span><span></span>
+            </div>
+            <p>Generating safety counsel...</p>
+          </div>
+
+          <!-- AI Response -->
+          <div ng-show="aiResponse &amp;&amp; !aiLoading" class="ts-ai-message ts-ai-response">
+            <div class="ts-ai-bubble">
+              <p>{{ aiResponse }}</p>
+            </div>
+            <div class="ts-ai-disclaimer">
+              <small>💡 AI-generated advice. Always consult your doctor.</small>
+            </div>
+          </div>
+
+          <!-- Error State -->
+          <div ng-show="aiError" class="ts-ai-message ts-ai-error">
+            <p>🔧 AI Concierge temporarily unavailable. Here's what you should know:</p>
+            <div class="ts-ai-fallback">
+              <p><strong>Safety reminder:</strong> Always follow your doctor's prescription and take the full course as directed. If you experience side effects, consult your pharmacist immediately.</p>
+              <p><strong>DPRI Price:</strong> The government-set fair price for {{ drug.generic_name }} is ₱{{ drug.dpri_price }}.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- AI Input (Future feature) -->
+        <div class="ts-ai-input-section">
+          <div class="ts-ai-quick-questions">
+            <button class="ts-quick-q" ng-click="askAI('What are the side effects?')" ng-show="!aiLoading">Side effects?</button>
+            <button class="ts-quick-q" ng-click="askAI('Can I take this with food?')" ng-show="!aiLoading">With food?</button>
+            <button class="ts-quick-q" ng-click="askAI('Are there generic alternatives?')" ng-show="!aiLoading">Alternatives?</button>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- STICKY BOTTOM ACTIONS -->
+  <div class="ts-bottom-actions">
+    <button class="ts-action-btn ts-btn-primary" ng-click="generateReport()">
+      📄 Generate Price Report
+    </button>
+    <button class="ts-action-btn ts-btn-secondary" ng-click="findPharmacies()">
+      🗺️ Find Nearest Pharmacy
+    </button>
+    <button class="ts-action-btn ts-btn-ghost" ng-click="shareThis()">
+      📱 Share
+    </button>
+  </div>
+
+</body>
+</html>
+</j:jelly>

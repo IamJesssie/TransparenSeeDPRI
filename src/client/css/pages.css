@@ -1,0 +1,1307 @@
+/* Additional CSS for Search, Detail, and Map pages */
+
+/* ============================================
+   SEARCH RESULTS PAGE
+   ============================================ */
+.ts-search-sticky {
+  position: sticky;
+  top: 64px;
+  background: var(--ts-white-glass);
+  backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid var(--ts-border);
+  padding: var(--ts-space-lg) 0;
+  z-index: 90;
+}
+
+.ts-search-bar-results {
+  display: flex;
+  align-items: center;
+  background: var(--ts-white);
+  border: 2px solid var(--ts-border);
+  border-radius: var(--ts-radius-pill);
+  padding: var(--ts-space-sm) var(--ts-space-lg);
+  margin-bottom: var(--ts-space-md);
+  transition: all 200ms ease;
+}
+
+.ts-search-bar-results:focus-within {
+  border-color: var(--ts-teal);
+  box-shadow: var(--ts-shadow-card);
+}
+
+.ts-results-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+}
+
+.ts-result-count {
+  color: var(--ts-text-secondary);
+}
+
+.ts-filter-btn {
+  background: var(--ts-teal-light);
+  color: var(--ts-teal-deep);
+  border: none;
+  padding: var(--ts-space-sm) var(--ts-space-md);
+  border-radius: var(--ts-radius-sm);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 200ms ease;
+}
+
+.ts-filter-btn:hover {
+  background: var(--ts-teal);
+  color: var(--ts-white);
+}
+
+/* Search Layout */
+.ts-search-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: var(--ts-space-xl);
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: var(--ts-space-xl) var(--ts-space-lg);
+}
+
+.ts-filter-sidebar {
+  background: var(--ts-white);
+  border-radius: var(--ts-radius-card);
+  padding: var(--ts-space-xl);
+  box-shadow: var(--ts-shadow-card);
+  height: fit-content;
+  position: sticky;
+  top: 180px;
+}
+
+.ts-filter-sidebar.ts-filter-open {
+  display: block;
+}
+
+.ts-filter-section {
+  margin-bottom: var(--ts-space-xl);
+}
+
+.ts-filter-section h3 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ts-text-primary);
+  margin-bottom: var(--ts-space-md);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.ts-filter-section label {
+  display: flex;
+  align-items: center;
+  gap: var(--ts-space-sm);
+  margin-bottom: var(--ts-space-sm);
+  cursor: pointer;
+}
+
+.ts-filter-pill {
+  padding: 4px 8px;
+  border-radius: var(--ts-radius-sm);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.ts-price-range input[type="range"] {
+  width: 100%;
+  margin: var(--ts-space-sm) 0;
+}
+
+.ts-toggle {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--ts-space-sm);
+}
+
+.ts-toggle-slider {
+  width: 40px;
+  height: 20px;
+  background: #ccc;
+  border-radius: 10px;
+  position: relative;
+  transition: background 200ms ease;
+}
+
+.ts-toggle input:checked + .ts-toggle-slider {
+  background: var(--ts-teal);
+}
+
+.ts-toggle-slider::after {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  background: var(--ts-white);
+  border-radius: 50%;
+  top: 2px;
+  left: 2px;
+  transition: transform 200ms ease;
+}
+
+.ts-toggle input:checked + .ts-toggle-slider::after {
+  transform: translateX(20px);
+}
+
+/* Drug Cards */
+.ts-drug-card {
+  display: flex;
+  align-items: center;
+  gap: var(--ts-space-lg);
+  background: var(--ts-white);
+  border: 2px solid transparent;
+  border-left: 4px solid var(--ts-teal-bright);
+  border-radius: var(--ts-radius-card);
+  padding: var(--ts-space-lg);
+  margin-bottom: var(--ts-space-md);
+  box-shadow: var(--ts-shadow-card);
+  cursor: pointer;
+  transition: all 300ms ease;
+}
+
+.ts-drug-card:hover {
+  border-color: var(--ts-teal);
+  box-shadow: var(--ts-shadow-card-hover);
+  transform: translateY(-2px);
+}
+
+.ts-drug-info {
+  flex: 1;
+}
+
+.ts-drug-name {
+  font-family: var(--ts-font-display);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--ts-text-primary);
+  margin-bottom: var(--ts-space-xs);
+}
+
+.ts-drug-brands {
+  font-size: 13px;
+  color: var(--ts-text-secondary);
+  font-style: italic;
+  margin-bottom: var(--ts-space-sm);
+}
+
+.ts-drug-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ts-space-xs);
+}
+
+.ts-tag {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 2px 6px;
+  border-radius: var(--ts-radius-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.ts-tag-dosage { background: var(--ts-surface); color: var(--ts-text-muted); }
+.ts-tag-route { background: var(--ts-teal-light); color: var(--ts-teal-deep); }
+.ts-tag-generic { background: var(--ts-green-light); color: var(--ts-green); }
+.ts-tag-warning { background: var(--ts-red-light); color: var(--ts-red); }
+
+.ts-drug-pricing {
+  text-align: right;
+  min-width: 120px;
+}
+
+.ts-dpri-price .ts-price-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--ts-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.ts-dpri-price .ts-price-value {
+  display: block;
+  font-family: var(--ts-font-mono);
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--ts-teal-deep);
+}
+
+.ts-comparison-label {
+  font-size: 11px;
+  color: var(--ts-text-muted);
+  text-decoration: line-through;
+}
+
+.ts-drug-savings {
+  min-width: 100px;
+}
+
+.ts-savings-badge {
+  background: var(--ts-gradient-price);
+  color: var(--ts-white);
+  padding: var(--ts-space-sm) var(--ts-space-md);
+  border-radius: var(--ts-radius-pill);
+  font-size: 12px;
+  font-weight: 500;
+  text-align: center;
+  box-shadow: var(--ts-shadow-badge);
+}
+
+.ts-savings-icon {
+  margin-right: var(--ts-space-xs);
+}
+
+.ts-savings-amount {
+  display: block;
+  font-family: var(--ts-font-mono);
+  font-size: 14px;
+}
+
+/* Clinical Recommendation */
+.ts-clinical-card {
+  background: var(--ts-gradient-savings);
+  color: var(--ts-white);
+  border-radius: var(--ts-radius-card);
+  padding: var(--ts-space-xl);
+  margin-bottom: var(--ts-space-xl);
+}
+
+.ts-clinical-header {
+  display: flex;
+  align-items: center;
+  gap: var(--ts-space-sm);
+  margin-bottom: var(--ts-space-md);
+}
+
+.ts-clinical-icon {
+  font-size: 20px;
+}
+
+.ts-clinical-header h3 {
+  font-family: var(--ts-font-display);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.ts-btn-clinical {
+  background: rgba(255, 255, 255, 0.2);
+  color: var(--ts-white);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: var(--ts-space-sm) var(--ts-space-md);
+  border-radius: var(--ts-radius-sm);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 200ms ease;
+  margin-top: var(--ts-space-md);
+}
+
+.ts-btn-clinical:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Loading and Empty States */
+.ts-loading {
+  text-align: center;
+  padding: var(--ts-space-4xl);
+}
+
+.ts-loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--ts-teal-light);
+  border-top: 3px solid var(--ts-teal);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto var(--ts-space-lg);
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.ts-empty-state {
+  text-align: center;
+  padding: var(--ts-space-4xl);
+}
+
+.ts-empty-icon {
+  font-size: 64px;
+  margin-bottom: var(--ts-space-lg);
+}
+
+.ts-empty-state h3 {
+  font-family: var(--ts-font-display);
+  font-size: 20px;
+  color: var(--ts-text-primary);
+  margin-bottom: var(--ts-space-md);
+}
+
+.ts-btn-secondary {
+  background: var(--ts-surface);
+  color: var(--ts-teal);
+  border: 1px solid var(--ts-border);
+  padding: var(--ts-space-md) var(--ts-space-lg);
+  border-radius: var(--ts-radius-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 200ms ease;
+}
+
+.ts-btn-secondary:hover {
+  background: var(--ts-teal-light);
+}
+
+/* Floating CTA */
+.ts-floating-cta {
+  position: fixed;
+  bottom: var(--ts-space-lg);
+  right: var(--ts-space-lg);
+  z-index: 100;
+}
+
+.ts-cta-btn {
+  background: var(--ts-gradient-savings);
+  color: var(--ts-white);
+  border: none;
+  padding: var(--ts-space-md) var(--ts-space-xl);
+  border-radius: var(--ts-radius-pill);
+  font-weight: 600;
+  box-shadow: var(--ts-shadow-modal);
+  cursor: pointer;
+  transition: all 300ms ease;
+}
+
+.ts-cta-btn:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 12px 40px rgba(0, 122, 114, 0.3);
+}
+
+/* ============================================
+   DRUG DETAIL PAGE
+   ============================================ */
+.ts-detail-layout {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: var(--ts-space-xl);
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: var(--ts-space-xl) var(--ts-space-lg);
+}
+
+.ts-drug-column {
+  space-y: var(--ts-space-xl);
+}
+
+/* Drug Header Card */
+.ts-drug-header-card {
+  background: var(--ts-teal-ghost);
+  border: 1px solid var(--ts-teal-light);
+  border-left: 4px solid var(--ts-teal);
+  border-radius: var(--ts-radius-card);
+  padding: var(--ts-space-2xl);
+  margin-bottom: var(--ts-space-xl);
+}
+
+.ts-drug-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: var(--ts-space-md);
+}
+
+.ts-drug-title {
+  font-family: var(--ts-font-display);
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--ts-text-primary);
+}
+
+.ts-drug-category-pill {
+  padding: var(--ts-space-sm) var(--ts-space-md);
+  border-radius: var(--ts-radius-pill);
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.ts-drug-specs {
+  display: flex;
+  align-items: center;
+  gap: var(--ts-space-sm);
+  margin-top: var(--ts-space-lg);
+}
+
+.ts-spec {
+  font-size: 14px;
+  color: var(--ts-text-secondary);
+  font-weight: 500;
+}
+
+.ts-spec-divider {
+  color: var(--ts-text-muted);
+}
+
+.ts-spec-generic {
+  background: var(--ts-green-light);
+  color: var(--ts-green);
+  padding: 2px 6px;
+  border-radius: var(--ts-radius-sm);
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+/* Price Comparison */
+.ts-price-comparison {
+  margin-top: var(--ts-space-xl);
+  padding-top: var(--ts-space-xl);
+  border-top: 1px solid var(--ts-teal-light);
+}
+
+.ts-dpri-price-lg {
+  text-align: center;
+  margin-bottom: var(--ts-space-lg);
+}
+
+.ts-dpri-price-lg .ts-price-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ts-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--ts-space-sm);
+}
+
+.ts-dpri-price-lg .ts-price-amount {
+  font-family: var(--ts-font-mono);
+  font-size: 40px;
+  font-weight: 500;
+  color: var(--ts-teal-deep);
+}
+
+.ts-comparison-bar {
+  display: flex;
+  height: 40px;
+  border-radius: var(--ts-radius-sm);
+  overflow: hidden;
+  margin-bottom: var(--ts-space-sm);
+}
+
+.ts-bar-dpri {
+  background: var(--ts-teal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ts-white);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.ts-bar-hospital {
+  background: var(--ts-red);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ts-white);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.ts-savings-highlight {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ts-space-sm);
+  color: var(--ts-teal-deep);
+  font-weight: 600;
+}
+
+/* Bento Grid */
+.ts-drug-bento {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--ts-space-lg);
+  margin-bottom: var(--ts-space-xl);
+}
+
+.ts-bento-tile {
+  background: var(--ts-white);
+  border-radius: var(--ts-radius-card);
+  padding: var(--ts-space-xl);
+  box-shadow: var(--ts-shadow-card);
+  transition: all 300ms ease;
+}
+
+.ts-bento-tile:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--ts-shadow-card-hover);
+}
+
+.ts-bento-tile h3 {
+  font-family: var(--ts-font-display);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ts-text-primary);
+  margin-bottom: var(--ts-space-md);
+}
+
+.ts-dpri-note {
+  font-size: 12px;
+  color: var(--ts-text-muted);
+  font-style: italic;
+  margin-top: var(--ts-space-sm);
+}
+
+.ts-classification-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ts-space-xs);
+}
+
+.ts-class-tag {
+  background: var(--ts-surface);
+  color: var(--ts-text-secondary);
+  padding: 4px 8px;
+  border-radius: var(--ts-radius-sm);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.ts-class-tag-form {
+  background: var(--ts-teal-light);
+  color: var(--ts-teal-deep);
+}
+
+/* Pharmacies Preview */
+.ts-pharmacies-preview {
+  background: var(--ts-white);
+  border-radius: var(--ts-radius-card);
+  padding: var(--ts-space-xl);
+  box-shadow: var(--ts-shadow-card);
+}
+
+.ts-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--ts-space-lg);
+}
+
+.ts-section-header h2 {
+  font-family: var(--ts-font-display);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--ts-text-primary);
+}
+
+.ts-pharmacy-list-preview {
+  space-y: var(--ts-space-md);
+}
+
+.ts-pharmacy-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--ts-space-md);
+  border: 1px solid var(--ts-border);
+  border-radius: var(--ts-radius-sm);
+  transition: all 200ms ease;
+}
+
+.ts-pharmacy-item:hover {
+  background: var(--ts-surface);
+}
+
+.ts-pharmacy-item:not(:last-child) {
+  margin-bottom: var(--ts-space-md);
+}
+
+.ts-pharmacy-info h4 {
+  font-weight: 600;
+  color: var(--ts-text-primary);
+  font-size: 14px;
+  margin-bottom: 2px;
+}
+
+.ts-pharmacy-address {
+  font-size: 12px;
+  color: var(--ts-text-secondary);
+  margin-bottom: 2px;
+}
+
+.ts-pharmacy-chain {
+  font-size: 11px;
+  color: var(--ts-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.ts-pharmacy-distance {
+  display: flex;
+  align-items: center;
+  gap: var(--ts-space-sm);
+}
+
+.ts-distance {
+  font-family: var(--ts-font-mono);
+  font-size: 12px;
+  color: var(--ts-teal);
+  font-weight: 500;
+}
+
+.ts-btn-directions {
+  background: var(--ts-teal-light);
+  color: var(--ts-teal);
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 200ms ease;
+  font-size: 14px;
+}
+
+.ts-btn-directions:hover {
+  background: var(--ts-teal);
+  color: var(--ts-white);
+}
+
+/* AI Panel */
+.ts-ai-panel {
+  position: sticky;
+  top: 120px;
+  height: fit-content;
+}
+
+.ts-ai-card {
+  background: var(--ts-white-glass);
+  backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(0, 191, 165, 0.25);
+  border-radius: var(--ts-radius-xl);
+  box-shadow: var(--ts-shadow-modal);
+  overflow: hidden;
+}
+
+.ts-ai-header {
+  display: flex;
+  align-items: center;
+  gap: var(--ts-space-md);
+  background: var(--ts-gradient-savings);
+  color: var(--ts-white);
+  padding: var(--ts-space-lg);
+}
+
+.ts-ai-avatar {
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+.ts-ai-title h3 {
+  font-family: var(--ts-font-display);
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.ts-ai-title p {
+  font-size: 12px;
+  opacity: 0.8;
+  margin: 0;
+}
+
+.ts-ai-chat {
+  padding: var(--ts-space-lg);
+  min-height: 200px;
+}
+
+.ts-ai-message {
+  margin-bottom: var(--ts-space-lg);
+}
+
+.ts-ai-loading {
+  display: flex;
+  align-items: center;
+  gap: var(--ts-space-sm);
+  color: var(--ts-text-secondary);
+}
+
+.ts-typing-indicator {
+  display: flex;
+  gap: 3px;
+}
+
+.ts-typing-indicator span {
+  width: 6px;
+  height: 6px;
+  background: var(--ts-teal);
+  border-radius: 50%;
+  animation: typing 1.2s infinite;
+}
+
+.ts-typing-indicator span:nth-child(2) { animation-delay: 0.1s; }
+.ts-typing-indicator span:nth-child(3) { animation-delay: 0.2s; }
+
+@keyframes typing {
+  0%, 60%, 100% { transform: scale(1); opacity: 0.5; }
+  30% { transform: scale(1.2); opacity: 1; }
+}
+
+.ts-ai-bubble {
+  background: var(--ts-teal-ghost);
+  border: 1px solid var(--ts-teal-light);
+  border-radius: var(--ts-radius-lg);
+  padding: var(--ts-space-md);
+  margin-bottom: var(--ts-space-sm);
+}
+
+.ts-ai-disclaimer {
+  font-size: 11px;
+  color: var(--ts-text-muted);
+}
+
+.ts-ai-fallback {
+  background: var(--ts-gold-light);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  border-radius: var(--ts-radius-lg);
+  padding: var(--ts-space-md);
+}
+
+.ts-ai-input-section {
+  border-top: 1px solid var(--ts-border);
+  padding: var(--ts-space-md);
+}
+
+.ts-ai-quick-questions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ts-space-xs);
+}
+
+.ts-quick-q {
+  background: var(--ts-surface);
+  color: var(--ts-text-secondary);
+  border: 1px solid var(--ts-border);
+  padding: var(--ts-space-xs) var(--ts-space-sm);
+  border-radius: var(--ts-radius-pill);
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 200ms ease;
+}
+
+.ts-quick-q:hover {
+  background: var(--ts-teal-light);
+  color: var(--ts-teal-deep);
+}
+
+/* Bottom Actions */
+.ts-bottom-actions {
+  position: sticky;
+  bottom: 0;
+  background: var(--ts-white-glass);
+  backdrop-filter: blur(20px) saturate(180%);
+  border-top: 1px solid var(--ts-border);
+  padding: var(--ts-space-lg);
+  display: flex;
+  gap: var(--ts-space-md);
+  justify-content: center;
+  z-index: 80;
+}
+
+.ts-action-btn {
+  padding: var(--ts-space-md) var(--ts-space-lg);
+  border-radius: var(--ts-radius-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 200ms ease;
+  display: flex;
+  align-items: center;
+  gap: var(--ts-space-sm);
+}
+
+.ts-btn-primary {
+  background: var(--ts-teal);
+  color: var(--ts-white);
+  border: none;
+}
+
+.ts-btn-primary:hover {
+  background: var(--ts-teal-deep);
+  transform: translateY(-1px);
+}
+
+/* ============================================
+   MAP PAGE
+   ============================================ */
+.ts-map-layout {
+  position: relative;
+  height: calc(100vh - 64px);
+  overflow: hidden;
+}
+
+.ts-map-container {
+  width: 100%;
+  height: 100%;
+}
+
+/* Custom map markers */
+.ts-custom-marker {
+  background: none;
+  border: none;
+}
+
+.ts-map-marker {
+  background: var(--ts-teal);
+  color: var(--ts-white);
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  box-shadow: var(--ts-shadow-badge);
+  transition: all 200ms ease;
+}
+
+.ts-marker-selected {
+  background: var(--ts-navy);
+  transform: scale(1.2);
+  z-index: 1000;
+}
+
+.ts-user-marker-icon {
+  background: none;
+  border: none;
+}
+
+.ts-user-marker {
+  background: var(--ts-gold);
+  color: var(--ts-white);
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  box-shadow: var(--ts-shadow-badge);
+}
+
+/* Map Sidebar */
+.ts-map-sidebar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 380px;
+  background: var(--ts-white-glass);
+  backdrop-filter: blur(20px) saturate(180%);
+  border-right: 1px solid var(--ts-border);
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+  transform: translateX(0);
+  transition: transform 300ms ease;
+}
+
+.ts-sidebar-collapsed {
+  transform: translateX(-340px);
+}
+
+.ts-sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--ts-space-lg);
+  border-bottom: 1px solid var(--ts-border);
+}
+
+.ts-sidebar-header h2 {
+  font-family: var(--ts-font-display);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--ts-text-primary);
+}
+
+.ts-sidebar-controls {
+  display: flex;
+  gap: var(--ts-space-sm);
+}
+
+.ts-locate-btn,
+.ts-collapse-btn {
+  background: var(--ts-teal-light);
+  color: var(--ts-teal-deep);
+  border: none;
+  padding: var(--ts-space-sm);
+  border-radius: var(--ts-radius-sm);
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 200ms ease;
+}
+
+.ts-locate-btn:hover,
+.ts-collapse-btn:hover {
+  background: var(--ts-teal);
+  color: var(--ts-white);
+}
+
+.ts-locate-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.ts-sort-options {
+  padding: var(--ts-space-md) var(--ts-space-lg);
+  border-bottom: 1px solid var(--ts-border);
+}
+
+.ts-sort-options label {
+  display: flex;
+  align-items: center;
+  gap: var(--ts-space-sm);
+  margin-bottom: var(--ts-space-xs);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.ts-pharmacy-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--ts-space-md);
+}
+
+.ts-pharmacy-card {
+  background: var(--ts-white);
+  border: 2px solid transparent;
+  border-radius: var(--ts-radius-md);
+  padding: var(--ts-space-md);
+  margin-bottom: var(--ts-space-md);
+  cursor: pointer;
+  transition: all 200ms ease;
+}
+
+.ts-pharmacy-card:hover {
+  border-color: var(--ts-teal-light);
+  box-shadow: var(--ts-shadow-card);
+}
+
+.ts-pharmacy-selected {
+  border-color: var(--ts-teal);
+  box-shadow: var(--ts-shadow-card-hover);
+}
+
+.ts-pharmacy-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--ts-space-sm);
+}
+
+.ts-pharmacy-header h3 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ts-text-primary);
+}
+
+.ts-chain-badge {
+  font-size: 10px;
+  font-weight: 500;
+  padding: 2px 6px;
+  border-radius: var(--ts-radius-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.ts-chain-mercury { background: #e3f2fd; color: #1976d2; }
+.ts-chain-generika { background: #f3e5f5; color: #7b1fa2; }
+.ts-chain-rose { background: #fce4ec; color: #c2185b; }
+.ts-chain-southstar { background: #fff3e0; color: #f57c00; }
+.ts-chain-watsons { background: #e8f5e8; color: #388e3c; }
+.ts-chain-generic_plus { background: #fff8e1; color: #f9a825; }
+
+.ts-pharmacy-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: var(--ts-space-sm);
+}
+
+.ts-pharmacy-meta .ts-distance,
+.ts-pharmacy-meta .ts-phone {
+  font-size: 12px;
+  color: var(--ts-text-secondary);
+}
+
+.ts-pharmacy-actions {
+  display: flex;
+  gap: var(--ts-space-sm);
+}
+
+.ts-btn-directions,
+.ts-btn-call {
+  background: var(--ts-surface);
+  color: var(--ts-text-secondary);
+  border: 1px solid var(--ts-border);
+  padding: 4px 8px;
+  border-radius: var(--ts-radius-sm);
+  font-size: 10px;
+  cursor: pointer;
+  transition: all 200ms ease;
+}
+
+.ts-btn-directions:hover {
+  background: var(--ts-teal-light);
+  color: var(--ts-teal-deep);
+}
+
+.ts-btn-call:hover {
+  background: var(--ts-green-light);
+  color: var(--ts-green);
+}
+
+/* Map Controls */
+.ts-map-controls {
+  position: absolute;
+  top: var(--ts-space-lg);
+  right: var(--ts-space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ts-space-sm);
+  z-index: 1000;
+}
+
+.ts-map-control-btn {
+  background: var(--ts-white);
+  color: var(--ts-text-primary);
+  border: 1px solid var(--ts-border);
+  padding: var(--ts-space-sm) var(--ts-space-md);
+  border-radius: var(--ts-radius-sm);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: var(--ts-shadow-card);
+  transition: all 200ms ease;
+}
+
+.ts-map-control-btn:hover {
+  background: var(--ts-teal);
+  color: var(--ts-white);
+}
+
+/* Pharmacy Popup */
+.ts-pharmacy-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.ts-popup-content {
+  background: var(--ts-white);
+  border-radius: var(--ts-radius-lg);
+  max-width: 400px;
+  width: 90%;
+  box-shadow: var(--ts-shadow-modal);
+}
+
+.ts-popup-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--ts-space-lg);
+  border-bottom: 1px solid var(--ts-border);
+}
+
+.ts-popup-header h3 {
+  font-family: var(--ts-font-display);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--ts-text-primary);
+}
+
+.ts-close-popup {
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: var(--ts-text-muted);
+  cursor: pointer;
+  padding: var(--ts-space-sm);
+  border-radius: var(--ts-radius-sm);
+  transition: all 200ms ease;
+}
+
+.ts-close-popup:hover {
+  background: var(--ts-surface);
+  color: var(--ts-text-primary);
+}
+
+.ts-popup-body {
+  padding: var(--ts-space-lg);
+}
+
+.ts-popup-actions {
+  display: flex;
+  gap: var(--ts-space-sm);
+  margin-top: var(--ts-space-lg);
+}
+
+/* Location Modal */
+.ts-location-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3000;
+}
+
+.ts-modal-content {
+  background: var(--ts-white);
+  border-radius: var(--ts-radius-lg);
+  padding: var(--ts-space-2xl);
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  box-shadow: var(--ts-shadow-modal);
+}
+
+.ts-modal-content h3 {
+  font-family: var(--ts-font-display);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--ts-text-primary);
+  margin-bottom: var(--ts-space-md);
+}
+
+.ts-modal-actions {
+  display: flex;
+  gap: var(--ts-space-sm);
+  margin-top: var(--ts-space-xl);
+}
+
+.ts-modal-actions button {
+  flex: 1;
+}
+
+/* Loading States */
+.ts-loading-pharmacies {
+  text-align: center;
+  padding: var(--ts-space-2xl);
+  color: var(--ts-text-secondary);
+}
+
+.ts-no-pharmacies {
+  text-align: center;
+  padding: var(--ts-space-2xl);
+  color: var(--ts-text-secondary);
+}
+
+/* Map Popup */
+.ts-map-popup {
+  font-family: var(--ts-font-body);
+}
+
+.ts-map-popup h4 {
+  font-weight: 600;
+  color: var(--ts-text-primary);
+  margin-bottom: var(--ts-space-xs);
+}
+
+.ts-popup-btn {
+  background: var(--ts-teal);
+  color: var(--ts-white);
+  border: none;
+  padding: var(--ts-space-xs) var(--ts-space-sm);
+  border-radius: var(--ts-radius-sm);
+  font-size: 12px;
+  cursor: pointer;
+  margin-top: var(--ts-space-sm);
+}
+
+/* ============================================
+   RESPONSIVE DESIGN UPDATES
+   ============================================ */
+@media (max-width: 1024px) {
+  .ts-detail-layout {
+    grid-template-columns: 1fr;
+  }
+  
+  .ts-ai-panel {
+    position: relative;
+    top: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .ts-search-layout {
+    grid-template-columns: 1fr;
+  }
+  
+  .ts-filter-sidebar {
+    position: fixed;
+    top: 140px;
+    left: 0;
+    right: 0;
+    z-index: 200;
+    transform: translateY(-100%);
+    transition: transform 300ms ease;
+  }
+  
+  .ts-filter-sidebar.ts-filter-open {
+    transform: translateY(0);
+  }
+  
+  .ts-drug-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--ts-space-md);
+  }
+  
+  .ts-drug-bento {
+    grid-template-columns: 1fr;
+  }
+  
+  .ts-map-sidebar {
+    width: 100vw;
+  }
+  
+  .ts-sidebar-collapsed {
+    transform: translateX(-100vw);
+  }
+  
+  .ts-bottom-actions {
+    flex-wrap: wrap;
+  }
+  
+  .ts-action-btn {
+    flex: 1;
+    min-width: 120px;
+  }
+}
