@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/IamJesssie/TransparenSeeDPRI/main/assets/logo.png" alt="TransparenSee Logo" width="320"/>
+<img src="https://raw.githubusercontent.com/IamJesssie/TransparenSeeDPRI/main/docs/assets/TransparenSee.png" alt="TransparenSee Logo" width="320"/>
 
 # TransparenSee
 ### Pharmacy Price Transparency (DPRI) Concierge
