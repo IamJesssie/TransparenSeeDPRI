@@ -4,11 +4,477 @@
 <html ng-app="TransparenSeeSearchApp">
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <link rel="stylesheet" href="/x_1966129_transpar_theme.cssdo"/>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&amp;family=DM+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
   <link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&amp;display=swap" rel="stylesheet"/>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
   <title>Search Results - TransparenSee</title>
+  
+  <!-- INLINE CRITICAL CSS -->
+  <style>
+    :root {
+      --ts-teal: #009688;
+      --ts-teal-deep: #007A72;
+      --ts-teal-bright: #00BFA5;
+      --ts-teal-light: #E0F2F1;
+      --ts-teal-ghost: #F0FAFA;
+      --ts-navy: #0D1F4E;
+      --ts-navy-mid: #1A2B5E;
+      --ts-gold: #F59E0B;
+      --ts-surface: #F8FAFB;
+      --ts-border: #E2EAEB;
+      --ts-shadow: 0 4px 24px rgba(0,122,114,0.08);
+      --ts-radius-card: 20px;
+      --ts-radius-pill: 9999px;
+      --ts-font-display: 'Clash Display', 'Plus Jakarta Sans', sans-serif;
+      --ts-font-body: 'Plus Jakarta Sans', sans-serif;
+      --ts-font-mono: 'DM Mono', monospace;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: var(--ts-font-body);
+      background: var(--ts-surface);
+      color: var(--ts-navy);
+    }
+
+    .ts-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* NAVBAR */
+    .ts-navbar {
+      background: rgba(255,255,255,0.88);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--ts-border);
+      z-index: 100;
+    }
+
+    .ts-navbar-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 24px;
+    }
+
+    .ts-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--ts-font-display);
+      font-weight: 600;
+      font-size: 18px;
+      color: var(--ts-navy);
+    }
+
+    .ts-nav-links {
+      display: flex;
+      list-style: none;
+      gap: 32px;
+    }
+
+    .ts-nav-links a {
+      text-decoration: none;
+      color: var(--ts-navy);
+      font-weight: 500;
+      padding-bottom: 4px;
+      transition: all 0.2s;
+    }
+
+    .ts-nav-links a.active,
+    .ts-nav-links a:hover {
+      color: var(--ts-teal);
+      border-bottom: 2px solid var(--ts-teal);
+    }
+
+    /* SEARCH BAR */
+    .ts-search-sticky {
+      background: white;
+      border-bottom: 1px solid var(--ts-border);
+      padding: 20px 0;
+      position: sticky;
+      top: 0;
+      z-index: 90;
+    }
+
+    .ts-search-bar-results {
+      display: flex;
+      align-items: center;
+      background: var(--ts-surface);
+      border: 2px solid var(--ts-border);
+      border-radius: var(--ts-radius-pill);
+      margin-bottom: 16px;
+      transition: border-color 0.2s;
+    }
+
+    .ts-search-bar-results:focus-within {
+      border-color: var(--ts-teal);
+    }
+
+    .ts-search-icon {
+      padding: 0 20px;
+      font-size: 18px;
+      color: var(--ts-teal);
+    }
+
+    .ts-search-input {
+      flex: 1;
+      border: none;
+      padding: 14px 0;
+      font-size: 16px;
+      outline: none;
+      background: transparent;
+    }
+
+    .ts-search-btn {
+      background: var(--ts-teal);
+      color: white;
+      border: none;
+      padding: 14px 20px;
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: 0 var(--ts-radius-pill) var(--ts-radius-pill) 0;
+      transition: background 0.2s;
+    }
+
+    .ts-search-btn:hover {
+      background: var(--ts-teal-deep);
+    }
+
+    .ts-results-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .ts-result-count {
+      color: #666;
+      font-size: 14px;
+    }
+
+    .ts-filter-btn {
+      background: none;
+      border: 1px solid var(--ts-border);
+      padding: 8px 16px;
+      border-radius: var(--ts-radius-pill);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .ts-filter-btn:hover {
+      background: var(--ts-teal-ghost);
+      border-color: var(--ts-teal);
+    }
+
+    /* LAYOUT */
+    .ts-search-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 24px;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 40px 24px;
+    }
+
+    /* FILTER SIDEBAR */
+    .ts-filter-sidebar {
+      background: white;
+      border-radius: var(--ts-radius-card);
+      padding: 24px;
+      height: fit-content;
+      position: sticky;
+      top: 120px;
+      box-shadow: var(--ts-shadow);
+    }
+
+    .ts-filter-section {
+      margin-bottom: 32px;
+    }
+
+    .ts-filter-section h3 {
+      font-family: var(--ts-font-display);
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      color: var(--ts-navy);
+    }
+
+    .ts-filter-section label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+      cursor: pointer;
+    }
+
+    .ts-filter-pill {
+      padding: 4px 12px;
+      border-radius: var(--ts-radius-pill);
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    /* RESULTS MAIN */
+    .ts-results-main {
+      min-height: 400px;
+    }
+
+    .ts-loading {
+      text-align: center;
+      padding: 80px 20px;
+      color: #666;
+    }
+
+    .ts-loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid var(--ts-teal-light);
+      border-top: 3px solid var(--ts-teal);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px auto;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* CLINICAL RECOMMENDATION */
+    .ts-clinical-card {
+      background: linear-gradient(135deg, var(--ts-teal) 0%, var(--ts-teal-bright) 100%);
+      color: white;
+      padding: 24px;
+      border-radius: var(--ts-radius-card);
+      margin-bottom: 32px;
+    }
+
+    .ts-clinical-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .ts-clinical-header h3 {
+      font-family: var(--ts-font-display);
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .ts-btn-clinical {
+      background: rgba(255,255,255,0.2);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.3);
+      padding: 8px 16px;
+      border-radius: var(--ts-radius-pill);
+      cursor: pointer;
+      margin-top: 16px;
+      transition: background 0.2s;
+    }
+
+    .ts-btn-clinical:hover {
+      background: rgba(255,255,255,0.3);
+    }
+
+    /* DRUG CARD */
+    .ts-drug-card {
+      background: white;
+      border: 1px solid var(--ts-border);
+      border-left: 4px solid var(--ts-teal-bright);
+      border-radius: var(--ts-radius-card);
+      padding: 24px;
+      margin-bottom: 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 24px;
+      align-items: center;
+    }
+
+    .ts-drug-card:hover {
+      box-shadow: 0 8px 40px rgba(0,122,114,0.16);
+      transform: translateY(-2px);
+    }
+
+    .ts-drug-name {
+      font-family: var(--ts-font-display);
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--ts-navy);
+      margin-bottom: 4px;
+    }
+
+    .ts-drug-brands {
+      font-style: italic;
+      color: #666;
+      font-size: 14px;
+      margin-bottom: 12px;
+    }
+
+    .ts-drug-tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .ts-tag {
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .ts-tag-dosage {
+      background: var(--ts-teal-light);
+      color: var(--ts-teal-deep);
+    }
+
+    .ts-tag-route {
+      background: #F3F4F6;
+      color: #374151;
+    }
+
+    .ts-tag-generic {
+      background: #F1F8E9;
+      color: #558B2F;
+    }
+
+    .ts-tag-warning {
+      background: #FEE2E2;
+      color: #EF4444;
+    }
+
+    .ts-drug-pricing {
+      text-align: right;
+    }
+
+    .ts-price-label {
+      display: block;
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 4px;
+    }
+
+    .ts-price-value {
+      display: block;
+      font-family: var(--ts-font-mono);
+      font-size: 22px;
+      font-weight: 500;
+      color: var(--ts-teal-deep);
+    }
+
+    .ts-comparison-label {
+      font-size: 12px;
+      color: #666;
+      text-decoration: line-through;
+    }
+
+    .ts-drug-savings {
+      text-align: center;
+    }
+
+    .ts-savings-badge {
+      background: linear-gradient(90deg, var(--ts-gold), #F97316);
+      color: white;
+      padding: 12px 16px;
+      border-radius: var(--ts-radius-pill);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
+    }
+
+    .ts-savings-amount {
+      font-family: var(--ts-font-mono);
+    }
+
+    /* EMPTY STATE */
+    .ts-empty-state {
+      text-align: center;
+      padding: 80px 20px;
+      color: #666;
+    }
+
+    .ts-empty-icon {
+      font-size: 64px;
+      margin-bottom: 20px;
+    }
+
+    .ts-empty-state h3 {
+      font-family: var(--ts-font-display);
+      font-size: 22px;
+      color: var(--ts-navy);
+      margin-bottom: 12px;
+    }
+
+    .ts-btn-secondary {
+      background: none;
+      border: 1px solid var(--ts-teal);
+      color: var(--ts-teal);
+      padding: 12px 24px;
+      border-radius: var(--ts-radius-pill);
+      cursor: pointer;
+      font-weight: 600;
+      margin-top: 20px;
+      transition: all 0.2s;
+    }
+
+    .ts-btn-secondary:hover {
+      background: var(--ts-teal);
+      color: white;
+    }
+
+    /* FLOATING CTA */
+    .ts-floating-cta {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 100;
+    }
+
+    .ts-cta-btn {
+      background: linear-gradient(135deg, var(--ts-teal) 0%, var(--ts-teal-bright) 100%);
+      color: white;
+      border: none;
+      padding: 16px 24px;
+      border-radius: var(--ts-radius-pill);
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 8px 32px rgba(0,122,114,0.3);
+      transition: transform 0.2s;
+    }
+
+    .ts-cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(0,122,114,0.4);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .ts-search-layout {
+        grid-template-columns: 1fr;
+      }
+      
+      .ts-filter-sidebar {
+        display: none;
+      }
+      
+      .ts-filter-open {
+        display: block !important;
+      }
+    }
+  </style>
 </head>
 <body ng-controller="SearchController">
 
@@ -43,9 +509,9 @@
         <button class="ts-search-btn" ng-click="performSearch()">Search</button>
       </div>
       <div class="ts-results-meta">
-        <span class="ts-result-count">{{ filteredResults().length }} results</span>
+        <span class="ts-result-count"><span ng-bind="filteredResults().length"></span> results</span>
         <button class="ts-filter-btn" ng-click="toggleFilters()">
-          Filters {{ filterOpen ? '✕' : '⚙️' }}
+          Filters <span ng-bind="filterOpen ? '✕' : '⚙️'"></span>
         </button>
       </div>
     </div>
@@ -60,7 +526,7 @@
         <label ng-repeat="cat in categories">
           <input type="checkbox" ng-model="filters.categories[cat.name]"/>
           <span class="ts-filter-pill" style="background: {{cat.color}}20; color: {{cat.color}}">
-            {{ cat.name }}
+            <span ng-bind="cat.name"></span>
           </span>
         </label>
       </div>
@@ -69,7 +535,7 @@
         <h3>Dosage Form</h3>
         <label ng-repeat="form in dosageForms">
           <input type="checkbox" ng-model="filters.forms[form]"/>
-          <span>{{ form | titleCase }}</span>
+          <span ng-bind="form | titleCase"></span>
         </label>
       </div>
 
@@ -77,7 +543,7 @@
         <h3>Price Range (₱)</h3>
         <div class="ts-price-range">
           <input type="range" ng-model="filters.maxPrice" min="0" max="1000" step="10"/>
-          <span>Up to ₱{{ filters.maxPrice }}</span>
+          <span>Up to ₱<span ng-bind="filters.maxPrice"></span></span>
         </div>
       </div>
 
@@ -104,7 +570,7 @@
           <span class="ts-clinical-icon">🩺</span>
           <h3>Clinical Recommendation</h3>
         </div>
-        <p>Consider generic alternatives for {{ searchQuery }} - they contain the same active ingredients at significantly lower costs (average 65% savings).</p>
+        <p>Consider generic alternatives for <span ng-bind="searchQuery"></span> - they contain the same active ingredients at significantly lower costs (average 65% savings).</p>
         <button class="ts-btn-clinical" ng-click="showGenericsOnly()">Show Generic Options</button>
       </div>
 
@@ -112,13 +578,13 @@
       <div ng-show="!isLoading &amp;&amp; filteredResults().length > 0">
         <div class="ts-drug-card" ng-repeat="drug in filteredResults()" ng-click="goToDetail(drug.sys_id)">
           <div class="ts-drug-info">
-            <h3 class="ts-drug-name">{{ drug.generic_name }}</h3>
-            <p class="ts-drug-brands" ng-show="drug.brand_names">{{ drug.brand_names }}</p>
+            <h3 class="ts-drug-name" ng-bind="drug.generic_name"></h3>
+            <p class="ts-drug-brands" ng-show="drug.brand_names" ng-bind="drug.brand_names"></p>
             <div class="ts-drug-tags">
-              <span class="ts-tag ts-tag-dosage">{{ drug.dosage_strength }} {{ drug.dosage_form }}</span>
-              <span class="ts-tag ts-tag-route">{{ drug.route }}</span>
+              <span class="ts-tag ts-tag-dosage"><span ng-bind="drug.dosage_strength"></span> <span ng-bind="drug.dosage_form"></span></span>
+              <span class="ts-tag ts-tag-route" ng-bind="drug.route"></span>
               <span class="ts-tag ts-tag-category" style="background: {{ getCategoryColor(drug.category) }}20; color: {{ getCategoryColor(drug.category) }}">
-                {{ drug.category }}
+                <span ng-bind="drug.category"></span>
               </span>
               <span ng-show="drug.is_generic" class="ts-tag ts-tag-generic">Generic</span>
               <span ng-show="drug.limited_stock" class="ts-tag ts-tag-warning">Limited Stock</span>
@@ -128,18 +594,18 @@
           <div class="ts-drug-pricing">
             <div class="ts-dpri-price">
               <span class="ts-price-label">DPRI Fair Price</span>
-              <span class="ts-price-value">₱{{ drug.dpri_price | number:2 }}</span>
+              <span class="ts-price-value">₱<span ng-bind="drug.dpri_price | number:2"></span></span>
             </div>
             <div class="ts-hospital-comparison" ng-show="drug.hospital_avg > 0">
-              <span class="ts-comparison-label">vs Hospital: ₱{{ drug.hospital_avg | number:2 }}</span>
+              <span class="ts-comparison-label">vs Hospital: ₱<span ng-bind="drug.hospital_avg | number:2"></span></span>
             </div>
           </div>
 
           <div class="ts-drug-savings" ng-show="drug.savings_percent > 0">
             <div class="ts-savings-badge">
               <span class="ts-savings-icon">💰</span>
-              <span class="ts-savings-text">Save {{ drug.savings_percent }}%</span>
-              <span class="ts-savings-amount">₱{{ (drug.hospital_avg - drug.dpri_price) | number:0 }}</span>
+              <span class="ts-savings-text">Save <span ng-bind="drug.savings_percent"></span>%</span>
+              <span class="ts-savings-amount">₱<span ng-bind="(drug.hospital_avg - drug.dpri_price) | number:0"></span></span>
             </div>
           </div>
         </div>
@@ -148,7 +614,7 @@
       <!-- EMPTY STATE -->
       <div ng-show="!isLoading &amp;&amp; filteredResults().length === 0 &amp;&amp; searchQuery" class="ts-empty-state">
         <div class="ts-empty-icon">🔍</div>
-        <h3>No medicines found for "{{ searchQuery }}"</h3>
+        <h3>No medicines found for "<span ng-bind="searchQuery"></span>"</h3>
         <p>Try searching with different terms or check spelling.</p>
         <button class="ts-btn-secondary" ng-click="clearFilters()">Clear Filters</button>
       </div>
@@ -158,7 +624,7 @@
   <!-- FLOATING COMPARE CTA -->
   <div class="ts-floating-cta" ng-show="selectedDrugs.length > 0">
     <button class="ts-cta-btn" ng-click="compareSelected()">
-      ✨ Compare {{ selectedDrugs.length }} Medicine{{ selectedDrugs.length > 1 ? 's' : '' }}
+      ✨ Compare <span ng-bind="selectedDrugs.length"></span> Medicine<span ng-show="selectedDrugs.length > 1">s</span>
     </button>
   </div>
 

@@ -18,8 +18,8 @@ DPRI_PriceEngine.prototype = Object.assign(new AbstractAjaxProcessor(), {
         var gr = new GlideRecord('x_1966129_transpar_medicine');
         gr.addEncodedQuery(
             'generic_nameLIKE' + query +
-            '^ORbrand_namesLIKE' + query +
-            '^is_active=true'
+            '^ORbrand_nameLIKE' + query +
+            '^active=active'
         );
         gr.orderBy('generic_name');
         gr.setLimit(15);
@@ -28,24 +28,22 @@ DPRI_PriceEngine.prototype = Object.assign(new AbstractAjaxProcessor(), {
         while (gr.next()) {
             var dpriPrice = parseFloat(gr.dpri_price.toString()) || 0;
             var hospitalAvg = parseFloat(gr.hospital_avg_price.toString()) || 0;
-            var savingsPct = hospitalAvg > 0
-                ? Math.round(((hospitalAvg - dpriPrice) / hospitalAvg) * 100)
-                : 0;
+            var savingsPct = parseInt(gr.savings_percentage.toString()) || 0;
 
             results.push({
                 sys_id:          gr.sys_id.toString(),
                 generic_name:    gr.generic_name.toString(),
-                brand_names:     gr.brand_names.toString(),
-                dosage_strength: gr.dosage_strength.toString(),
-                dosage_form:     gr.dosage_form.toString(),
-                route:           gr.route.toString(),
+                brand_names:     gr.brand_name.toString(), // Output as brand_names for frontend compatibility
+                dosage_strength: gr.strength.toString(),   // Output as dosage_strength for frontend
+                dosage_form:     gr.form.toString(),       // Output as dosage_form for frontend
+                route:           'oral', // Default since route field doesn't exist
                 dpri_price:      dpriPrice,
                 hospital_avg:    hospitalAvg,
                 savings_percent: savingsPct,
                 category:        gr.category.getDisplayValue(),
-                is_generic:      gr.is_generic.toString() === 'true',
-                limited_stock:   gr.limited_stock.toString() === 'true',
-                indications:     gr.indications.toString()
+                is_generic:      true,  // Default true since field doesn't exist
+                limited_stock:   false, // Default false since field doesn't exist
+                indications:     gr.description.toString()  // Use description as indications
             });
         }
 
@@ -66,17 +64,17 @@ DPRI_PriceEngine.prototype = Object.assign(new AbstractAjaxProcessor(), {
         return JSON.stringify({
             sys_id:          gr.sys_id.toString(),
             generic_name:    gr.generic_name.toString(),
-            brand_names:     gr.brand_names.toString(),
-            dosage_strength: gr.dosage_strength.toString(),
-            dosage_form:     gr.dosage_form.toString(),
-            route:           gr.route.toString(),
+            brand_names:     gr.brand_name.toString(),
+            dosage_strength: gr.strength.toString(),
+            dosage_form:     gr.form.toString(),
+            route:           'oral',
             dpri_price:      parseFloat(gr.dpri_price.toString()),
             hospital_avg:    parseFloat(gr.hospital_avg_price.toString()),
-            savings_percent: parseInt(gr.savings_percent.toString()),
+            savings_percent: parseInt(gr.savings_percentage.toString()),
             category:        gr.category.getDisplayValue(),
-            indications:     gr.indications.toString(),
-            warnings:        gr.warnings.toString(),
-            dpri_ref_code:   gr.dpri_ref_code.toString()
+            indications:     gr.description.toString(),
+            warnings:        'Consult your pharmacist for proper usage.',
+            dpri_ref_code:   'DPRI-2025-' + gr.sys_id.toString().substr(0, 8)
         });
     },
 
@@ -111,7 +109,7 @@ DPRI_PriceEngine.prototype = Object.assign(new AbstractAjaxProcessor(), {
         var pharmacyCount = 0;
         
         var gr = new GlideRecord('x_1966129_transpar_medicine');
-        gr.addEncodedQuery('is_active=true');
+        gr.addEncodedQuery('active=active');
         gr.query();
         drugCount = gr.getRowCount();
 
@@ -140,10 +138,10 @@ DPRI_PriceEngine.prototype = Object.assign(new AbstractAjaxProcessor(), {
         var results = [];
         var gr = new GlideRecord('x_1966129_transpar_medicine');
         
-        var queryParts = ['is_active=true'];
+        var queryParts = ['active=active'];
         
         if (query && query.length >= 2) {
-            queryParts.push('(generic_nameLIKE' + query.trim().toLowerCase() + '^ORbrand_namesLIKE' + query.trim().toLowerCase() + ')');
+            queryParts.push('(generic_nameLIKE' + query.trim().toLowerCase() + '^ORbrand_nameLIKE' + query.trim().toLowerCase() + ')');
         }
         
         if (category) {
@@ -151,11 +149,7 @@ DPRI_PriceEngine.prototype = Object.assign(new AbstractAjaxProcessor(), {
         }
         
         if (form) {
-            queryParts.push('dosage_form=' + form);
-        }
-        
-        if (genericOnly) {
-            queryParts.push('is_generic=true');
+            queryParts.push('form=' + form);
         }
         
         queryParts.push('dpri_price<=' + maxPrice);
@@ -168,24 +162,22 @@ DPRI_PriceEngine.prototype = Object.assign(new AbstractAjaxProcessor(), {
         while (gr.next()) {
             var dpriPrice = parseFloat(gr.dpri_price.toString()) || 0;
             var hospitalAvg = parseFloat(gr.hospital_avg_price.toString()) || 0;
-            var savingsPct = hospitalAvg > 0
-                ? Math.round(((hospitalAvg - dpriPrice) / hospitalAvg) * 100)
-                : 0;
+            var savingsPct = parseInt(gr.savings_percentage.toString()) || 0;
 
             results.push({
                 sys_id:          gr.sys_id.toString(),
                 generic_name:    gr.generic_name.toString(),
-                brand_names:     gr.brand_names.toString(),
-                dosage_strength: gr.dosage_strength.toString(),
-                dosage_form:     gr.dosage_form.toString(),
-                route:           gr.route.toString(),
+                brand_names:     gr.brand_name.toString(),
+                dosage_strength: gr.strength.toString(),
+                dosage_form:     gr.form.toString(),
+                route:           'oral',
                 dpri_price:      dpriPrice,
                 hospital_avg:    hospitalAvg,
                 savings_percent: savingsPct,
                 category:        gr.category.getDisplayValue(),
-                is_generic:      gr.is_generic.toString() === 'true',
-                limited_stock:   gr.limited_stock.toString() === 'true',
-                indications:     gr.indications.toString()
+                is_generic:      true,
+                limited_stock:   false,
+                indications:     gr.description.toString()
             });
         }
 

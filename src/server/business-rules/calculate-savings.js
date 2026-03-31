@@ -5,7 +5,10 @@ function calculateSavings(current, previous) {
     
     if (hospitalAvg > 0 && dpriPrice > 0) {
         var savingsPercent = Math.round(((hospitalAvg - dpriPrice) / hospitalAvg) * 100);
-        current.setValue('savings_percent', savingsPercent);
+        var savingsAmount = hospitalAvg - dpriPrice;
+        
+        current.setValue('savings_percentage', savingsPercent);
+        current.setValue('savings_amount', savingsAmount);
         
         // Log significant savings (>50%) for admin review
         if (savingsPercent > 50) {
@@ -13,6 +16,7 @@ function calculateSavings(current, previous) {
                              ' saves ' + savingsPercent + '% vs hospital pricing');
         }
     } else {
-        current.setValue('savings_percent', 0);
+        current.setValue('savings_percentage', 0);
+        current.setValue('savings_amount', 0);
     }
 }

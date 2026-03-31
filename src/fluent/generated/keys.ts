@@ -5,13 +5,89 @@ declare global {
         namespace Internal {
             interface Keys extends KeysRegistry {
                 explicit: {
+                    '061c0c08c3444310c47bd72d0501315e': {
+                        table: 'sys_ui_element'
+                        id: '061c0c08c3444310c47bd72d0501315e'
+                    }
+                    '0a1c0c08c3444310c47bd72d0501315b': {
+                        table: 'sys_ui_element'
+                        id: '0a1c0c08c3444310c47bd72d0501315b'
+                    }
+                    '0a1c0c08c3444310c47bd72d05013187': {
+                        table: 'sys_ui_element'
+                        id: '0a1c0c08c3444310c47bd72d05013187'
+                    }
+                    '0e1c0c08c3444310c47bd72d05013184': {
+                        table: 'sys_ui_element'
+                        id: '0e1c0c08c3444310c47bd72d05013184'
+                    }
+                    '351c80c0c3444310c47bd72d05013119': {
+                        table: 'sys_ui_section'
+                        id: '351c80c0c3444310c47bd72d05013119'
+                    }
+                    '4a1c0c08c3444310c47bd72d0501315d': {
+                        table: 'sys_ui_element'
+                        id: '4a1c0c08c3444310c47bd72d0501315d'
+                    }
+                    '4a1c0c08c3444310c47bd72d05013189': {
+                        table: 'sys_ui_element'
+                        id: '4a1c0c08c3444310c47bd72d05013189'
+                    }
+                    '4e1c0c08c3444310c47bd72d0501315a': {
+                        table: 'sys_ui_element'
+                        id: '4e1c0c08c3444310c47bd72d0501315a'
+                    }
+                    '4e1c0c08c3444310c47bd72d05013186': {
+                        table: 'sys_ui_element'
+                        id: '4e1c0c08c3444310c47bd72d05013186'
+                    }
+                    '791c0c08c3444310c47bd72d05013158': {
+                        table: 'sys_ui_element'
+                        id: '791c0c08c3444310c47bd72d05013158'
+                    }
+                    '821c0c08c3444310c47bd72d0501315a': {
+                        table: 'sys_ui_element'
+                        id: '821c0c08c3444310c47bd72d0501315a'
+                    }
+                    '821c0c08c3444310c47bd72d05013186': {
+                        table: 'sys_ui_element'
+                        id: '821c0c08c3444310c47bd72d05013186'
+                    }
+                    '8e1c0c08c3444310c47bd72d0501315c': {
+                        table: 'sys_ui_element'
+                        id: '8e1c0c08c3444310c47bd72d0501315c'
+                    }
+                    '8e1c0c08c3444310c47bd72d05013188': {
+                        table: 'sys_ui_element'
+                        id: '8e1c0c08c3444310c47bd72d05013188'
+                    }
+                    af2fbe7bc3fb3210c47bd72d0501311b: {
+                        table: 'sys_scope_privilege'
+                        id: 'af2fbe7bc3fb3210c47bd72d0501311b'
+                    }
                     ai_concierge: {
                         table: 'sys_script_include'
                         id: '53c987c62c3a4ea48b6f73adcdf651f2'
                     }
+                    b91c8cc4c3444310c47bd72d0501310e: {
+                        table: 'sys_ui_section'
+                        id: 'b91c8cc4c3444310c47bd72d0501310e'
+                    }
                     bom_json: {
                         table: 'sys_module'
                         id: 'ed3766e73e3f40fc9a2e4deb258ca345'
+                    }
+                    c21c0c08c3444310c47bd72d0501315c: {
+                        table: 'sys_ui_element'
+                        id: 'c21c0c08c3444310c47bd72d0501315c'
+                    }
+                    c21c0c08c3444310c47bd72d05013188: {
+                        table: 'sys_ui_element'
+                        id: 'c21c0c08c3444310c47bd72d05013188'
+                    }
+                    c61c0c08c3444310c47bd72d05013185: {
+                        table: 'sys_ui_element'
+                        id: 'c61c0c08c3444310c47bd72d05013185'
                     }
                     calculate_savings_rule: {
                         table: 'sys_script'
@@ -53,9 +129,17 @@ declare global {
                         table: 'sys_security_acl'
                         id: '7e14a211c36b4a4d95bbb388013d9f29'
                     }
+                    ce1c0c08c3444310c47bd72d0501315e: {
+                        table: 'sys_ui_element'
+                        id: 'ce1c0c08c3444310c47bd72d0501315e'
+                    }
                     dpri_price_engine: {
                         table: 'sys_script_include'
                         id: '3630f81cd8884a218816ba9daafd10af'
+                    }
+                    f11c8cc4c3444310c47bd72d05013115: {
+                        table: 'sys_ui_element'
+                        id: 'f11c8cc4c3444310c47bd72d05013115'
                     }
                     medicine_amlodipine: {
                         table: 'x_1966129_transpar_medicine'
