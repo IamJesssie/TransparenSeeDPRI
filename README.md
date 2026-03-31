@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/IamJesssie/TransparenSeeDPRI/main/assets/logo.png" alt="TransparenSee Logo" width="320"/>
+<img src="https://raw.githubusercontent.com/IamJesssie/TransparenSeeDPRI/main/docs/assets/TransparenSee.png" alt="TransparenSee Logo" width="320"/>
 
 # TransparenSee
 ### Pharmacy Price Transparency (DPRI) Concierge
@@ -33,7 +33,7 @@
 
 - 🔍 **Search** any drug and instantly see the government-mandated fair price
 - 📍 **Find** the nearest DOH-accredited pharmacy using real geolocation
-- 🤖 **Get AI counsel** from a built-in pharmacist assistant (via OpenAI integration)
+- 🤖 **Get AI counsel** from a built-in pharmacist assistant (via Gemini API integration)
 - 📄 **Generate** a printable price report to show pharmacists and avoid overcharging
 
 > **Hackathon:** ALPS Batch 2 · EY GDS × ServiceNow · Case PRBCS00034 · Health Sector
@@ -69,7 +69,7 @@ The Philippine DOH maintains the **Drug Price Reference Index (DPRI)** — a leg
 - Sorted pharmacy list: nearest first, with distance in km
 
 ### 🤖 AI Pharmacist Concierge
-- Powered by **OpenAI GPT** via ServiceNow Integration Hub
+- Powered by **Google Gemini API** via ServiceNow Integration Hub
 - Generates personalized drug safety counsel in simple Filipino/English (Taglish)
 - Warns if a drug's common retail price exceeds DPRI
 - Suggests safe generic alternatives with estimated savings
@@ -90,13 +90,13 @@ The Philippine DOH maintains the **Drug Price Reference Index (DPRI)** — a leg
 ## 🏗️ Architecture
 
 ```
-x_snc_transparensee (Scoped Application)
+x_1966129_transparensee (Scoped Application)
 │
 ├── 📊 Data Layer
-│   ├── x_snc_transparensee_medicine      → DPRI drug price records
-│   ├── x_snc_transparensee_pharmacy      → Accredited pharmacy locations
-│   ├── x_snc_transparensee_category      → Drug classification categories
-│   └── x_snc_transparensee_search_log    → Patient search analytics
+│   ├── x_1966129_transparensee_medicine      → DPRI drug price records
+│   ├── x_1966129_transparensee_pharmacy      → Accredited pharmacy locations
+│   ├── x_1966129_transparensee_category      → Drug classification categories
+│   └── x_1966129_transparensee_search_log    → Patient search analytics
 │
 ├── 🧠 Business Logic
 │   ├── DPRI_PriceEngine (Script Include)  → Drug search + GlideAjax API
@@ -139,10 +139,10 @@ x_snc_transparensee (Scoped Application)
 | **Backend** | Server-side JavaScript (ES5) — Script Includes |
 | **Database** | ServiceNow Tables (GlideRecord) |
 | **Maps** | Leaflet.js + OpenStreetMap |
-| **AI** | Gemini 3.1 lite via Integration Hub |
+| **AI** | Gemini API via Integration Hub |
 | **Styling** | Custom CSS (Clash Display + Plus Jakarta Sans + DM Mono) |
 | **Data Source** | DPRI 2025 PDF → CSV → ServiceNow Import Set |
-| **Version Control** | Git + ServiceNow VSCode Extension |
+| **Version Control** | Git + Github |
 
 ---
 
@@ -152,7 +152,7 @@ x_snc_transparensee (Scoped Application)
 
 - ServiceNow Developer Instance ([Free signup](https://developer.servicenow.com)) — **Xanadu release or later**
 - [VS Code](https://code.visualstudio.com/) with [ServiceNow Extension](https://marketplace.visualstudio.com/items?itemName=ServiceNow.servicenow-vscode-extension)
-- OpenAI API Key (for AI Concierge feature)
+- Gemini API Key (for AI Concierge feature)
 - Git
 
 ### 1. Clone the Repository
@@ -162,48 +162,59 @@ git clone https://github.com/IamJesssie/TransparenSeeDPRI.git
 cd TransparenSeeDPRI
 ```
 
-### 2. Connect VS Code to Your ServiceNow Instance
+### 2.Install Dependencies
+- This project uses the modern ServiceNow Fluent SDK. You must install the required Node modules before building.
 
 ```
-1. Open VS Code
-2. Ctrl+Shift+P → "ServiceNow: Add Connection"
-3. Enter your instance URL: https://devXXXXXX.service-now.com
-4. Enter your admin credentials
-5. Ctrl+Shift+P → "ServiceNow: Open Application" → x_snc_transparensee
+# Open your terminal in the project folder and run:
+npm install
 ```
 
-### 3. Import the Application
-
+### 3. Connect to Your ServiceNow Instance
+- Authenticate the ServiceNow SDK with your developer instance credentials via the terminal:
 ```
-1. In your ServiceNow instance, go to:
-   System Applications → Studio → Import From Source Control
-2. Enter this repository URL
-3. Branch: main
-4. Click Import
+# Add your instance connection (replace with your instance URL)
+npx now-sdk auth --add https://devXXXXXX.service-now.com --type basic --alias mydev
+
+# Set it as your default profile
+npx now-sdk auth --use mydev
 ```
 
-### 4. Import DPRI Drug Data
-
+### 4. Build and Deploy
+- Compile the TypeScript/React code and push it directly to your ServiceNow instance:
 ```
-1. Download the sample CSV from /data/dpri_2025_sample.csv
-2. In ServiceNow: System Import Sets → Load Data
+# To build the application locally:
+npm run build
+
+# To build and deploy to your instance:
+npm run deploy
+```
+### 5. Import DPRI Drug Data
+```
+1. Download the sample CSV from /data/dpri_2025_sample.csv (if applicable) or prepare your DPRI dataset.
+
+2. In your ServiceNow instance, go to: System Import Sets → Load Data
+
 3. Upload the CSV file
-4. Run the Transform Map: "DPRI Medicine Import"
-5. Verify data at: x_snc_transparensee_medicine.list
+
+4. Run the Transform Map to target the x_1966129_transpar_medicine table.
+
+5. Verify data at: x_1966129_transpar_medicine.list
+
+
 ```
+### 6. Configure Gemini API Integration
+1. Go to System Properties → New
 
-### 5. Configure OpenAI Integration
+>Name: x_1966129_transpar.gemini_api_key
 
-```
-1. System Properties → New
-   Name: x_snc_transparensee.openai_api_key
-   Value: your-openai-api-key-here
+>Value: your-gemini-api-key-here
 
-2. System Web Services → REST Messages → OpenAI_API
-   Verify endpoint: https://api.openai.com/v1/chat/completions
-```
+2. Go to System Web Services → REST Messages → Gemini_API
 
-### 6. Seed Pharmacy Locations (Cebu)
+Verify endpoint points to the standard Google Gemini generation URL.
+
+### 7. Seed Pharmacy Locations (Cebu)
 
 ```
 Run the background script at:
@@ -212,10 +223,10 @@ Run the background script at:
 This inserts 10+ Cebu City pharmacy locations with GPS coordinates.
 ```
 
-### 7. Access the Portal
+### 8. Access the Portal
 
 ```
-https://devXXXXXX.service-now.com/transparensee
+[https://devXXXXXX.service-now.com/transparensee](https://devXXXXXX.service-now.com/x_1966129_transpar_home.do)
 ```
 
 ---
@@ -224,10 +235,10 @@ https://devXXXXXX.service-now.com/transparensee
 
 | Page | URL | Description |
 |---|---|---|
-| **Home** | `/transparensee` | Hero search portal with live autocomplete |
-| **Search Results** | `/transparensee/search?q=amoxicillin` | Drug results with filters and savings badges |
-| **Drug Detail** | `/transparensee/drug/{id}` | Full drug info + AI Concierge panel |
-| **Pharmacy Map** | `/transparensee/map` | Geolocation map sorted by distance |
+| **Home** | `/x_1966129_transpar_home.do` | Hero search portal with live autocomplete |
+| **Search Results** | `/x_1966129_transpar_search.do` | Drug results with filters and savings badges |
+| **Drug Detail** | `/x_1966129_transpar_detail.do` | Full drug info + AI Concierge panel |
+| **Pharmacy Map** | `/x_1966129_transpar_map.do` | Geolocation map sorted by distance |
 | **Price Report** | `/transparensee/report/{id}` | Printable patient price report |
 | **Admin Dashboard** | `/transparensee/admin` | `dpri_admin` only — data management |
 
@@ -239,8 +250,8 @@ https://devXXXXXX.service-now.com/transparensee
 
 | Role | Access Level | Who Gets It |
 |---|---|---|
-| `x_snc_transparensee.dpri_patient` | Read all drugs + pharmacies · Create search logs | All portal users |
-| `x_snc_transparensee.dpri_admin` | Full CRUD · Approve pharmacies · View analytics | Admin team |
+| `x_1966129_transpar.dpri_patient` | Read all drugs + pharmacies · Create search logs | All portal users |
+| `x_1966129_transpar.dpri_admin` | Full CRUD · Approve pharmacies · View analytics | Admin team |
 
 ### ACL Summary
 
@@ -362,11 +373,11 @@ TransparenSeeDPRI/
 
 | Member | Role | GitHub |
 |---|---|---|
-| Axcelson Macansantos | Lead Developer & Architect | [@IamJesssie](https://github.com/IamJesssie) |
+| Jessie Noel Lapure | Lead Developer & Architect | [@IamJesssie](https://github.com/IamJesssie) |
 | Josephjames Banico | Frontend & Portal Developer | — |
 | Michaelgrant Libato | Backend & Script Includes | — |
 | Raymart Ruperez | Integration & Flow Designer | — |
-| Jessienoel Lapure | Data & Presentation Lead | — |
+| Axcel Macansantos | Data & Presentation Lead | — |
 
 > 📍 Cebu Institute of Technology - University · BS Information Technology  
 > 🏢 EY GDS × ServiceNow Hackathon · Health Sector · Case PRBCS00034
