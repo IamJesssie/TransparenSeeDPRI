@@ -3,15 +3,24 @@ var app = angular.module('TransparenSeeApp', []);
 app.controller('HomeController', function($scope, $timeout) {
     $scope.searchQuery   = '';
     $scope.suggestions   = [];
+    $scope.searchState   = 'idle';
     $scope.showSuggestions = false;
     $scope.searchFocused = false;
-    $scope.popularTerms  = ['Paracetamol', 'Metformin', 'Amoxicillin', 'Amlodipine'];
+    $scope.popularTerms  = ['Paracetamol', 'Metformin', 'Amoxicillin', 'Amlodipine', 'Atorvastatin'];
     $scope.recentSearches = [
-        { search_term: 'Paracetamol', time_ago: '2 hours ago' },
-        { search_term: 'Ibuprofen', time_ago: '1 day ago' },
-        { search_term: 'Metformin', time_ago: '3 days ago' }
+        { search_term: 'Amoxicillin', time_ago: 'Mar 28, 2025 · 2:30 PM' },
+        { search_term: 'Paracetamol', time_ago: 'Mar 27, 2025 · 11:15 AM' },
+        { search_term: 'Metformin', time_ago: 'Mar 25, 2025 · 9:00 AM' },
+        { search_term: 'Amlodipine', time_ago: 'Mar 22, 2025 · 3:45 PM' },
+        { search_term: 'Cetirizine', time_ago: 'Mar 20, 2025 · 7:20 PM' }
     ];
-    $scope.stats = { totalDrugs: '—', totalPharmacies: '—' };
+    $scope.savingsItems = [
+        { name: 'Metformin 500mg', save: 'save P13.25/tablet' },
+        { name: 'Atorvastatin 20mg', save: 'save P26.50/tablet' },
+        { name: 'Amlodipine 5mg', save: 'save P15.25/tablet' }
+    ];
+    $scope.statsLoading = false;
+    $scope.stats = { totalDrugs: '2,847', totalPharmacies: '1,234' };
 
     var searchTimeout = null;
 
@@ -20,8 +29,11 @@ app.controller('HomeController', function($scope, $timeout) {
         if (searchTimeout) $timeout.cancel(searchTimeout);
         if ($scope.searchQuery.length < 2) {
             $scope.suggestions = [];
+            $scope.searchState = 'idle';
+            $scope.showSuggestions = false;
             return;
         }
+        $scope.searchState = 'loading';
         searchTimeout = $timeout(function() {
             var ga = new GlideAjax('DPRI_PriceEngine');
             ga.addParam('sysparm_name', 'searchDrug');
@@ -29,11 +41,18 @@ app.controller('HomeController', function($scope, $timeout) {
             ga.getXMLAnswer(function(resp) {
                 $scope.$apply(function() {
                     try {
-                        $scope.suggestions = JSON.parse(resp).slice(0, 6);
-                        $scope.showSuggestions = true;
+                        var parsed = JSON.parse(resp);
+                        var arr = Array.isArray(parsed)
+                            ? parsed
+                            : (Array.isArray(parsed.results) ? parsed.results : (Array.isArray(parsed.data) ? parsed.data : []));
+                        $scope.suggestions = arr.slice(0, 6);
+                        $scope.searchState = $scope.suggestions.length ? 'ready' : 'empty';
+                        $scope.showSuggestions = $scope.suggestions.length > 0;
                     } catch(e) {
                         console.error('Search error:', e);
                         $scope.suggestions = [];
+                        $scope.searchState = 'empty';
+                        $scope.showSuggestions = false;
                     }
                 });
             });
@@ -47,6 +66,8 @@ app.controller('HomeController', function($scope, $timeout) {
     };
 
     $scope.selectSuggestion = function(drug) {
+        if (!drug || !drug.generic_name || !drug.sys_id) return;
+
         // Log the search
         var ga = new GlideAjax('DPRI_PriceEngine');
         ga.addParam('sysparm_name', 'logSearch');
@@ -77,7 +98,10 @@ app.controller('HomeController', function($scope, $timeout) {
             $scope.$apply(function() {
                 try {
                     var data = JSON.parse(resp);
-                    $scope.stats = data;
+                    $scope.stats = {
+                        totalDrugs: data.totalDrugs || data.total_drugs || data.drug_count || '2,847',
+                        totalPharmacies: data.totalPharmacies || data.total_pharmacies || data.pharmacy_count || '1,234'
+                    };
                 } catch(e) {
                     console.error('Stats loading error:', e);
                 }

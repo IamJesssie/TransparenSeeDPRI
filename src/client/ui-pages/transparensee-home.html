@@ -64,9 +64,9 @@
 
     .ts-logo {
       position: relative;
-      width: 180px;
+      width: 360px;
       height: 36px;
-      flex: 0 0 180px;
+      flex: 0 0 360px;
       overflow: visible;
       color: var(--ts-navy);
     }
@@ -76,7 +76,7 @@
       left: 0;
       top: 50%;
       transform: translateY(-50%);
-      height: 72px;
+      height: 62px;
       width: auto;
       max-width: none;
     }
@@ -152,7 +152,7 @@
     .ts-search-wrap {
       position: relative;
       max-width: 600px;
-      margin: 0 auto 32px auto;
+      margin: 0 auto 18px auto;
     }
 
     .ts-search-bar {
@@ -172,8 +172,12 @@
 
     .ts-search-icon {
       padding: 0 20px;
-      font-size: 18px;
+      width: 18px;
+      height: 18px;
       color: var(--ts-teal);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .ts-search-input {
@@ -197,6 +201,13 @@
 
     .ts-search-btn:hover {
       background: var(--ts-teal-deep);
+    }
+
+    .ts-trust-note {
+      margin-top: 10px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.78);
+      letter-spacing: 0.02em;
     }
 
     /* AUTOCOMPLETE */
@@ -289,7 +300,7 @@
 
     /* STATS SECTION */
     .ts-stats-section {
-      padding: 80px 24px;
+      padding: 56px 24px 34px;
     }
 
     .ts-bento-row {
@@ -299,10 +310,12 @@
     }
 
     .ts-stat-card {
-      background: white;
-      padding: 32px 24px;
-      border-radius: var(--ts-radius-card);
-      text-align: center;
+      position: relative;
+      overflow: hidden;
+      min-height: 178px;
+      padding: 28px 24px 22px;
+      border-radius: 24px;
+      text-align: left;
       box-shadow: var(--ts-shadow);
       transition: all 0.2s;
     }
@@ -313,40 +326,75 @@
     }
 
     .ts-stat-teal {
-      background: linear-gradient(135deg, var(--ts-teal) 0%, var(--ts-teal-bright) 100%);
+      background: linear-gradient(155deg, #007A72 0%, #00BFA5 100%);
+      box-shadow: 0 8px 40px rgba(0,122,114,0.30);
       color: white;
     }
 
     .ts-stat-gold {
-      background: linear-gradient(135deg, var(--ts-gold) 0%, #F97316 100%);
+      background: linear-gradient(155deg, #F59E0B 0%, #FBBF24 100%);
+      box-shadow: 0 8px 40px rgba(245,158,11,0.32);
       color: white;
     }
 
     .ts-stat-navy {
-      background: linear-gradient(135deg, var(--ts-navy) 0%, var(--ts-navy-mid) 100%);
+      background: linear-gradient(155deg, #1A2B5E 0%, #2C3E6B 100%);
+      box-shadow: 0 8px 40px rgba(13,31,78,0.38);
       color: white;
     }
 
+    .ts-stat-deco {
+      position: absolute;
+      right: -20px;
+      top: 8px;
+      width: 200px;
+      height: 200px;
+      opacity: 1;
+      pointer-events: none;
+    }
+
     .ts-stat-icon {
-      font-size: 32px;
-      margin-bottom: 16px;
+      display: none;
+    }
+
+    .ts-icon-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
       display: block;
     }
 
     .ts-stat-value {
       display: block;
       font-family: var(--ts-font-display);
-      font-size: 36px;
+      font-size: 42px;
+      line-height: 1;
+      letter-spacing: -0.03em;
       font-weight: 700;
-      margin-bottom: 8px;
+      margin-bottom: 4px;
+    }
+
+    .ts-stat-sub {
+      display: block;
+      font-size: 12px;
+      line-height: 18px;
+      color: rgba(255,255,255,0.68);
+      margin-bottom: 10px;
     }
 
     .ts-stat-label {
-      font-size: 12px;
+      font-size: 11px;
+      line-height: 16.5px;
       font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
-      opacity: 0.9;
+      letter-spacing: 0.07em;
+      color: rgba(255,255,255,0.72);
+    }
+
+    .ts-stat-content {
+      position: relative;
+      z-index: 2;
+      max-width: 78%;
     }
 
     /* TWO COLUMN SECTION */
@@ -354,7 +402,7 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 24px;
-      padding: 80px 24px;
+      padding: 24px;
     }
 
     .ts-card {
@@ -373,20 +421,55 @@
       font-family: var(--ts-font-display);
       font-size: 20px;
       font-weight: 600;
-      margin-bottom: 24px;
+      margin-bottom: 0;
       color: var(--ts-navy);
+    }
+
+    .ts-card-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .ts-view-all {
+      color: var(--ts-teal);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
     }
 
     .ts-recent-item {
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 12px 0;
-      border-bottom: 1px solid var(--ts-border);
+      padding: 12px 14px;
+      border: 1px solid var(--ts-border);
+      border-radius: 12px;
+      background: #F8FAFB;
+      margin-bottom: 8px;
+    }
+
+    .ts-recent-item-body {
+      flex: 1;
     }
 
     .ts-recent-item:last-child {
-      border-bottom: none;
+      margin-bottom: 0;
+    }
+
+    .ts-recent-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background: #E0F2F1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
     }
 
     .ts-recent-name {
@@ -396,22 +479,34 @@
 
     .ts-recent-time {
       font-size: 12px;
-      color: #888;
+      color: #5D7295;
     }
 
-    .ts-btn-ghost {
-      background: none;
-      border: none;
+    .ts-recent-empty {
+      border: 1px dashed var(--ts-border);
+      border-radius: 12px;
+      color: #5D7295;
+      padding: 16px;
+      text-align: center;
+      font-size: 13px;
+    }
+
+    .ts-recent-action {
+      border: 1px solid var(--ts-border);
+      width: 34px;
+      height: 34px;
+      background: #fff;
       color: var(--ts-teal);
-      font-size: 18px;
+      font-size: 14px;
+      font-weight: 700;
       cursor: pointer;
-      padding: 8px;
       border-radius: 50%;
-      transition: background 0.2s;
+      transition: all 0.2s;
     }
 
-    .ts-btn-ghost:hover {
+    .ts-recent-action:hover {
       background: var(--ts-teal-ghost);
+      border-color: var(--ts-teal);
     }
 
     .ts-tip-label {
@@ -428,9 +523,52 @@
     }
 
     .ts-tip-text {
-      font-size: 16px;
+      font-size: 15px;
       line-height: 1.6;
-      margin-bottom: 20px;
+      margin-bottom: 12px;
+    }
+
+    .ts-tip-subtext {
+      color: #4A5D8A;
+      font-size: 12px;
+      line-height: 1.55;
+      margin-bottom: 12px;
+    }
+
+    .ts-tip-highlight {
+      border-radius: 12px;
+      background: #FEF3C7;
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      padding: 10px 12px;
+      color: #B45309;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .ts-tip-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .ts-tip-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-radius: 10px;
+      background: #F8FAFB;
+      border: 1px solid var(--ts-border);
+      padding: 8px 10px;
+      font-size: 12px;
+      color: #314566;
+    }
+
+    .ts-tip-item strong {
+      color: #059669;
+      font-family: var(--ts-font-mono);
+      font-size: 11px;
     }
 
     .ts-btn-ghost-teal {
@@ -447,70 +585,260 @@
 
     /* HOW IT WORKS */
     .ts-how-it-works {
-      padding: 80px 24px 120px 24px;
+      padding: 40px 24px 48px;
       text-align: center;
+    }
+
+    .ts-how-kicker {
+      display: block;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #4A8D95;
+      font-size: 11px;
+      font-weight: 700;
+      margin-bottom: 8px;
     }
 
     .ts-section-title {
       font-family: var(--ts-font-display);
-      font-size: 36px;
+      font-size: 44px;
       font-weight: 600;
       color: var(--ts-navy);
-      margin-bottom: 48px;
+      margin-bottom: 28px;
     }
 
     .ts-steps {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 40px;
-      max-width: 900px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      max-width: 1200px;
       margin: 0 auto;
     }
 
     .ts-step {
-      text-align: center;
+      text-align: left;
+      border-radius: 24px;
+      color: #fff;
+      padding: 64px 28px 24px;
+      min-height: 260px;
+      box-shadow: var(--ts-shadow);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ts-step-teal {
+      background: linear-gradient(146deg, #007A72 0%, #00BFA5 100%);
+      box-shadow: 0 8px 40px rgba(0,122,114,0.35);
+    }
+
+    .ts-step-gold {
+      background: linear-gradient(146deg, #F59E0B 0%, #FBBF24 100%);
+      box-shadow: 0 8px 40px rgba(245,158,11,0.35);
+    }
+
+    .ts-step-navy {
+      background: linear-gradient(146deg, #1A2B5E 0%, #2C3E6B 100%);
+      box-shadow: 0 8px 40px rgba(13,31,78,0.4);
     }
 
     .ts-step-icon {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 60px;
-      height: 60px;
-      background: var(--ts-teal);
-      color: white;
-      border-radius: 50%;
-      font-family: var(--ts-font-display);
-      font-size: 24px;
-      font-weight: 700;
-      margin-bottom: 20px;
+      font-family: var(--ts-font-mono);
+      font-size: 56px;
+      font-weight: 500;
+      letter-spacing: -0.03em;
+      margin-bottom: 8px;
+      line-height: 1;
+    }
+
+    .ts-step-deco {
+      position: absolute;
+      right: -8px;
+      bottom: -10px;
+      width: 180px;
+      height: 180px;
+      opacity: 1;
+      pointer-events: none;
     }
 
     .ts-step h3 {
       font-family: var(--ts-font-display);
-      font-size: 20px;
-      font-weight: 600;
-      color: var(--ts-navy);
-      margin-bottom: 12px;
+      font-size: 32px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+      line-height: 1.05;
     }
 
     .ts-step p {
-      color: #666;
-      line-height: 1.6;
+      color: rgba(255,255,255,0.82);
+      line-height: 1.7;
+      font-size: 13px;
+      max-width: 244px;
+    }
+
+    .ts-report-cta {
+      max-width: 1200px;
+      margin: 24px auto 0;
+      border-radius: 24px;
+      background: linear-gradient(172deg, #0D1F4E 0%, #007A72 100%);
+      color: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      padding: 40px;
+      box-shadow: 0 8px 40px rgba(0,122,114,0.25);
+      text-align: left;
+    }
+
+    .ts-report-kicker {
+      display: block;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 500;
+      opacity: 0.6;
+      margin-bottom: 8px;
+    }
+
+    .ts-report-title {
+      font-family: var(--ts-font-display);
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 1.5;
+      margin-bottom: 6px;
+    }
+
+    .ts-report-sub {
+      color: rgba(255,255,255,0.7);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .ts-report-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .ts-report-btn {
+      border: none;
+      border-radius: var(--ts-radius-pill);
+      height: 46.8px;
+      padding: 0 26px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      color: #fff;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .ts-report-btn-primary {
+      background: linear-gradient(165deg, #00BFA5 0%, #007A72 100%);
+      min-width: 173px;
+    }
+
+    .ts-report-btn-ghost {
+      border: 1px solid rgba(255,255,255,0.3);
+      background: rgba(255,255,255,0.1);
+      min-width: 147px;
+    }
+
+    .ts-btn-icon {
+      width: 16px;
+      height: 16px;
+      display: inline-block;
+    }
+
+    .ts-footer-note {
+      text-align: center;
+      color: #6B7A96;
+      font-size: 11px;
+      margin: 36px 0 26px;
     }
 
     /* RESPONSIVE */
+    @media (max-width: 1024px) {
+      .ts-steps {
+        grid-template-columns: 1fr;
+      }
+
+      .ts-report-cta {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .ts-report-title {
+        font-size: 26px;
+      }
+    }
+
     @media (max-width: 768px) {
       .ts-hero-headline {
         font-size: 32px;
+      }
+
+      .ts-hero {
+        padding: 88px 16px 56px;
+      }
+
+      .ts-search-wrap {
+        max-width: 100%;
+      }
+
+      .ts-search-bar {
+        display: grid;
+        grid-template-columns: 1fr;
+        border-radius: 16px;
+      }
+
+      .ts-search-icon {
+        display: none;
+      }
+
+      .ts-search-input {
+        padding: 14px 14px 8px;
+      }
+
+      .ts-search-btn {
+        border-radius: 0 0 16px 16px;
+        padding: 12px;
+      }
+
+      .ts-stats-section {
+        padding: 38px 16px 20px;
+      }
+
+      .ts-two-col {
+        padding: 18px 16px;
       }
       
       .ts-two-col {
         grid-template-columns: 1fr;
       }
       
-      .ts-nav-links {
-        display: none;
+      .ts-how-it-works {
+        padding: 22px 16px 34px;
+      }
+
+      .ts-report-title {
+        font-size: 30px;
+      }
+
+      .ts-report-actions {
+        width: 100%;
+      }
+
+      .ts-report-btn {
+        flex: 1;
+        min-width: 140px;
       }
     }
   </style>
@@ -521,7 +849,15 @@
   <nav class="ts-navbar">
     <div class="ts-navbar-inner">
       <div class="ts-logo">
-        <img class="ts-logo-mark" src="/x_1966129_transpar_TransparenSee.png" width="676" height="369"alt="TransparenSee"/>
+        <svg class="ts-logo-mark" viewBox="0 0 760 140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="TransparenSee logo">
+          <title>TransparenSee</title>
+          <path d="M22 70C45 41 80 23 130 23C180 23 215 41 238 70C215 99 180 117 130 117C80 117 45 99 22 70Z" fill="none" stroke="#008080" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="130" cy="70" r="36" fill="#E0F2F1" stroke="#008080" stroke-width="10"/>
+          <rect x="112" y="43" width="36" height="54" rx="18" fill="#008080"/>
+          <rect x="130" y="43" width="18" height="54" rx="9" fill="#81b5a1"/>
+          <path d="M130 70L148 70" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round"/>
+          <text x="272" y="82" font-family="'Plus Jakarta Sans', sans-serif" font-size="46" font-weight="700" fill="#003366">TransparenSee</text>
+        </svg>
       </div>
       <ul class="ts-nav-links">
         <li><a href="/x_1966129_transpar_home.do" class="active">Home</a></li>
@@ -545,7 +881,7 @@
       <!-- SEARCH BAR -->
       <div class="ts-search-wrap">
         <div class="ts-search-bar" ng-class="{'ts-search-focused': searchFocused}">
-          <span class="ts-search-icon">🔍</span>
+          <span class="ts-search-icon"><img class="ts-icon-img" src="/x_1966129_transpar_imgIcon2.svg" alt="Search"/></span>
           <input
             type="text"
             ng-model="searchQuery"
@@ -559,6 +895,8 @@
           <button class="ts-search-btn" ng-click="goToResults()">Search</button>
         </div>
 
+        <p class="ts-trust-note">Based on DOH DPRI 2025 official reference data.</p>
+
         <!-- AUTOCOMPLETE DROPDOWN -->
         <div class="ts-autocomplete" ng-show="suggestions.length > 0 &amp;&amp; showSuggestions">
           <div class="ts-suggestion-item"
@@ -570,6 +908,7 @@
             <span class="ts-sug-cat" ng-bind="drug.category"></span>
           </div>
         </div>
+
       </div>
 
       <!-- POPULAR SEARCHES -->
@@ -585,19 +924,31 @@
   <section class="ts-stats-section ts-container">
     <div class="ts-bento-row">
       <div class="ts-stat-card ts-stat-teal">
-        <span class="ts-stat-icon">💊</span>
-        <span class="ts-stat-value" ng-bind="stats.totalDrugs"></span>
-        <span class="ts-stat-label">DRUGS IN DPRI 2025</span>
+        <img class="ts-stat-deco" src="/x_1966129_transpar_ghost-3-9.svg" alt="" aria-hidden="true"/>
+        <div class="ts-stat-content">
+          <span class="ts-tip-label" style="background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.22); color: rgba(255,255,255,0.92); margin-bottom: 12px; font-size:10px; line-height:15px;">DPRI 2025</span>
+          <span class="ts-stat-value">{{ stats.totalDrugs || '2,847' }}</span>
+          <span class="ts-stat-sub">Updated March 2025</span>
+          <span class="ts-stat-label">DRUGS IN DPRI FORMULARY</span>
+        </div>
       </div>
       <div class="ts-stat-card ts-stat-gold">
-        <span class="ts-stat-icon">💰</span>
-        <span class="ts-stat-value">65%</span>
-        <span class="ts-stat-label">AVG SAVINGS VS HOSPITAL</span>
+        <img class="ts-stat-deco" src="/x_1966129_transpar_ghost-3-25.svg" alt="" aria-hidden="true"/>
+        <div class="ts-stat-content">
+          <span class="ts-tip-label" style="background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.22); color: rgba(255,255,255,0.92); margin-bottom: 12px; font-size:10px; line-height:15px;">↑ Savings</span>
+          <span class="ts-stat-value">65%</span>
+          <span class="ts-stat-sub">vs. non-DPRI pharmacies</span>
+          <span class="ts-stat-label">AVG SAVINGS VS HOSPITAL PRICE</span>
+        </div>
       </div>
       <div class="ts-stat-card ts-stat-navy">
-        <span class="ts-stat-icon">🏪</span>
-        <span class="ts-stat-value" ng-bind="stats.totalPharmacies"></span>
-        <span class="ts-stat-label">ACCREDITED PHARMACIES</span>
+        <img class="ts-stat-deco" src="/x_1966129_transpar_ghost-3-41.svg" alt="" aria-hidden="true"/>
+        <div class="ts-stat-content">
+          <span class="ts-tip-label" style="background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.22); color: rgba(255,255,255,0.92); margin-bottom: 12px; font-size:10px; line-height:15px;">Live</span>
+          <span class="ts-stat-value">{{ stats.totalPharmacies || '1,234' }}</span>
+          <span class="ts-stat-sub">Metro Manila &amp; provinces</span>
+          <span class="ts-stat-label">ACCREDITED DPRI PHARMACIES</span>
+        </div>
       </div>
     </div>
   </section>
@@ -605,43 +956,77 @@
   <!-- RECENT ACTIVITY + SAVINGS TIP -->
   <section class="ts-container ts-two-col">
     <div class="ts-recent-card ts-card">
-      <h3 class="ts-card-title">🕐 Recent Activity</h3>
+      <div class="ts-card-head">
+        <h3 class="ts-card-title">Recent Searches</h3>
+        <a class="ts-view-all" href="/x_1966129_transpar_search.do">View All →</a>
+      </div>
+
+      <div class="ts-recent-empty" ng-show="!recentSearches.length">
+        No recent searches yet. Start by searching a generic or brand medicine.
+      </div>
+
       <div class="ts-recent-item" ng-repeat="item in recentSearches">
-        <span class="ts-recent-icon">💊</span>
-        <div>
+        <span class="ts-recent-icon"><img class="ts-icon-img" src="/x_1966129_transpar_imgIcon1.svg" alt="Medicine"/></span>
+        <div class="ts-recent-item-body">
           <div class="ts-recent-name" ng-bind="item.search_term"></div>
           <div class="ts-recent-time" ng-bind="item.time_ago"></div>
         </div>
-        <button class="ts-btn-ghost" ng-click="quickSearch(item.search_term)">›</button>
+        <button class="ts-recent-action" ng-click="quickSearch(item.search_term)" aria-label="Search this drug">⌕</button>
       </div>
     </div>
     <div class="ts-tip-card ts-card ts-card-glass-gold">
       <span class="ts-tip-label">SAVINGS TIP</span>
-      <p class="ts-tip-text">Generic alternatives for common medicines can save you up to 65% this month.</p>
+      <p class="ts-tip-text">Always ask for the generic name.</p>
+      <p class="ts-tip-subtext">Under the Generics Act, pharmacists should offer equivalent generics at regulated DPRI prices.</p>
+      <div class="ts-tip-highlight">Patients can save an average of P850/month by switching to DPRI-priced generics.</div>
+      <div class="ts-tip-list">
+        <div class="ts-tip-item" ng-repeat="entry in savingsItems">
+          <span ng-bind="entry.name"></span>
+          <strong ng-bind="entry.save"></strong>
+        </div>
+      </div>
       <a href="/x_1966129_transpar_search.do" class="ts-btn-ghost-teal">LEARN MORE →</a>
     </div>
   </section>
 
   <!-- HOW IT WORKS -->
   <section class="ts-container ts-how-it-works">
-    <h2 class="ts-section-title">How It Works</h2>
+    <span class="ts-how-kicker">How It Works</span>
+    <h2 class="ts-section-title">Three simple steps to affordable medicine</h2>
     <div class="ts-steps">
-      <div class="ts-step">
-        <div class="ts-step-icon">1</div>
+      <div class="ts-step ts-step-teal">
+        <div class="ts-step-icon">01</div>
+        <img class="ts-step-deco" src="/x_1966129_transpar_ghost-3-177.svg" alt="" aria-hidden="true"/>
         <h3>Search Drug</h3>
-        <p>Type any medicine name to see DPRI fair pricing</p>
+        <p>Enter the generic or brand name of any medicine in the DPRI 2025 formulary.</p>
       </div>
-      <div class="ts-step">
-        <div class="ts-step-icon">2</div>
+      <div class="ts-step ts-step-gold">
+        <div class="ts-step-icon">02</div>
+        <img class="ts-step-deco" src="/x_1966129_transpar_ghost-3-193.svg" alt="" aria-hidden="true"/>
         <h3>Compare Prices</h3>
-        <p>See potential savings vs hospital pharmacy</p>
+        <p>See the official DPRI price vs retail and hospital averages. Know exactly how much you should pay.</p>
       </div>
-      <div class="ts-step">
-        <div class="ts-step-icon">3</div>
+      <div class="ts-step ts-step-navy">
+        <div class="ts-step-icon">03</div>
+        <img class="ts-step-deco" src="/x_1966129_transpar_ghost-3-208.svg" alt="" aria-hidden="true"/>
         <h3>Find Nearest Pharmacy</h3>
-        <p>Locate accredited pharmacies near you</p>
+        <p>Locate accredited pharmacies near you that carry the drug at the regulated DPRI price.</p>
       </div>
     </div>
+
+    <div class="ts-report-cta">
+      <div>
+        <span class="ts-report-kicker">Generate a report</span>
+        <h3 class="ts-report-title">Need an official DPRI price reference?</h3>
+        <p class="ts-report-sub">Generate a printable report you can show at any pharmacy.</p>
+      </div>
+      <div class="ts-report-actions">
+        <a class="ts-report-btn ts-report-btn-primary" href="/x_1966129_transpar_search.do"><img class="ts-btn-icon" src="/x_1966129_transpar_imgIcon2.svg" alt="" aria-hidden="true"/>Search a Drug</a>
+        <a class="ts-report-btn ts-report-btn-ghost" href="/x_1966129_transpar_map.do"><img class="ts-btn-icon" src="/x_1966129_transpar_imgIcon5.svg" alt="" aria-hidden="true"/>View Map</a>
+      </div>
+    </div>
+
+    <p class="ts-footer-note">TransparenSee v1.0 · DPRI 2025 · Department of Health, Philippines · EY GDS × ServiceNow · ALPS Batch 2 </p>
   </section>
 
 </body>

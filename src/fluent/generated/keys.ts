@@ -407,6 +407,13 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_ui_page'
+                        id: '1a2ef58e289841a9b6ec8e312be63bc9'
+                        key: {
+                            endpoint: 'x_1966129_transpar_profile.do'
+                        }
+                    },
+                    {
                         table: 'sys_dictionary'
                         id: '1bf1142d150c4a4a8efa54d2bfd64577'
                         key: {

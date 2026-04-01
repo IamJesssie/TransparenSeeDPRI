@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+<!DOCTYPE html>
+<html ng-app="TransparenSeeProfileApp">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&amp;family=DM+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+  <link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&amp;display=swap" rel="stylesheet"/>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+  <title>Profile - TransparenSee</title>
+
+  <style>
+    :root {
+      --ts-teal: #009688;
+      --ts-teal-deep: #007A72;
+      --ts-teal-light: #E0F2F1;
+      --ts-teal-ghost: #F0FAFA;
+      --ts-navy: #0D1F4E;
+      --ts-navy-mid: #1A2B5E;
+      --ts-gold: #F59E0B;
+      --ts-surface: #F8FAFB;
+      --ts-border: #E2EAEB;
+      --ts-shadow: 0 4px 24px rgba(0,122,114,0.08);
+      --ts-radius-card: 20px;
+      --ts-radius-pill: 9999px;
+      --ts-font-display: 'Clash Display', 'Plus Jakarta Sans', sans-serif;
+      --ts-font-body: 'Plus Jakarta Sans', sans-serif;
+      --ts-font-mono: 'DM Mono', monospace;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: var(--ts-font-body);
+      background: var(--ts-surface);
+      color: var(--ts-navy);
+    }
+
+    .ts-navbar {
+      position: sticky;
+      top: 0;
+      background: rgba(255,255,255,0.88);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--ts-border);
+      z-index: 100;
+    }
+
+    .ts-navbar-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 24px;
+    }
+
+    .ts-logo {
+      position: relative;
+      width: 360px;
+      height: 36px;
+      flex: 0 0 360px;
+      overflow: visible;
+    }
+
+    .ts-logo-mark {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 62px;
+      width: auto;
+      max-width: none;
+    }
+
+    .ts-nav-links {
+      display: flex;
+      list-style: none;
+      gap: 32px;
+    }
+
+    .ts-nav-links a {
+      text-decoration: none;
+      color: var(--ts-navy);
+      font-weight: 500;
+      padding-bottom: 4px;
+      transition: all 0.2s;
+    }
+
+    .ts-nav-links a.active,
+    .ts-nav-links a:hover {
+      color: var(--ts-teal);
+      border-bottom: 2px solid var(--ts-teal);
+    }
+
+    .ts-profile-wrap {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    .ts-profile-card {
+      background: #fff;
+      border-radius: var(--ts-radius-card);
+      box-shadow: var(--ts-shadow);
+      padding: 28px;
+      border: 1px solid var(--ts-border);
+      margin-bottom: 24px;
+    }
+
+    .ts-profile-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .ts-profile-identity {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .ts-avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, #009688 0%, #00BFA5 100%);
+      color: #fff;
+      font-weight: 700;
+      font-family: var(--ts-font-display);
+      font-size: 24px;
+      box-shadow: 0 8px 24px rgba(0,122,114,0.2);
+    }
+
+    .ts-profile-name {
+      font-family: var(--ts-font-display);
+      font-size: 28px;
+      line-height: 1.2;
+      margin-bottom: 4px;
+    }
+
+    .ts-profile-meta {
+      color: #4A5D8A;
+      font-size: 14px;
+    }
+
+    .ts-role-pill {
+      background: #0D1F4E;
+      color: #fff;
+      padding: 6px 12px;
+      border-radius: var(--ts-radius-pill);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+
+    .ts-profile-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 12px;
+    }
+
+    .ts-stat {
+      background: var(--ts-teal-ghost);
+      border: 1px solid var(--ts-teal-light);
+      border-radius: 14px;
+      padding: 14px;
+    }
+
+    .ts-stat-label {
+      color: #4A5D8A;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      margin-bottom: 6px;
+    }
+
+    .ts-stat-value {
+      font-family: var(--ts-font-mono);
+      font-size: 24px;
+      color: var(--ts-teal-deep);
+      font-weight: 500;
+    }
+
+    .ts-section-title {
+      font-family: var(--ts-font-display);
+      font-size: 20px;
+      margin-bottom: 16px;
+    }
+
+    .ts-settings {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .ts-setting {
+      border: 1px solid var(--ts-border);
+      border-radius: 12px;
+      padding: 14px;
+      background: #fff;
+    }
+
+    .ts-setting h4 {
+      font-size: 15px;
+      margin-bottom: 6px;
+      color: var(--ts-navy);
+    }
+
+    .ts-setting p {
+      color: #4A5D8A;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 900px) {
+      .ts-logo { width: 240px; flex-basis: 240px; }
+      .ts-logo-mark { height: 52px; }
+      .ts-nav-links { gap: 18px; }
+      .ts-profile-grid { grid-template-columns: 1fr; }
+      .ts-settings { grid-template-columns: 1fr; }
+      .ts-profile-head { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body ng-controller="ProfileController">
+
+  <nav class="ts-navbar">
+    <div class="ts-navbar-inner">
+      <div class="ts-logo">
+        <svg class="ts-logo-mark" viewBox="0 0 760 140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="TransparenSee logo">
+          <title>TransparenSee</title>
+          <path d="M22 70C45 41 80 23 130 23C180 23 215 41 238 70C215 99 180 117 130 117C80 117 45 99 22 70Z" fill="none" stroke="#008080" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="130" cy="70" r="36" fill="#E0F2F1" stroke="#008080" stroke-width="10"/>
+          <rect x="112" y="43" width="36" height="54" rx="18" fill="#008080"/>
+          <rect x="130" y="43" width="18" height="54" rx="9" fill="#81b5a1"/>
+          <path d="M130 70L148 70" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round"/>
+          <text x="272" y="82" font-family="'Plus Jakarta Sans', sans-serif" font-size="46" font-weight="700" fill="#003366">TransparenSee</text>
+        </svg>
+      </div>
+      <ul class="ts-nav-links">
+        <li><a href="/x_1966129_transpar_home.do">Home</a></li>
+        <li><a href="/x_1966129_transpar_search.do">Search</a></li>
+        <li><a href="/x_1966129_transpar_map.do">Map</a></li>
+        <li><a href="/x_1966129_transpar_profile.do" class="active">Profile</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="ts-profile-wrap">
+    <section class="ts-profile-card">
+      <div class="ts-profile-head">
+        <div class="ts-profile-identity">
+          <div class="ts-avatar" ng-bind="profile.initials"></div>
+          <div>
+            <h1 class="ts-profile-name" ng-bind="profile.name"></h1>
+            <p class="ts-profile-meta">Session ID: <span ng-bind="profile.session"></span></p>
+          </div>
+        </div>
+        <span class="ts-role-pill" ng-bind="profile.role"></span>
+      </div>
+
+      <div class="ts-profile-grid">
+        <div class="ts-stat">
+          <div class="ts-stat-label">Searches This Week</div>
+          <div class="ts-stat-value" ng-bind="stats.searches"></div>
+        </div>
+        <div class="ts-stat">
+          <div class="ts-stat-label">Saved Estimate</div>
+          <div class="ts-stat-value">P <span ng-bind="stats.saved"></span></div>
+        </div>
+        <div class="ts-stat">
+          <div class="ts-stat-label">Reports Generated</div>
+          <div class="ts-stat-value" ng-bind="stats.reports"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="ts-profile-card">
+      <h2 class="ts-section-title">Preferences</h2>
+      <div class="ts-settings">
+        <div class="ts-setting">
+          <h4>Preferred Search Type</h4>
+          <p ng-bind="settings.searchType"></p>
+        </div>
+        <div class="ts-setting">
+          <h4>Nearest Pharmacy Radius</h4>
+          <p ng-bind="settings.radius"></p>
+        </div>
+        <div class="ts-setting">
+          <h4>Generic Filter Default</h4>
+          <p ng-bind="settings.genericDefault"></p>
+        </div>
+        <div class="ts-setting">
+          <h4>AI Concierge Mode</h4>
+          <p ng-bind="settings.aiMode"></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+</body>
+</html>
+</j:jelly>

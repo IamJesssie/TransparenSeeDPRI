@@ -74,7 +74,7 @@
               </div>
             </div>
             <div class="ts-savings-highlight">
-              <span class="ts-savings-icon">💰</span>
+              <span class="ts-savings-icon"><img src="/x_1966129_transpar_figma-icons/imgIcon8.svg" alt="Savings" style="width:18px;height:18px;vertical-align:middle;"/></span>
               <span>You save ₱{{ drug.hospital_avg - drug.dpri_price | number:0 }} ({{ drug.savings_percent }}%)</span>
             </div>
           </div>
@@ -84,7 +84,7 @@
       <!-- DRUG INFORMATION BENTO GRID -->
       <section class="ts-drug-bento">
         <div class="ts-bento-tile ts-indications-tile">
-          <h3>💊 What it treats</h3>
+          <h3><img src="/x_1966129_transpar_figma-icons/imgIcon1.svg" alt="What it treats" style="width:16px;height:16px;vertical-align:-2px;margin-right:6px;"/>What it treats</h3>
           <p>{{ drug.indications || 'Information not available' }}</p>
         </div>
         
@@ -94,13 +94,13 @@
         </div>
         
         <div class="ts-bento-tile ts-dpri-tile">
-          <h3>📋 DPRI Reference</h3>
+          <h3><img src="/x_1966129_transpar_figma-icons/imgIcon12.svg" alt="DPRI Reference" style="width:16px;height:16px;vertical-align:-2px;margin-right:6px;"/>DPRI Reference</h3>
           <p><strong>Code:</strong> {{ drug.dpri_ref_code || 'N/A' }}</p>
           <p class="ts-dpri-note">This is the official government-mandated maximum retail price as per DOH DPRI 2025.</p>
         </div>
         
         <div class="ts-bento-tile ts-classification-tile">
-          <h3>🔬 Classification</h3>
+          <h3><img src="/x_1966129_transpar_figma-icons/imgIcon3.svg" alt="Classification" style="width:16px;height:16px;vertical-align:-2px;margin-right:6px;"/>Classification</h3>
           <div class="ts-classification-tags">
             <span class="ts-class-tag">{{ drug.category }}</span>
             <span class="ts-class-tag">{{ drug.route | titleCase }} route</span>
@@ -112,7 +112,7 @@
       <!-- NEAREST PHARMACIES PREVIEW -->
       <section class="ts-pharmacies-preview">
         <div class="ts-section-header">
-          <h2>🏪 Nearest Pharmacies</h2>
+          <h2><img src="/x_1966129_transpar_figma-icons/imgIcon5.svg" alt="Nearest Pharmacies" style="width:18px;height:18px;vertical-align:-2px;margin-right:6px;"/>Nearest Pharmacies</h2>
           <button class="ts-btn-ghost" ng-click="viewFullMap()">View Full Map →</button>
         </div>
         
@@ -125,7 +125,7 @@
             </div>
             <div class="ts-pharmacy-distance">
               <span class="ts-distance">{{ pharmacy.distance }}km</span>
-              <button class="ts-btn-directions" ng-click="getDirections(pharmacy)">📍</button>
+              <button class="ts-btn-directions" ng-click="getDirections(pharmacy)"><img src="/x_1966129_transpar_figma-icons/imgIcon10.svg" alt="Directions" style="width:16px;height:16px;vertical-align:middle;"/></button>
             </div>
           </div>
         </div>
@@ -137,7 +137,7 @@
     <aside class="ts-ai-panel">
       <div class="ts-ai-card">
         <div class="ts-ai-header">
-          <div class="ts-ai-avatar">🤖</div>
+          <div class="ts-ai-avatar"><img src="/x_1966129_transpar_figma-icons/imgIcon12.svg" alt="AI" style="width:20px;height:20px;vertical-align:middle;"/></div>
           <div class="ts-ai-title">
             <h3>AI Pharmacist</h3>
             <p>TransparenSee Concierge</p>
@@ -159,13 +159,13 @@
               <p>{{ aiResponse }}</p>
             </div>
             <div class="ts-ai-disclaimer">
-              <small>💡 AI-generated advice. Always consult your doctor.</small>
+              <small><img src="/x_1966129_transpar_figma-icons/imgIcon3.svg" alt="Tip" style="width:12px;height:12px;vertical-align:-1px;margin-right:4px;"/>AI-generated advice. Always consult your doctor.</small>
             </div>
           </div>
 
           <!-- Error State -->
           <div ng-show="aiError" class="ts-ai-message ts-ai-error">
-            <p>🔧 AI Concierge temporarily unavailable. Here's what you should know:</p>
+            <p><img src="/x_1966129_transpar_figma-icons/imgIcon12.svg" alt="Notice" style="width:14px;height:14px;vertical-align:-2px;margin-right:4px;"/>AI Concierge temporarily unavailable. Here's what you should know:</p>
             <div class="ts-ai-fallback">
               <p><strong>Safety reminder:</strong> Always follow your doctor's prescription and take the full course as directed. If you experience side effects, consult your pharmacist immediately.</p>
               <p><strong>DPRI Price:</strong> The government-set fair price for {{ drug.generic_name }} is ₱{{ drug.dpri_price }}.</p>
@@ -189,13 +189,13 @@
   <!-- STICKY BOTTOM ACTIONS -->
   <div class="ts-bottom-actions">
     <button class="ts-action-btn ts-btn-primary" ng-click="generateReport()">
-      📄 Generate Price Report
+      <img src="/x_1966129_transpar_figma-icons/imgIcon12.svg" alt="Report" style="width:14px;height:14px;vertical-align:-2px;margin-right:6px;"/>Generate Price Report
     </button>
     <button class="ts-action-btn ts-btn-secondary" ng-click="findPharmacies()">
-      🗺️ Find Nearest Pharmacy
+      <img src="/x_1966129_transpar_figma-icons/imgIcon5.svg" alt="Map" style="width:14px;height:14px;vertical-align:-2px;margin-right:6px;"/>Find Nearest Pharmacy
     </button>
     <button class="ts-action-btn ts-btn-ghost" ng-click="shareThis()">
-      📱 Share
+      <img src="/x_1966129_transpar_figma-icons/imgIcon11.svg" alt="Share" style="width:14px;height:14px;vertical-align:-2px;margin-right:6px;"/>Share
     </button>
   </div>
 

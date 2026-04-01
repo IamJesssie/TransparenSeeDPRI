@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" fill="none">
+  <circle cx="90" cy="90" r="58" fill="#FFFFFF" fill-opacity="0.10"/>
+  <circle cx="90" cy="90" r="42" fill="#FFFFFF" fill-opacity="0.12"/>
+  <circle cx="90" cy="90" r="26" fill="#FFFFFF" fill-opacity="0.13"/>
+  <text x="90" y="106" text-anchor="middle" font-family="Inter, sans-serif" font-size="47" font-weight="700" fill="#FFFFFF" fill-opacity="0.13">₱</text>
+</svg>
