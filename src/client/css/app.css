@@ -122,18 +122,22 @@ body {
 }
 
 .ts-logo {
-  display: flex;
-  align-items: center;
-  gap: var(--ts-space-sm);
-  font-family: var(--ts-font-display);
-  font-size: 20px;
-  font-weight: 600;
-  color: var(--ts-text-primary);
+  position: relative;
+  width: 180px;
+  height: 36px;
+  flex: 0 0 180px;
+  overflow: visible;
   text-decoration: none;
 }
 
-.ts-logo-icon {
-  font-size: 28px;
+.ts-logo-mark {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 72px;
+  width: auto;
+  max-width: none;
 }
 
 .ts-nav-links {

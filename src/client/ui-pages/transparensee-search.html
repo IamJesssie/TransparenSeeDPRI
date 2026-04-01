@@ -66,13 +66,22 @@
     }
 
     .ts-logo {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-family: var(--ts-font-display);
-      font-weight: 600;
-      font-size: 18px;
+      position: relative;
+      width: 180px;
+      height: 36px;
+      flex: 0 0 180px;
+      overflow: visible;
       color: var(--ts-navy);
+    }
+
+    .ts-logo-mark {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 72px;
+      width: auto;
+      max-width: none;
     }
 
     .ts-nav-links {
@@ -482,8 +491,7 @@
   <nav class="ts-navbar">
     <div class="ts-navbar-inner">
       <div class="ts-logo">
-        <div class="ts-logo-icon">💊</div>
-        <span>TransparenSee</span>
+        <img class="ts-logo-mark" src="/x_1966129_transpar_TransparenSee.png" alt="TransparenSee"/>
       </div>
       <ul class="ts-nav-links">
         <li><a href="/x_1966129_transpar_home.do">Home</a></li>
