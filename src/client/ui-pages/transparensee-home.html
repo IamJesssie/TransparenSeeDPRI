@@ -43,6 +43,10 @@
       color: var(--ts-navy);
     }
 
+    .ts-will-animate {
+      will-change: transform, opacity;
+    }
+
     /* NAVBAR */
     .ts-navbar {
       position: sticky;
@@ -107,11 +111,42 @@
       padding: 120px 24px;
       text-align: center;
       color: white;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .ts-hero::before,
+    .ts-hero::after {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .ts-hero::before {
+      width: 420px;
+      height: 420px;
+      top: -140px;
+      left: -120px;
+      background: radial-gradient(circle at center, rgba(0, 191, 165, 0.34) 0%, rgba(0, 191, 165, 0) 74%);
+      animation: ts-float-soft 8s ease-in-out infinite;
+    }
+
+    .ts-hero::after {
+      width: 360px;
+      height: 360px;
+      right: -100px;
+      bottom: -120px;
+      background: radial-gradient(circle at center, rgba(245, 158, 11, 0.28) 0%, rgba(245, 158, 11, 0) 74%);
+      animation: ts-float-soft 10s ease-in-out infinite reverse;
     }
 
     .ts-hero-content {
       max-width: 800px;
       margin: 0 auto;
+      position: relative;
+      z-index: 1;
     }
 
     .ts-eyebrow {
@@ -291,6 +326,42 @@
       transform: translateY(-1px);
     }
 
+    .ts-hero-stage {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: ts-rise-in 700ms cubic-bezier(0.2, 0.9, 0.2, 1) forwards;
+    }
+
+    .ts-hero-stage-1 { animation-delay: 80ms; }
+    .ts-hero-stage-2 { animation-delay: 180ms; }
+    .ts-hero-stage-3 { animation-delay: 300ms; }
+    .ts-hero-stage-4 { animation-delay: 460ms; }
+    .ts-hero-stage-5 { animation-delay: 620ms; }
+
+    .ts-reveal {
+      opacity: 1;
+      transform: none;
+      transition: opacity 520ms ease, transform 520ms cubic-bezier(0.2, 0.9, 0.2, 1);
+    }
+
+    .ts-motion-ready .ts-reveal {
+      opacity: 0;
+      transform: translateY(22px) scale(0.985);
+    }
+
+    .ts-motion-ready .ts-reveal-left {
+      transform: translateX(-24px);
+    }
+
+    .ts-motion-ready .ts-reveal-right {
+      transform: translateX(24px);
+    }
+
+    .ts-motion-ready .ts-reveal.is-visible {
+      opacity: 1;
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+
     /* CONTAINER */
     .ts-container {
       max-width: 1280px;
@@ -325,6 +396,10 @@
       box-shadow: 0 8px 40px rgba(0,122,114,0.16);
     }
 
+    .ts-stat-card:hover .ts-stat-deco {
+      transform: translate3d(-6px, -4px, 0) rotate(-2deg);
+    }
+
     .ts-stat-teal {
       background: linear-gradient(155deg, #007A72 0%, #00BFA5 100%);
       box-shadow: 0 8px 40px rgba(0,122,114,0.30);
@@ -351,6 +426,7 @@
       height: 200px;
       opacity: 1;
       pointer-events: none;
+      transition: transform 260ms ease;
     }
 
     .ts-stat-icon {
@@ -627,6 +703,11 @@
       justify-content: flex-start;
       position: relative;
       overflow: hidden;
+      transition: transform 240ms ease, box-shadow 240ms ease;
+    }
+
+    .ts-step:hover {
+      transform: translateY(-3px);
     }
 
     .ts-step-teal {
@@ -764,6 +845,42 @@
       margin: 36px 0 26px;
     }
 
+    @keyframes ts-rise-in {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes ts-float-soft {
+      0%, 100% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-12px);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .ts-hero-stage,
+      .ts-reveal,
+      .ts-stat-deco,
+      .ts-step,
+      .ts-chip,
+      .ts-search-bar,
+      .ts-search-btn,
+      .ts-recent-action {
+        animation: none !important;
+        transition: none !important;
+        transform: none !important;
+        opacity: 1 !important;
+      }
+    }
+
     /* RESPONSIVE */
     @media (max-width: 1024px) {
       .ts-steps {
@@ -843,7 +960,7 @@
     }
   </style>
 </head>
-<body ng-controller="HomeController">
+<body ng-controller="HomeController" ng-class="{'ts-motion-ready': motionEnabled}">
 
   <!-- NAVBAR -->
   <nav class="ts-navbar">
@@ -871,15 +988,15 @@
   <!-- HERO SECTION -->
   <section class="ts-hero">
     <div class="ts-hero-content">
-      <span class="ts-eyebrow">DPRI 2025 · Department of Health</span>
-      <h1 class="ts-hero-headline">
+      <span class="ts-eyebrow ts-hero-stage ts-hero-stage-1 ts-will-animate">DPRI 2025 · Department of Health</span>
+      <h1 class="ts-hero-headline ts-hero-stage ts-hero-stage-2 ts-will-animate">
         Bridging the gap between<br/>
         patients and <span class="ts-highlight">affordable medicine.</span>
       </h1>
-      <p class="ts-hero-sub">Real-time DPRI pricing, clinical insights, and financial transparency at your fingertips.</p>
+      <p class="ts-hero-sub ts-hero-stage ts-hero-stage-3 ts-will-animate">Real-time DPRI pricing, clinical insights, and financial transparency at your fingertips.</p>
 
       <!-- SEARCH BAR -->
-      <div class="ts-search-wrap">
+      <div class="ts-search-wrap ts-hero-stage ts-hero-stage-4 ts-will-animate">
         <div class="ts-search-bar" ng-class="{'ts-search-focused': searchFocused}">
           <span class="ts-search-icon"><img class="ts-icon-img" src="/x_1966129_transpar_imgIcon2.svg" alt="Search"/></span>
           <input
@@ -912,7 +1029,7 @@
       </div>
 
       <!-- POPULAR SEARCHES -->
-      <div class="ts-popular">
+      <div class="ts-popular ts-hero-stage ts-hero-stage-5 ts-will-animate">
         <span class="ts-popular-label">POPULAR SEARCHES:</span>
         <button class="ts-chip" ng-repeat="term in popularTerms" ng-click="quickSearch(term)" ng-bind="term">
         </button>
@@ -921,31 +1038,31 @@
   </section>
 
   <!-- BENTO STATS ROW -->
-  <section class="ts-stats-section ts-container">
+  <section class="ts-stats-section ts-container ts-reveal ts-will-animate" data-animate="stats">
     <div class="ts-bento-row">
-      <div class="ts-stat-card ts-stat-teal">
-        <img class="ts-stat-deco" src="/x_1966129_transpar_ghost-3-9.svg" alt="" aria-hidden="true"/>
+      <div class="ts-stat-card ts-stat-teal ts-will-animate">
+        <img class="ts-stat-deco js-parallax" data-parallax="10" src="/x_1966129_transpar_ghost-3-9.svg" alt="" aria-hidden="true"/>
         <div class="ts-stat-content">
           <span class="ts-tip-label" style="background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.22); color: rgba(255,255,255,0.92); margin-bottom: 12px; font-size:10px; line-height:15px;">DPRI 2025</span>
-          <span class="ts-stat-value">{{ stats.totalDrugs || '2,847' }}</span>
+          <span class="ts-stat-value js-countup" data-countup-key="totalDrugs" ng-bind="stats.totalDrugs"></span>
           <span class="ts-stat-sub">Updated March 2025</span>
           <span class="ts-stat-label">DRUGS IN DPRI FORMULARY</span>
         </div>
       </div>
-      <div class="ts-stat-card ts-stat-gold">
-        <img class="ts-stat-deco" src="/x_1966129_transpar_ghost-3-25.svg" alt="" aria-hidden="true"/>
+      <div class="ts-stat-card ts-stat-gold ts-will-animate">
+        <img class="ts-stat-deco js-parallax" data-parallax="8" src="/x_1966129_transpar_ghost-3-25.svg" alt="" aria-hidden="true"/>
         <div class="ts-stat-content">
           <span class="ts-tip-label" style="background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.22); color: rgba(255,255,255,0.92); margin-bottom: 12px; font-size:10px; line-height:15px;">↑ Savings</span>
-          <span class="ts-stat-value">65%</span>
+          <span class="ts-stat-value js-countup" data-countup-value="65" data-countup-suffix="%">65%</span>
           <span class="ts-stat-sub">vs. non-DPRI pharmacies</span>
           <span class="ts-stat-label">AVG SAVINGS VS HOSPITAL PRICE</span>
         </div>
       </div>
-      <div class="ts-stat-card ts-stat-navy">
-        <img class="ts-stat-deco" src="/x_1966129_transpar_ghost-3-41.svg" alt="" aria-hidden="true"/>
+      <div class="ts-stat-card ts-stat-navy ts-will-animate">
+        <img class="ts-stat-deco js-parallax" data-parallax="12" src="/x_1966129_transpar_ghost-3-41.svg" alt="" aria-hidden="true"/>
         <div class="ts-stat-content">
           <span class="ts-tip-label" style="background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.22); color: rgba(255,255,255,0.92); margin-bottom: 12px; font-size:10px; line-height:15px;">Live</span>
-          <span class="ts-stat-value">{{ stats.totalPharmacies || '1,234' }}</span>
+          <span class="ts-stat-value js-countup" data-countup-key="totalPharmacies" ng-bind="stats.totalPharmacies"></span>
           <span class="ts-stat-sub">Metro Manila &amp; provinces</span>
           <span class="ts-stat-label">ACCREDITED DPRI PHARMACIES</span>
         </div>
@@ -955,7 +1072,7 @@
 
   <!-- RECENT ACTIVITY + SAVINGS TIP -->
   <section class="ts-container ts-two-col">
-    <div class="ts-recent-card ts-card">
+    <div class="ts-recent-card ts-card ts-reveal ts-reveal-left ts-will-animate">
       <div class="ts-card-head">
         <h3 class="ts-card-title">Recent Searches</h3>
         <a class="ts-view-all" href="/x_1966129_transpar_search.do">View All →</a>
@@ -974,7 +1091,7 @@
         <button class="ts-recent-action" ng-click="quickSearch(item.search_term)" aria-label="Search this drug">⌕</button>
       </div>
     </div>
-    <div class="ts-tip-card ts-card ts-card-glass-gold">
+    <div class="ts-tip-card ts-card ts-card-glass-gold ts-reveal ts-reveal-right ts-will-animate">
       <span class="ts-tip-label">SAVINGS TIP</span>
       <p class="ts-tip-text">Always ask for the generic name.</p>
       <p class="ts-tip-subtext">Under the Generics Act, pharmacists should offer equivalent generics at regulated DPRI prices.</p>
@@ -992,29 +1109,29 @@
   <!-- HOW IT WORKS -->
   <section class="ts-container ts-how-it-works">
     <span class="ts-how-kicker">How It Works</span>
-    <h2 class="ts-section-title">Three simple steps to affordable medicine</h2>
+    <h2 class="ts-section-title ts-reveal ts-will-animate">Three simple steps to affordable medicine</h2>
     <div class="ts-steps">
-      <div class="ts-step ts-step-teal">
+      <div class="ts-step ts-step-teal ts-reveal ts-will-animate">
         <div class="ts-step-icon">01</div>
-        <img class="ts-step-deco" src="/x_1966129_transpar_ghost-3-177.svg" alt="" aria-hidden="true"/>
+        <img class="ts-step-deco js-parallax" data-parallax="9" src="/x_1966129_transpar_ghost-3-177.svg" alt="" aria-hidden="true"/>
         <h3>Search Drug</h3>
         <p>Enter the generic or brand name of any medicine in the DPRI 2025 formulary.</p>
       </div>
-      <div class="ts-step ts-step-gold">
+      <div class="ts-step ts-step-gold ts-reveal ts-will-animate">
         <div class="ts-step-icon">02</div>
-        <img class="ts-step-deco" src="/x_1966129_transpar_ghost-3-193.svg" alt="" aria-hidden="true"/>
+        <img class="ts-step-deco js-parallax" data-parallax="7" src="/x_1966129_transpar_ghost-3-193.svg" alt="" aria-hidden="true"/>
         <h3>Compare Prices</h3>
         <p>See the official DPRI price vs retail and hospital averages. Know exactly how much you should pay.</p>
       </div>
-      <div class="ts-step ts-step-navy">
+      <div class="ts-step ts-step-navy ts-reveal ts-will-animate">
         <div class="ts-step-icon">03</div>
-        <img class="ts-step-deco" src="/x_1966129_transpar_ghost-3-208.svg" alt="" aria-hidden="true"/>
+        <img class="ts-step-deco js-parallax" data-parallax="11" src="/x_1966129_transpar_ghost-3-208.svg" alt="" aria-hidden="true"/>
         <h3>Find Nearest Pharmacy</h3>
         <p>Locate accredited pharmacies near you that carry the drug at the regulated DPRI price.</p>
       </div>
     </div>
 
-    <div class="ts-report-cta">
+    <div class="ts-report-cta ts-reveal ts-will-animate">
       <div>
         <span class="ts-report-kicker">Generate a report</span>
         <h3 class="ts-report-title">Need an official DPRI price reference?</h3>
