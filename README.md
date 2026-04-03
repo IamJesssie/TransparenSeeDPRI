@@ -31,10 +31,12 @@
 
 **TransparenSee** is a ServiceNow-powered web portal that puts the Philippine Department of Health's **Drug Price Reference Index (DPRI 2025)** directly in the hands of patients. Built as a scoped ServiceNow application, it allows any Filipino patient to:
 
-- 🔍 **Search** any drug and instantly see the government-mandated fair price
-- 📍 **Find** the nearest DOH-accredited pharmacy using real geolocation
+- 🔍 **Search** any drug and see official DPRI reference price benchmarks (lowest/median/highest)
+- 📍 **Find** nearby DOH-accredited pharmacies/facilities using real geolocation
 - 🤖 **Get AI counsel** from a built-in pharmacist assistant (via Gemini API integration)
-- 📄 **Generate** a printable price report to show pharmacists and avoid overcharging
+- 📄 **Generate** a printable price report with DPRI references and nearby accredited options
+
+> Note: "nearest cheapest" ranking is based on available mapped accredited facility records and DPRI reference data.
 
 > **Hackathon:** ALPS Batch 2 · EY GDS × ServiceNow · Case PRBCS00034 · Health Sector
 > **Team:** TransparenSee · G6 · Cebu Institute of Technology - University
@@ -43,7 +45,7 @@
 
 ## 🧩 The Problem
 
-The Philippine DOH maintains the **Drug Price Reference Index (DPRI)** — a legally-mandated list of maximum retail prices for essential medicines. The reality:
+The Philippine DOH maintains the **Drug Price Reference Index (DPRI)** — an official public reference benchmark for essential medicine pricing. The reality:
 
 | The Gap | The Impact |
 |---|---|
@@ -58,15 +60,15 @@ The Philippine DOH maintains the **Drug Price Reference Index (DPRI)** — a leg
 
 ### 🔍 Smart Drug Search
 - Live autocomplete search as you type — powered by **GlideAjax + AngularJS**
-- Results show DPRI fair price, brand names, dosage form, and savings percentage vs hospital pharmacy
+- Results show DPRI benchmark prices (lowest/median/highest), brand names, dosage form, and savings context
 - Filter by drug category, dosage form, and generic-only toggle
 - Clinical recommendation banner for generic alternatives
 
 ### 📍 Pharmacy Geolocation Map
 - HTML5 GPS detection of patient location
-- **Haversine formula** distance calculation to all accredited pharmacies
+- **Haversine formula** distance calculation to accredited pharmacies/facilities
 - Interactive Leaflet.js map with custom teal pharmacy pins
-- Sorted pharmacy list: nearest first, with distance in km
+- Sorted list: nearest first, with distance in km and mapped acquisition price where available
 
 ### 🤖 AI Pharmacist Concierge
 - Powered by **Google Gemini API** via ServiceNow Integration Hub
@@ -76,7 +78,7 @@ The Philippine DOH maintains the **Drug Price Reference Index (DPRI)** — a leg
 
 ### 📄 Price Report Generator
 - One-click printable PDF summary
-- Includes: Drug name, DPRI price, nearest pharmacies, AI safety note, DPRI 2025 official citation
+- Includes: Drug name, DPRI benchmark prices, nearest accredited options, AI safety note, DPRI 2025 official citation
 - Patients can show this report to any pharmacist as price reference
 
 ### 🔔 Automated Workflows
@@ -95,13 +97,14 @@ x_1966129_transparensee (Scoped Application)
 ├── 📊 Data Layer
 │   ├── x_1966129_transparensee_medicine      → DPRI drug price records
 │   ├── x_1966129_transparensee_pharmacy      → Accredited pharmacy locations
+│   ├── x_1966129_transparensee_drug_facility_price → Drug-to-facility acquisition price mapping
 │   ├── x_1966129_transparensee_category      → Drug classification categories
 │   └── x_1966129_transparensee_search_log    → Patient search analytics
 │
 ├── 🧠 Business Logic
 │   ├── DPRI_PriceEngine (Script Include)  → Drug search + GlideAjax API
-│   ├── PharmacyLocator (Script Include)   → Haversine geolocation
-│   └── AI_Concierge (Script Include)      → OpenAI REST integration
+│   ├── PharmacyLocator (Script Include)   → Haversine geolocation + nearest-by-drug lookup
+│   └── AI_Concierge (Script Include)      → Gemini REST integration
 │
 ├── ⚙️ Automation
 │   ├── Business Rule: ts_calculate_savings     → Auto-calc savings %
@@ -141,7 +144,7 @@ x_1966129_transparensee (Scoped Application)
 | **Maps** | Leaflet.js + OpenStreetMap |
 | **AI** | Gemini API via Integration Hub |
 | **Styling** | Custom CSS (Clash Display + Plus Jakarta Sans + DM Mono) |
-| **Data Source** | DPRI 2025 PDF → CSV → ServiceNow Import Set |
+| **Data Source** | DPRI 2025 PDF/CSV → ServiceNow Import Set |
 | **Version Control** | Git + Github |
 
 ---
@@ -197,9 +200,11 @@ npm run deploy
 
 3. Upload the CSV file
 
-4. Run the Transform Map to target the x_1966129_transpar_medicine table.
+4. Run Transform Map A to target x_1966129_transpar_medicine (drug benchmark fields).
 
-5. Verify data at: x_1966129_transpar_medicine.list
+5. Run Transform Map B to target x_1966129_transpar_drug_facility_price (facility-level acquisition rows).
+
+6. Verify data at: x_1966129_transpar_medicine.list and x_1966129_transpar_drug_facility_price.list
 
 
 ```
@@ -238,7 +243,7 @@ This inserts 10+ Cebu City pharmacy locations with GPS coordinates.
 | **Home** | `/x_1966129_transpar_home.do` | Hero search portal with live autocomplete |
 | **Search Results** | `/x_1966129_transpar_search.do` | Drug results with filters and savings badges |
 | **Drug Detail** | `/x_1966129_transpar_detail.do` | Full drug info + AI Concierge panel |
-| **Pharmacy Map** | `/x_1966129_transpar_map.do` | Geolocation map sorted by distance |
+| **Pharmacy Map** | `/x_1966129_transpar_map.do` | Geolocation map sorted by distance, with mapped prices when available |
 | **Price Report** | `/transparensee/report/{id}` | Printable patient price report |
 | **Admin Dashboard** | `/transparensee/admin` | `dpri_admin` only — data management |
 
@@ -269,7 +274,7 @@ This inserts 10+ Cebu City pharmacy locations with GPS coordinates.
 Drug price data is sourced from the official **Philippine Department of Health Drug Price Reference Index 2025**.
 
 - **Source:** [dpri.doh.gov.ph](https://dpri.doh.gov.ph/downloads/DPRI-2025-Booklet-asofOctober7.pdf)
-- **Import format:** CSV via ServiceNow Import Sets
+- **Import format:** CSV via ServiceNow Import Sets (drug benchmark + facility mapping)
 - **Sample dataset:** 30 most common drugs (Amoxicillin, Paracetamol, Metformin, Amlodipine, etc.)
 - **Update frequency:** DPRI is updated annually by DOH
 
@@ -300,7 +305,7 @@ Sample Data Preview:
 | ⬜ Notifications (Outbound) | Pharmacy approval email | 🔧 In Progress |
 | ⬜ Notifications (Inbound) | Email-to-pharmacy submission | 🔧 In Progress |
 | ⬜ Approval via Email | Pharmacy accreditation flow | 🔧 In Progress |
-| ⬜ Integration Hub (API) | OpenAI AI Concierge spoke | 🔧 In Progress |
+| ⬜ Integration Hub (API) | Gemini AI Concierge spoke | 🔧 In Progress |
 | ⬜ Flow Designer | Search → AI → Log → Notify | 🔧 In Progress |
 | ⬜ Service Portal | `/transparensee` portal | 🔧 In Progress |
 | ⬜ User Criteria & Roles | `dpri_patient` + `dpri_admin` | 🔧 In Progress |
@@ -335,7 +340,7 @@ TransparenSeeDPRI/
 │   ├── script_includes/
 │   │   ├── DPRI_PriceEngine.js           → Drug search API
 │   │   ├── PharmacyLocator.js            → Haversine geolocation
-│   │   └── AI_Concierge.js               → OpenAI integration
+│   │   └── AI_Concierge.js               → Gemini integration
 │   ├── ui_pages/
 │   │   ├── transparensee_home.*          → Home page (HTML + JS)
 │   │   ├── transparensee_search.*        → Search results
@@ -389,7 +394,7 @@ TransparenSeeDPRI/
 - **Philippine Department of Health** — for maintaining the DPRI 2025 public data
 - **EY GDS Philippines** — for the hackathon opportunity and mentorship
 - **ServiceNow** — developer instance and platform
-- **Gemini** — GEMINI API powering the AI Concierge
+- **Gemini** — API powering the AI Concierge
 - **Leaflet.js + OpenStreetMap** — open-source mapping
 
 ---

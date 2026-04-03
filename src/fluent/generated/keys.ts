@@ -141,6 +141,18 @@ declare global {
                         table: 'sys_ui_element'
                         id: 'f11c8cc4c3444310c47bd72d05013115'
                     }
+                    facility_price_amox_generika_itpark: {
+                        table: 'x_1966129_transpar_drug_facility_price'
+                        id: 'dcefc4cad4654553a2c770c0133adb24'
+                    }
+                    facility_price_amox_mercury_ayala: {
+                        table: 'x_1966129_transpar_drug_facility_price'
+                        id: '87a150fc1d53458c895fdb7cea6e2027'
+                    }
+                    facility_price_para_rose_capitol: {
+                        table: 'x_1966129_transpar_drug_facility_price'
+                        id: 'bcaf7130b8cf4d058e37ec956f73c0f3'
+                    }
                     medicine_amlodipine: {
                         table: 'x_1966129_transpar_medicine'
                         id: '14e062688bba4ded969fbf7ab2dd6dbd'
@@ -294,10 +306,27 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_dictionary'
+                        id: '0272bcddadad4b7ba447f3ac1ba6f707'
+                        key: {
+                            name: 'x_1966129_transpar_drug_facility_price'
+                            element: 'quantity'
+                        }
+                    },
+                    {
                         table: 'sys_user_role'
                         id: '08049047bbee46d6bf43deadf5c23652'
                         key: {
                             name: 'x_1966129_transpar.dpri_patient'
+                        }
+                    },
+                    {
+                        table: 'sys_documentation'
+                        id: '0864c3b14a344986b06722b95ccab4b4'
+                        key: {
+                            name: 'x_1966129_transpar_drug_facility_price'
+                            element: 'quantity'
+                            language: 'en'
                         }
                     },
                     {
@@ -440,6 +469,15 @@ declare global {
                     },
                     {
                         table: 'sys_documentation'
+                        id: '1da11b55393443908f1694a74cc7b6d5'
+                        key: {
+                            name: 'x_1966129_transpar_drug_facility_price'
+                            element: 'manufacturer'
+                            language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_documentation'
                         id: '1f7887468a634d18b7ffb4aa7233483d'
                         key: {
                             name: 'x_1966129_transpar_search_log'
@@ -457,6 +495,14 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_dictionary'
+                        id: '20802bfc8c174680ae378bcdc5ebacb7'
+                        key: {
+                            name: 'x_1966129_transpar_drug_facility_price'
+                            element: 'supplier'
+                        }
+                    },
+                    {
                         table: 'sys_choice_set'
                         id: '20e516cc703f4ea8ab6cbe3ddc831745'
                         key: {
@@ -466,11 +512,28 @@ declare global {
                     },
                     {
                         table: 'sys_documentation'
+                        id: '219317acbe2242c8a642a7078aec9e2f'
+                        key: {
+                            name: 'x_1966129_transpar_drug_facility_price'
+                            element: 'facility_name'
+                            language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_documentation'
                         id: '21ac71d91c2e45edb5d5c290ca5b1eb5'
                         key: {
                             name: 'x_1966129_transpar_pharmacy'
                             element: 'address'
                             language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_dictionary'
+                        id: '235373c7d74c4ab8a0bfb46bba9fddd4'
+                        key: {
+                            name: 'x_1966129_transpar_medicine'
+                            element: 'dpri_median_price'
                         }
                     },
                     {
@@ -658,6 +721,15 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_documentation'
+                        id: '3b878eb552c0435fbc808e8364a7817e'
+                        key: {
+                            name: 'x_1966129_transpar_drug_facility_price'
+                            element: 'supplier'
+                            language: 'en'
+                        }
+                    },
+                    {
                         table: 'sys_dictionary'
                         id: '3cf7f0bf14424e0b96061830415e047d'
                         key: {
@@ -703,6 +775,23 @@ declare global {
                         id: '3f17a35e9e434e50a350d44a1ea3868e'
                         key: {
                             name: 'x_1966129_transpar_pharmacy'
+                        }
+                    },
+                    {
+                        table: 'sys_dictionary'
+                        id: '3fc62d4ace5445948f0111252cfe9a64'
+                        key: {
+                            name: 'x_1966129_transpar_drug_facility_price'
+                            element: 'medicine'
+                        }
+                    },
+                    {
+                        table: 'sys_documentation'
+                        id: '404b73fd486b42b7b1e5853adcb3e930'
+                        key: {
+                            name: 'x_1966129_transpar_drug_facility_price'
+                            element: 'medicine'
+                            language: 'en'
                         }
                     },
                     {
@@ -846,6 +935,14 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_dictionary'
+                        id: '5ceab0557dd84e4e95734aaa2652d103'
+                        key: {
+                            name: 'x_1966129_transpar_drug_facility_price'
+                            element: 'pharmacy'
+                        }
+                    },
+                    {
                         table: 'sys_choice'
                         id: '5d2595a5b8664282a0158bb2b535a247'
                         key: {
@@ -868,6 +965,15 @@ declare global {
                         id: '5e3e266485214c3cb937d8259f4ef9a3'
                         key: {
                             name: 'x_1966129_transpar_category'
+                        }
+                    },
+                    {
+                        table: 'sys_documentation'
+                        id: '5e9dd17570b042d0a0aff988bcb96a2a'
+                        key: {
+                            name: 'x_1966129_transpar_drug_facility_price'
+                            element: 'brand'
+                            language: 'en'
                         }
                     },
                     {
@@ -916,6 +1022,15 @@ declare global {
                             name: 'x_1966129_transpar_pharmacy'
                             element: 'accreditation_status'
                             value: 'approved'
+                        }
+                    },
+                    {
+                        table: 'sys_documentation'
+                        id: '7222b554507b4679b6e7f001e8026a69'
+                        key: {
+                            name: 'x_1966129_transpar_medicine'
+                            element: 'dpri_lowest_price'
+                            language: 'en'
                         }
                     },
                     {
@@ -1006,12 +1121,28 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_dictionary'
+                        id: '77659341ae9f4e7b8dde49772da05826'
+                        key: {
+                            name: 'x_1966129_transpar_drug_facility_price'
+                            element: 'manufacturer'
+                        }
+                    },
+                    {
                         table: 'sys_documentation'
                         id: '7891fdd115224537b053c63c689b4450'
                         key: {
                             name: 'x_1966129_transpar_pharmacy'
                             element: 'city'
                             language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_dictionary'
+                        id: '79858bfff91d4e55874d1f28a994560f'
+                        key: {
+                            name: 'x_1966129_transpar_drug_facility_price'
+                            element: 'acquisition_price'
                         }
                     },
                     {
@@ -1249,6 +1380,13 @@ declare global {
                         }
                     },
                     {
+                        table: 'ua_table_licensing_config'
+                        id: '949ed24e8b9a47eeb813e99119b297fc'
+                        key: {
+                            name: 'x_1966129_transpar_drug_facility_price'
+                        }
+                    },
+                    {
                         table: 'sys_documentation'
                         id: '9676ecc9c30c41c0b1f71350889fdcb2'
                         key: {
@@ -1384,6 +1522,14 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_dictionary'
+                        id: 'a5f6b29e78cb4166950ad0e253face51'
+                        key: {
+                            name: 'x_1966129_transpar_drug_facility_price'
+                            element: 'brand'
+                        }
+                    },
+                    {
                         table: 'sys_documentation'
                         id: 'a5f7134abe7341798681687f977ddc96'
                         key: {
@@ -1441,6 +1587,14 @@ declare global {
                         key: {
                             name: 'x_1966129_transpar_medicine'
                             element: 'active'
+                        }
+                    },
+                    {
+                        table: 'sys_dictionary'
+                        id: 'ab912b3694bc490d906368b96ba62b9b'
+                        key: {
+                            name: 'x_1966129_transpar_drug_facility_price'
+                            element: 'source_ref'
                         }
                     },
                     {
@@ -1524,6 +1678,15 @@ declare global {
                         key: {
                             name: 'x_1966129_transpar_medicine'
                             element: 'brand_name'
+                        }
+                    },
+                    {
+                        table: 'sys_documentation'
+                        id: 'c2f93fa81470476aa4d7ec1275f9392c'
+                        key: {
+                            name: 'x_1966129_transpar_drug_facility_price'
+                            element: 'NULL'
+                            language: 'en'
                         }
                     },
                     {
@@ -1621,6 +1784,15 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_documentation'
+                        id: 'ce40ac4eb648431bbf123490825448b3'
+                        key: {
+                            name: 'x_1966129_transpar_medicine'
+                            element: 'dpri_median_price'
+                            language: 'en'
+                        }
+                    },
+                    {
                         table: 'sys_choice'
                         id: 'cf0c3209ac0c46c884342d3a81f1fece'
                         key: {
@@ -1649,6 +1821,15 @@ declare global {
                                     name: 'x_1966129_transpar.dpri_patient'
                                 }
                             }
+                        }
+                    },
+                    {
+                        table: 'sys_documentation'
+                        id: 'd2e3bc01dc8546a785f79cf7b03c3011'
+                        key: {
+                            name: 'x_1966129_transpar_medicine'
+                            element: 'dpri_highest_price'
+                            language: 'en'
                         }
                     },
                     {
@@ -1759,6 +1940,15 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_documentation'
+                        id: 'e6579f748cec465ba0306b764e07ec41'
+                        key: {
+                            name: 'x_1966129_transpar_drug_facility_price'
+                            element: 'source_ref'
+                            language: 'en'
+                        }
+                    },
+                    {
                         table: 'sys_choice_set'
                         id: 'e800f28370ab45c3ad137d4ed1459df8'
                         key: {
@@ -1773,6 +1963,13 @@ declare global {
                             name: 'x_1966129_transpar_category'
                             element: 'code'
                             language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_db_object'
+                        id: 'ebad208e99c24306ad0a969defdbde88'
+                        key: {
+                            name: 'x_1966129_transpar_drug_facility_price'
                         }
                     },
                     {
@@ -1803,6 +2000,15 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_documentation'
+                        id: 'efa1163235b24460867fbdc0e97ba446'
+                        key: {
+                            name: 'x_1966129_transpar_drug_facility_price'
+                            element: 'acquisition_price'
+                            language: 'en'
+                        }
+                    },
+                    {
                         table: 'sys_choice_set'
                         id: 'efe2cc0e8a294cbc99398700f9495d43'
                         key: {
@@ -1828,6 +2034,23 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_dictionary'
+                        id: 'f17d1056ed8f468cb6eeb4a57ba09287'
+                        key: {
+                            name: 'x_1966129_transpar_medicine'
+                            element: 'dpri_lowest_price'
+                        }
+                    },
+                    {
+                        table: 'sys_documentation'
+                        id: 'f1ac250a545048638994b7f7fa687340'
+                        key: {
+                            name: 'x_1966129_transpar_drug_facility_price'
+                            element: 'pharmacy'
+                            language: 'en'
+                        }
+                    },
+                    {
                         table: 'sys_documentation'
                         id: 'f26023dd9f3e4d8997430fbcfa789c9b'
                         key: {
@@ -1842,6 +2065,14 @@ declare global {
                         key: {
                             name: 'x_1966129_transpar_medicine'
                             element: 'savings_percentage'
+                        }
+                    },
+                    {
+                        table: 'sys_dictionary'
+                        id: 'f499475d0ebb403fa453d9f7aa9364f3'
+                        key: {
+                            name: 'x_1966129_transpar_drug_facility_price'
+                            element: 'NULL'
                         }
                     },
                     {
@@ -1863,10 +2094,26 @@ declare global {
                     },
                     {
                         table: 'sys_dictionary'
+                        id: 'fbe38cb7308f47868d12b95df1ee15d5'
+                        key: {
+                            name: 'x_1966129_transpar_medicine'
+                            element: 'dpri_highest_price'
+                        }
+                    },
+                    {
+                        table: 'sys_dictionary'
                         id: 'fcd3da6e24db4bdf8e608d689b932a23'
                         key: {
                             name: 'x_1966129_transpar_medicine'
                             element: 'dpri_price'
+                        }
+                    },
+                    {
+                        table: 'sys_dictionary'
+                        id: 'ff72a6b75fa44578beac3c119874bd2a'
+                        key: {
+                            name: 'x_1966129_transpar_drug_facility_price'
+                            element: 'facility_name'
                         }
                     },
                 ]

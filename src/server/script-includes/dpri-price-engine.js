@@ -27,6 +27,9 @@ DPRI_PriceEngine.prototype = Object.assign(new AbstractAjaxProcessor(), {
 
         while (gr.next()) {
             var dpriPrice = parseFloat(gr.dpri_price.toString()) || 0;
+            var lowest = parseFloat(gr.dpri_lowest_price.toString()) || dpriPrice;
+            var median = parseFloat(gr.dpri_median_price.toString()) || dpriPrice;
+            var highest = parseFloat(gr.dpri_highest_price.toString()) || dpriPrice;
             var hospitalAvg = parseFloat(gr.hospital_avg_price.toString()) || 0;
             var savingsPct = parseInt(gr.savings_percentage.toString()) || 0;
 
@@ -38,6 +41,9 @@ DPRI_PriceEngine.prototype = Object.assign(new AbstractAjaxProcessor(), {
                 dosage_form:     gr.form.toString(),       // Output as dosage_form for frontend
                 route:           'oral', // Default since route field doesn't exist
                 dpri_price:      dpriPrice,
+                dpri_lowest:     lowest,
+                dpri_median:     median,
+                dpri_highest:    highest,
                 hospital_avg:    hospitalAvg,
                 savings_percent: savingsPct,
                 category:        gr.category.getDisplayValue(),
@@ -69,6 +75,9 @@ DPRI_PriceEngine.prototype = Object.assign(new AbstractAjaxProcessor(), {
             dosage_form:     gr.form.toString(),
             route:           'oral',
             dpri_price:      parseFloat(gr.dpri_price.toString()),
+            dpri_lowest:     parseFloat(gr.dpri_lowest_price.toString()) || parseFloat(gr.dpri_price.toString()) || 0,
+            dpri_median:     parseFloat(gr.dpri_median_price.toString()) || parseFloat(gr.dpri_price.toString()) || 0,
+            dpri_highest:    parseFloat(gr.dpri_highest_price.toString()) || parseFloat(gr.dpri_price.toString()) || 0,
             hospital_avg:    parseFloat(gr.hospital_avg_price.toString()),
             savings_percent: parseInt(gr.savings_percentage.toString()),
             category:        gr.category.getDisplayValue(),
@@ -161,6 +170,9 @@ DPRI_PriceEngine.prototype = Object.assign(new AbstractAjaxProcessor(), {
 
         while (gr.next()) {
             var dpriPrice = parseFloat(gr.dpri_price.toString()) || 0;
+            var lowest = parseFloat(gr.dpri_lowest_price.toString()) || dpriPrice;
+            var median = parseFloat(gr.dpri_median_price.toString()) || dpriPrice;
+            var highest = parseFloat(gr.dpri_highest_price.toString()) || dpriPrice;
             var hospitalAvg = parseFloat(gr.hospital_avg_price.toString()) || 0;
             var savingsPct = parseInt(gr.savings_percentage.toString()) || 0;
 
@@ -172,6 +184,9 @@ DPRI_PriceEngine.prototype = Object.assign(new AbstractAjaxProcessor(), {
                 dosage_form:     gr.form.toString(),
                 route:           'oral',
                 dpri_price:      dpriPrice,
+                dpri_lowest:     lowest,
+                dpri_median:     median,
+                dpri_highest:    highest,
                 hospital_avg:    hospitalAvg,
                 savings_percent: savingsPct,
                 category:        gr.category.getDisplayValue(),
@@ -182,6 +197,40 @@ DPRI_PriceEngine.prototype = Object.assign(new AbstractAjaxProcessor(), {
         }
 
         return JSON.stringify(results);
+    },
+
+    /**
+     * Return facility-level acquisition rows for a selected drug.
+     * Params: sysparm_drug_id, sysparm_limit (optional)
+     */
+    getDrugFacilityPrices: function() {
+        var drugId = this.getParameter('sysparm_drug_id') || '';
+        var limit = parseInt(this.getParameter('sysparm_limit')) || 20;
+        if (!drugId) return JSON.stringify([]);
+
+        var rows = [];
+        var gr = new GlideRecord('x_1966129_transpar_drug_facility_price');
+        gr.addQuery('medicine', drugId);
+        gr.orderBy('acquisition_price');
+        gr.setLimit(limit);
+        gr.query();
+
+        while (gr.next()) {
+            rows.push({
+                sys_id: gr.sys_id.toString(),
+                facility_name: gr.facility_name.toString(),
+                acquisition: parseFloat(gr.acquisition_price.toString()) || 0,
+                quantity: parseInt(gr.quantity.toString()) || 0,
+                brand: gr.brand.toString(),
+                manufacturer: gr.manufacturer.toString(),
+                supplier: gr.supplier.toString(),
+                pharmacy_id: gr.pharmacy.toString(),
+                pharmacy_name: gr.pharmacy.getDisplayValue(),
+                source_ref: gr.source_ref.toString()
+            });
+        }
+
+        return JSON.stringify(rows);
     },
 
     /**

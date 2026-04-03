@@ -29,6 +29,7 @@ app.controller('SearchController', function($scope, $timeout) {
         maxPrice: 1000,
         genericOnly: false
     };
+    var activeRequestId = 0;
 
     // Load categories
     function loadCategories() {
@@ -47,16 +48,26 @@ app.controller('SearchController', function($scope, $timeout) {
 
     // Search function
     $scope.performSearch = function() {
-        if (!$scope.searchQuery || $scope.searchQuery.length < 2) return;
+        if (!$scope.searchQuery || $scope.searchQuery.length < 2) {
+            $scope.results = [];
+            $scope.showClinicalTip = false;
+            $scope.isLoading = false;
+            return;
+        }
         
+        activeRequestId += 1;
+        var requestId = activeRequestId;
         $scope.isLoading = true;
+        $scope.showClinicalTip = false;
         var ga = new GlideAjax('DPRI_PriceEngine');
         ga.addParam('sysparm_name', 'searchDrug');
         ga.addParam('sysparm_query', $scope.searchQuery);
         ga.getXMLAnswer(function(resp) {
+            if (requestId !== activeRequestId) return;
             $scope.$apply(function() {
                 try {
-                    $scope.results = JSON.parse(resp);
+                    var parsed = JSON.parse(resp);
+                    $scope.results = Array.isArray(parsed) ? parsed : [];
                     $scope.isLoading = false;
                     $scope.showClinicalTip = $scope.results.length > 2;
                     
@@ -69,10 +80,18 @@ app.controller('SearchController', function($scope, $timeout) {
                     
                 } catch(e) {
                     console.error('Search error:', e);
+                    $scope.results = [];
+                    $scope.showClinicalTip = false;
                     $scope.isLoading = false;
                 }
             });
         });
+
+        $timeout(function() {
+            if (requestId === activeRequestId && $scope.isLoading) {
+                $scope.isLoading = false;
+            }
+        }, 10000);
     };
 
     // Debounced search on input change

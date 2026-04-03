@@ -39,6 +39,15 @@ export const x_1966129_transpar_medicine = Table({
             label: 'DPRI Fair Price (₱)', 
             mandatory: true 
         }),
+        dpri_lowest_price: DecimalColumn({
+            label: 'DPRI Lowest Price (₱)'
+        }),
+        dpri_median_price: DecimalColumn({
+            label: 'DPRI Median Price (₱)'
+        }),
+        dpri_highest_price: DecimalColumn({
+            label: 'DPRI Highest Price (₱)'
+        }),
         hospital_avg_price: DecimalColumn({ 
             label: 'Hospital Average Price (₱)' 
         }),
