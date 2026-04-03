@@ -1,16 +1,13 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
-<!DOCTYPE html>
-<html ng-app="TransparenSeeProfileApp">
-<head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&amp;family=DM+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
-  <link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&amp;display=swap" rel="stylesheet"/>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
-  <title>Profile - TransparenSee</title>
-
-  <style>
-    :root {
+  <html ng-app="TransparenSeeProfileApp">
+    <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
+      <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&amp;family=DM+Mono:wght@400;500&amp;display=swap" rel="stylesheet"></link>
+      <link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&amp;display=swap" rel="stylesheet"></link>
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+      <title>Profile - TransparenSee</title>
+      <style>:root {
       --ts-teal: #009688;
       --ts-teal-deep: #007A72;
       --ts-teal-light: #E0F2F1;
@@ -225,85 +222,91 @@
       .ts-profile-grid { grid-template-columns: 1fr; }
       .ts-settings { grid-template-columns: 1fr; }
       .ts-profile-head { flex-direction: column; align-items: flex-start; }
-    }
-  </style>
-</head>
-<body ng-controller="ProfileController">
-
-  <nav class="ts-navbar">
-    <div class="ts-navbar-inner">
-      <div class="ts-logo">
-        <svg class="ts-logo-mark" viewBox="0 0 760 140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="TransparenSee logo">
-          <title>TransparenSee</title>
-          <path d="M22 70C45 41 80 23 130 23C180 23 215 41 238 70C215 99 180 117 130 117C80 117 45 99 22 70Z" fill="none" stroke="#008080" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
-          <circle cx="130" cy="70" r="36" fill="#E0F2F1" stroke="#008080" stroke-width="10"/>
-          <rect x="112" y="43" width="36" height="54" rx="18" fill="#008080"/>
-          <rect x="130" y="43" width="18" height="54" rx="9" fill="#81b5a1"/>
-          <path d="M130 70L148 70" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round"/>
-          <text x="272" y="82" font-family="'Plus Jakarta Sans', sans-serif" font-size="46" font-weight="700" fill="#003366">TransparenSee</text>
-        </svg>
-      </div>
-      <ul class="ts-nav-links">
-        <li><a href="/x_1966129_transpar_home.do">Home</a></li>
-        <li><a href="/x_1966129_transpar_search.do">Search</a></li>
-        <li><a href="/x_1966129_transpar_map.do">Map</a></li>
-        <li><a href="/x_1966129_transpar_profile.do" class="active">Profile</a></li>
-      </ul>
-    </div>
-  </nav>
-
-  <main class="ts-profile-wrap">
-    <section class="ts-profile-card">
-      <div class="ts-profile-head">
-        <div class="ts-profile-identity">
-          <div class="ts-avatar" ng-bind="profile.initials"></div>
-          <div>
-            <h1 class="ts-profile-name" ng-bind="profile.name"></h1>
-            <p class="ts-profile-meta">Session ID: <span ng-bind="profile.session"></span></p>
+    }</style>
+    </head>
+    <body ng-controller="ProfileController">
+      <nav class="ts-navbar">
+        <div class="ts-navbar-inner">
+          <div class="ts-logo">
+            <svg class="ts-logo-mark" viewBox="0 0 760 140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="TransparenSee logo">
+              <title>TransparenSee</title>
+              <path d="M22 70C45 41 80 23 130 23C180 23 215 41 238 70C215 99 180 117 130 117C80 117 45 99 22 70Z" fill="none" stroke="#008080" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"></path>
+              <circle cx="130" cy="70" r="36" fill="#E0F2F1" stroke="#008080" stroke-width="10"></circle>
+              <rect x="112" y="43" width="36" height="54" rx="18" fill="#008080"></rect>
+              <rect x="130" y="43" width="18" height="54" rx="9" fill="#81b5a1"></rect>
+              <path d="M130 70L148 70" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round"></path>
+              <text x="272" y="82" font-family="'Plus Jakarta Sans', sans-serif" font-size="46" font-weight="700" fill="#003366">TransparenSee</text>
+            </svg>
           </div>
+          <ul class="ts-nav-links">
+            <li>
+              <a href="/x_1966129_transpar_home.do">Home</a>
+            </li>
+            <li>
+              <a href="/x_1966129_transpar_search.do">Search</a>
+            </li>
+            <li>
+              <a href="/x_1966129_transpar_map.do">Map</a>
+            </li>
+            <li>
+              <a href="/x_1966129_transpar_profile.do" class="active">Profile</a>
+            </li>
+          </ul>
         </div>
-        <span class="ts-role-pill" ng-bind="profile.role"></span>
-      </div>
-
-      <div class="ts-profile-grid">
-        <div class="ts-stat">
-          <div class="ts-stat-label">Searches This Week</div>
-          <div class="ts-stat-value" ng-bind="stats.searches"></div>
-        </div>
-        <div class="ts-stat">
-          <div class="ts-stat-label">Saved Estimate</div>
-          <div class="ts-stat-value">P <span ng-bind="stats.saved"></span></div>
-        </div>
-        <div class="ts-stat">
-          <div class="ts-stat-label">Reports Generated</div>
-          <div class="ts-stat-value" ng-bind="stats.reports"></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="ts-profile-card">
-      <h2 class="ts-section-title">Preferences</h2>
-      <div class="ts-settings">
-        <div class="ts-setting">
-          <h4>Preferred Search Type</h4>
-          <p ng-bind="settings.searchType"></p>
-        </div>
-        <div class="ts-setting">
-          <h4>Nearest Pharmacy Radius</h4>
-          <p ng-bind="settings.radius"></p>
-        </div>
-        <div class="ts-setting">
-          <h4>Generic Filter Default</h4>
-          <p ng-bind="settings.genericDefault"></p>
-        </div>
-        <div class="ts-setting">
-          <h4>AI Concierge Mode</h4>
-          <p ng-bind="settings.aiMode"></p>
-        </div>
-      </div>
-    </section>
-  </main>
-
-</body>
-</html>
+      </nav>
+      <main class="ts-profile-wrap">
+        <section class="ts-profile-card">
+          <div class="ts-profile-head">
+            <div class="ts-profile-identity">
+              <div class="ts-avatar" ng-bind="profile.initials"></div>
+              <div>
+                <h1 class="ts-profile-name" ng-bind="profile.name"></h1>
+                <p class="ts-profile-meta">Session ID:
+                  <span ng-bind="profile.session"></span>
+                </p>
+              </div>
+            </div>
+            <span class="ts-role-pill" ng-bind="profile.role"></span>
+          </div>
+          <div class="ts-profile-grid">
+            <div class="ts-stat">
+              <div class="ts-stat-label">Searches This Week</div>
+              <div class="ts-stat-value" ng-bind="stats.searches"></div>
+            </div>
+            <div class="ts-stat">
+              <div class="ts-stat-label">Saved Estimate</div>
+              <div class="ts-stat-value">P
+                <span ng-bind="stats.saved"></span>
+              </div>
+            </div>
+            <div class="ts-stat">
+              <div class="ts-stat-label">Reports Generated</div>
+              <div class="ts-stat-value" ng-bind="stats.reports"></div>
+            </div>
+          </div>
+        </section>
+        <section class="ts-profile-card">
+          <h2 class="ts-section-title">Preferences</h2>
+          <div class="ts-settings">
+            <div class="ts-setting">
+              <h4>Preferred Search Type</h4>
+              <p ng-bind="settings.searchType"></p>
+            </div>
+            <div class="ts-setting">
+              <h4>Nearest Pharmacy Radius</h4>
+              <p ng-bind="settings.radius"></p>
+            </div>
+            <div class="ts-setting">
+              <h4>Generic Filter Default</h4>
+              <p ng-bind="settings.genericDefault"></p>
+            </div>
+            <div class="ts-setting">
+              <h4>AI Concierge Mode</h4>
+              <p ng-bind="settings.aiMode"></p>
+            </div>
+          </div>
+        </section>
+      </main>
+    </body>
+  </html>
 </j:jelly>

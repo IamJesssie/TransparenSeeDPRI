@@ -7,6 +7,9 @@ app.filter('titleCase', function() {
 });
 
 app.controller('MapController', function($scope, $timeout) {
+    var hasGlideAjax = typeof window.GlideAjax === 'function';
+    var hasLeaflet = typeof window.L !== 'undefined';
+
     // State
     $scope.pharmacies = [];
     $scope.selectedPharmacy = {};
@@ -24,6 +27,11 @@ app.controller('MapController', function($scope, $timeout) {
 
     // Initialize map
     function initMap() {
+        if (!hasLeaflet) {
+            console.error('Leaflet not available on map page');
+            return;
+        }
+
         // Default to Cebu City center
         var cebuCenter = [10.3157, 123.8854];
         
@@ -54,6 +62,12 @@ app.controller('MapController', function($scope, $timeout) {
     // Load pharmacies
     function loadPharmacies() {
         $scope.loadingPharmacies = true;
+
+        if (!hasGlideAjax) {
+            loadSamplePharmacies();
+            $scope.loadingPharmacies = false;
+            return;
+        }
         
         var lat = $scope.userLocation ? $scope.userLocation.lat : 10.3157;
         var lng = $scope.userLocation ? $scope.userLocation.lng : 123.8854;
@@ -144,6 +158,8 @@ app.controller('MapController', function($scope, $timeout) {
 
     // Add pharmacy markers to map
     function addPharmacyMarkers() {
+        if (!hasLeaflet || !map) return;
+
         // Clear existing markers
         Object.values(markers).forEach(function(marker) {
             map.removeLayer(marker);
@@ -270,7 +286,7 @@ app.controller('MapController', function($scope, $timeout) {
     $scope.toggleSidebar = function() {
         $scope.sidebarCollapsed = !$scope.sidebarCollapsed;
         $timeout(function() {
-            map.invalidateSize();
+            if (hasLeaflet && map) map.invalidateSize();
         }, 300);
     };
 
@@ -284,12 +300,14 @@ app.controller('MapController', function($scope, $timeout) {
     };
 
     $scope.centerOnUser = function() {
+        if (!hasLeaflet || !map) return;
         if ($scope.userLocation) {
             map.setView([$scope.userLocation.lat, $scope.userLocation.lng], 15);
         }
     };
 
     $scope.showAllPharmacies = function() {
+        if (!hasLeaflet || !map) return;
         if ($scope.pharmacies.length > 0) {
             var group = new L.featureGroup(Object.values(markers));
             if (userMarker) group.addLayer(userMarker);
