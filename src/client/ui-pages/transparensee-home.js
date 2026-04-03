@@ -1,19 +1,25 @@
-var app = angular.module('TransparenSeeApp', []);
+function bootstrapHomeController() {
+    if (typeof angular === 'undefined') {
+        if (typeof addLoadEvent === 'function') {
+            addLoadEvent(function() {
+                bootstrapHomeController();
+            });
+        }
+        return;
+    }
 
-app.controller('HomeController', function($scope, $timeout, $window, $document) {
+    var app = angular.module('TransparenSeeApp', []);
+
+    app.controller('HomeController', function($scope, $timeout, $window, $document) {
+    var hasGlideAjax = false;
+
     $scope.searchQuery   = '';
     $scope.suggestions   = [];
     $scope.searchState   = 'idle';
     $scope.showSuggestions = false;
     $scope.searchFocused = false;
-    $scope.popularTerms  = ['Paracetamol', 'Metformin', 'Amoxicillin', 'Amlodipine', 'Atorvastatin'];
-    $scope.recentSearches = [
-        { search_term: 'Amoxicillin', time_ago: 'Mar 28, 2025 · 2:30 PM' },
-        { search_term: 'Paracetamol', time_ago: 'Mar 27, 2025 · 11:15 AM' },
-        { search_term: 'Metformin', time_ago: 'Mar 25, 2025 · 9:00 AM' },
-        { search_term: 'Amlodipine', time_ago: 'Mar 22, 2025 · 3:45 PM' },
-        { search_term: 'Cetirizine', time_ago: 'Mar 20, 2025 · 7:20 PM' }
-    ];
+    $scope.popularTerms  = ['Paracetamol', 'Metformin', 'Amoxicillin', 'Amlodipine'];
+    $scope.recentSearches = [];
     $scope.savingsItems = [
         { name: 'Metformin 500mg', save: 'save P13.25/tablet' },
         { name: 'Atorvastatin 20mg', save: 'save P26.50/tablet' },
@@ -27,15 +33,191 @@ app.controller('HomeController', function($scope, $timeout, $window, $document) 
         countupDone: false,
         revealReady: false
     };
+    var fallbackSuggestions = [
+        { sys_id: 'demo-1', generic_name: 'Paracetamol', dosage_strength: '500mg', dpri_price: 8.5, category: 'Analgesic/Fever' },
+        { sys_id: 'demo-2', generic_name: 'Amoxicillin', dosage_strength: '500mg', dpri_price: 1.87, category: 'Antibiotic' },
+        { sys_id: 'demo-3', generic_name: 'Metformin', dosage_strength: '500mg', dpri_price: 0.54, category: 'Antidiabetic' },
+        { sys_id: 'demo-4', generic_name: 'Amlodipine', dosage_strength: '5mg', dpri_price: 0.33, category: 'Antihypertensive' },
+        { sys_id: 'demo-5', generic_name: 'Cetirizine', dosage_strength: '10mg', dpri_price: 0.39, category: 'Antihistamine' },
+        { sys_id: 'demo-6', generic_name: 'Salbutamol', dosage_strength: '2mg/5mL', dpri_price: 4.61, category: 'Bronchodilator' }
+    ];
 
     var searchTimeout = null;
+    var recentTicker = null;
     var doc = $document && $document[0] ? $document[0] : null;
     var win = $window || null;
+    hasGlideAjax = !!(win && typeof win.GlideAjax === 'function');
+    var medicineTableApi = '/api/now/table/x_1966129_transpar_medicine';
+    var pharmacyTableApi = '/api/now/table/x_1966129_transpar_pharmacy';
+    var searchLogTableApi = '/api/now/table/x_1966129_transpar_search_log';
 
     function parseToNumber(value) {
         if (value === undefined || value === null) return 0;
-        var digits = String(value).replace(/[^\d]/g, '');
-        return digits ? parseInt(digits, 10) : 0;
+        if (typeof value === 'number') return isFinite(value) ? Math.max(0, Math.floor(value)) : 0;
+
+        if (typeof value === 'object') {
+            if (typeof value.value !== 'undefined' && value.value !== null && value.value !== '') return parseToNumber(value.value);
+            if (typeof value.display_value !== 'undefined' && value.display_value !== null && value.display_value !== '') return parseToNumber(value.display_value);
+            return 0;
+        }
+
+        var text = String(value).trim();
+        if (!text) return 0;
+        var normalized = text.replace(/,/g, '');
+        if (!/^-?\d+(\.\d+)?$/.test(normalized)) return 0;
+        var num = Number(normalized);
+        if (!isFinite(num)) return 0;
+        return Math.max(0, Math.floor(num));
+    }
+
+    function parseServiceNowDate(dateLike) {
+        if (!dateLike) return null;
+        var text = String(dateLike).trim();
+        if (!text) return null;
+
+        var ms = Date.parse(text);
+        if (!isNaN(ms)) return new Date(ms);
+
+        var m = text.match(/^(\d{4})-(\d{2})-(\d{2})\s(\d{2}):(\d{2}):(\d{2})$/);
+        if (!m) return null;
+        return new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]), Number(m[4]), Number(m[5]), Number(m[6]));
+    }
+
+    function formatRecentTimeAgo(ts) {
+        if (!ts) return 'Just now';
+        var seconds = Math.floor((Date.now() - ts) / 1000);
+        if (seconds < 15) return 'Just now';
+        if (seconds < 60) return seconds + 's ago';
+        var minutes = Math.floor(seconds / 60);
+        if (minutes < 60) return minutes + 'm ago';
+        var hours = Math.floor(minutes / 60);
+        if (hours < 24) return hours + 'h ago';
+        var days = Math.floor(hours / 24);
+        if (days < 7) return days + 'd ago';
+        return new Date(ts).toLocaleDateString('en-PH', { month: 'short', day: '2-digit', year: 'numeric' });
+    }
+
+    function refreshRecentTimeAgo() {
+        if (!$scope.recentSearches || !$scope.recentSearches.length) return;
+        $scope.recentSearches.forEach(function(item) {
+            if (item && item._ts) {
+                item.time_ago = formatRecentTimeAgo(item._ts);
+            }
+        });
+    }
+
+    function startRecentTicker() {
+        if (recentTicker) $timeout.cancel(recentTicker);
+        var tick = function() {
+            refreshRecentTimeAgo();
+            recentTicker = $timeout(tick, 60000, false);
+        };
+        tick();
+    }
+
+    function getFieldValue(v) {
+        if (v && typeof v === 'object') {
+            if (typeof v.display_value !== 'undefined' && v.display_value !== null && v.display_value !== '') return String(v.display_value);
+            if (typeof v.value !== 'undefined' && v.value !== null && v.value !== '') return String(v.value);
+            return '';
+        }
+        return v ? String(v) : '';
+    }
+
+    function restGetJson(url, cb) {
+        fetch(url, {
+            method: 'GET',
+            headers: { Accept: 'application/json' },
+            credentials: 'same-origin'
+        })
+            .then(function(resp) {
+                if (!resp.ok) throw new Error('HTTP ' + resp.status);
+                return resp.json();
+            })
+            .then(function(data) { cb(null, data); })
+            .catch(function(err) { cb(err); });
+    }
+
+    function restCount(url, cb) {
+        fetch(url, {
+            method: 'GET',
+            headers: { Accept: 'application/json' },
+            credentials: 'same-origin'
+        })
+            .then(function(resp) {
+                if (!resp.ok) throw new Error('HTTP ' + resp.status);
+                var count = parseInt(resp.headers.get('x-total-count'), 10);
+                cb(null, isNaN(count) ? 0 : count);
+            })
+            .catch(function(err) { cb(err, 0); });
+    }
+
+    function loadRecentSearches() {
+        if (!hasGlideAjax) {
+            var recentUrl = searchLogTableApi + '?sysparm_fields=search_term,searched_at,search_timestamp,sys_created_on&sysparm_query=' + encodeURIComponent('ORDERBYDESCsys_created_on') + '&sysparm_display_value=all&sysparm_limit=5';
+            restGetJson(recentUrl, function(err, data) {
+                $scope.$apply(function() {
+                    if (err) {
+                        $scope.recentSearches = [];
+                        return;
+                    }
+                    var rows = (data && data.result) ? data.result : [];
+                    $scope.recentSearches = rows
+                        .filter(function(item) { return getFieldValue(item.search_term); })
+                        .map(function(item) {
+                            var when = getFieldValue(item.searched_at) || getFieldValue(item.search_timestamp) || getFieldValue(item.sys_created_on);
+                            var parsed = parseServiceNowDate(when);
+                            return {
+                                search_term: getFieldValue(item.search_term),
+                                _ts: parsed ? parsed.getTime() : Date.now(),
+                                time_ago: formatRecentTimeAgo(parsed ? parsed.getTime() : Date.now())
+                            };
+                        });
+                    startRecentTicker();
+                });
+            });
+            return;
+        }
+
+        var ga = new GlideAjax('DPRI_PriceEngine');
+        ga.addParam('sysparm_name', 'getRecentSearches');
+        ga.addParam('sysparm_limit', '5');
+        ga.getXMLAnswer(function(resp) {
+            $scope.$apply(function() {
+                try {
+                    var parsed = JSON.parse(resp);
+                    var rows = Array.isArray(parsed) ? parsed : [];
+                    $scope.recentSearches = rows.map(function(item) {
+                        var ts = parseInt(item.searched_at_ms, 10);
+                        if (!ts || isNaN(ts)) {
+                            var parsedDate = parseServiceNowDate(item.searched_at);
+                            ts = parsedDate ? parsedDate.getTime() : Date.now();
+                        }
+                        return {
+                            search_term: item.search_term,
+                            _ts: ts,
+                            time_ago: formatRecentTimeAgo(ts)
+                        };
+                    });
+                    startRecentTicker();
+                } catch (e) {
+                    $scope.recentSearches = [];
+                }
+            });
+        });
+    }
+
+    function setStatsFromData(data) {
+        var drugCount = parseToNumber(data.totalDrugs || data.total_drugs || data.drug_count || data.total_medicines);
+        var pharmacyCount = parseToNumber(data.totalPharmacies || data.total_pharmacies || data.pharmacy_count);
+
+        if (!drugCount) drugCount = 2847;
+        if (!pharmacyCount) pharmacyCount = 1234;
+
+        $scope.stats = {
+            totalDrugs: formatInt(drugCount),
+            totalPharmacies: formatInt(pharmacyCount)
+        };
     }
 
     function formatInt(value) {
@@ -155,6 +337,16 @@ app.controller('HomeController', function($scope, $timeout, $window, $document) 
         }
         $scope.searchState = 'loading';
         searchTimeout = $timeout(function() {
+            if (!hasGlideAjax) {
+                var q = ($scope.searchQuery || '').toLowerCase();
+                $scope.suggestions = fallbackSuggestions.filter(function(drug) {
+                    return drug.generic_name.toLowerCase().indexOf(q) !== -1;
+                }).slice(0, 6);
+                $scope.searchState = $scope.suggestions.length ? 'ready' : 'empty';
+                $scope.showSuggestions = $scope.suggestions.length > 0;
+                return;
+            }
+
             var ga = new GlideAjax('DPRI_PriceEngine');
             ga.addParam('sysparm_name', 'searchDrug');
             ga.addParam('sysparm_query', $scope.searchQuery);
@@ -188,6 +380,11 @@ app.controller('HomeController', function($scope, $timeout, $window, $document) 
     $scope.selectSuggestion = function(drug) {
         if (!drug || !drug.generic_name || !drug.sys_id) return;
 
+        if (!hasGlideAjax || String(drug.sys_id).indexOf('demo-') === 0) {
+            $window.location.href = '/x_1966129_transpar_search.do?q=' + encodeURIComponent(drug.generic_name);
+            return;
+        }
+
         // Log the search
         var ga = new GlideAjax('DPRI_PriceEngine');
         ga.addParam('sysparm_name', 'logSearch');
@@ -195,6 +392,7 @@ app.controller('HomeController', function($scope, $timeout, $window, $document) 
         ga.addParam('sysparm_count', 1);
         ga.addParam('sysparm_drug_id', drug.sys_id);
         ga.getXMLAnswer(function(resp) {
+            loadRecentSearches();
             // Navigate to detail page
             $window.location.href = '/x_1966129_transpar_detail.do?id=' + drug.sys_id;
         });
@@ -212,21 +410,38 @@ app.controller('HomeController', function($scope, $timeout, $window, $document) 
 
     // Load stats on page init
     (function loadStats() {
+        if (!hasGlideAjax) {
+            var medCountUrl = medicineTableApi + '?sysparm_query=' + encodeURIComponent('active=active') + '&sysparm_fields=sys_id&sysparm_limit=1&sysparm_count=true';
+            var pharmacyCountUrl = pharmacyTableApi + '?sysparm_query=' + encodeURIComponent('is_active=true^accreditation_status=approved') + '&sysparm_fields=sys_id&sysparm_limit=1&sysparm_count=true';
+
+            restCount(medCountUrl, function(errDrug, drugCount) {
+                restCount(pharmacyCountUrl, function(errPharmacy, pharmacyCount) {
+                    $scope.$apply(function() {
+                        if (errDrug || errPharmacy) {
+                            setStatsFromData({ totalDrugs: 2847, totalPharmacies: 1234 });
+                        } else {
+                            setStatsFromData({ totalDrugs: drugCount, totalPharmacies: pharmacyCount });
+                        }
+                    });
+                    $timeout(function() { runCountup(); }, 80, false);
+                });
+            });
+            return;
+        }
+
         var ga = new GlideAjax('DPRI_PriceEngine');
         ga.addParam('sysparm_name', 'getStats');
         ga.getXMLAnswer(function(resp) {
             $scope.$apply(function() {
                 try {
                     var data = JSON.parse(resp);
-                    $scope.stats = {
-                        totalDrugs: data.totalDrugs || data.total_drugs || data.drug_count || '2,847',
-                        totalPharmacies: data.totalPharmacies || data.total_pharmacies || data.pharmacy_count || '1,234'
-                    };
+                    setStatsFromData(data || {});
                     if ($scope.motion.countupDone) {
                         $scope.motion.countupDone = false;
                     }
                 } catch(e) {
                     console.error('Stats loading error:', e);
+                    setStatsFromData({ totalDrugs: 2847, totalPharmacies: 1234 });
                 }
             });
             $timeout(function() {
@@ -235,7 +450,12 @@ app.controller('HomeController', function($scope, $timeout, $window, $document) 
         });
     })();
 
-    $timeout(function() {
-        initMotion();
-    }, 0, false);
-});
+    loadRecentSearches();
+
+        $timeout(function() {
+            initMotion();
+        }, 0, false);
+    });
+}
+
+bootstrapHomeController();

@@ -37,6 +37,10 @@ app.controller('DetailController', function($scope, $timeout) {
                         window.location.href = '/x_1966129_transpar_home.do';
                         return;
                     }
+
+                    if ($scope.drug.category_color) {
+                        $scope.categoryColor = $scope.drug.category_color;
+                    }
                     
                     // Update page title
                     document.title = $scope.drug.generic_name + ' - TransparenSee';
