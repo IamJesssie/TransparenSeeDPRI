@@ -30,5 +30,6 @@ import './ui-pages/transparensee-map.now'
 // Import Sample Data
 import './records/categories.now'
 import './records/medicines.now'
+import './records/medicines-top.now'
 import './records/pharmacies.now'
 import './records/drug-facility-prices.now'
