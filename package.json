@@ -7,14 +7,17 @@
     "build": "now-sdk build",
     "deploy": "now-sdk install",
     "transform": "now-sdk transform",
-    "types": "now-sdk dependencies"
+    "types": "now-sdk dependencies",
+    "build:dpri": "node scripts/build-dpri-datasets.mjs",
+    "build:dpri:seed": "node scripts/build-dpri-fluent-seed.mjs"
   },
   "devDependencies": {
-    "@servicenow/sdk": "4.4.1",
-    "@servicenow/glide": "26.0.1",
-    "eslint": "8.50.0",
     "@servicenow/eslint-plugin-sdk-app-plugin": "4.4.1",
-    "@servicenow/isomorphic-rollup": "^1.2.3"
+    "@servicenow/glide": "26.0.1",
+    "@servicenow/isomorphic-rollup": "^1.2.3",
+    "@servicenow/sdk": "4.4.1",
+    "eslint": "8.50.0",
+    "xlsx": "^0.18.5"
   },
   "dependencies": {
     "react": "19.x",
