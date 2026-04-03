@@ -299,7 +299,7 @@ Validated snapshot (as of 2026-04-04): Home and Search flows are working and tes
 
 | Requirement | Component | Status |
 |---|---|---|
-| ⬜ Scoped Application | `x_snc_transparensee` | 🔧 In Progress |
+| ✅ Scoped Application | `x_1966129_transpar` | ✅ Done |
 | ⬜ Stored in Update Set | TransparenSee v1.0 Update Set | 🔧 In Progress |
 | ✅ Client Scripts | Live search autocomplete | ✅ Done |
 | ⬜ Business Rules | Price validation + savings calc | 🔧 In Progress |
@@ -310,8 +310,8 @@ Validated snapshot (as of 2026-04-04): Home and Search flows are working and tes
 | ⬜ Integration Hub (API) | Gemini AI Concierge spoke | 🔧 In Progress |
 | ⬜ Flow Designer | Search → AI → Log → Notify | 🔧 In Progress |
 | ⬜ Service Portal | `/transparensee` portal | 🔧 In Progress |
-| ⬜ User Criteria & Roles | `dpri_patient` + `dpri_admin` | 🔧 In Progress |
-| ✅ AI Integration | Gemini pharmacist counsel | ✅ Done |
+| ✅ User Criteria & Roles | `dpri_patient` + `dpri_admin` | ✅ Done |
+| ⬜ AI Integration | Gemini pharmacist counsel | 🔧 In Progress |
 
 ---
 
@@ -338,38 +338,60 @@ Validated snapshot (as of 2026-04-04): Home and Search flows are working and tes
 
 ```
 TransparenSeeDPRI/
-├── src/
-│   ├── script_includes/
-│   │   ├── DPRI_PriceEngine.js           → Drug search API
-│   │   ├── PharmacyLocator.js            → Haversine geolocation
-│   │   └── AI_Concierge.js               → Gemini integration
-│   ├── ui_pages/
-│   │   ├── transparensee_home.*          → Home page (HTML + JS)
-│   │   ├── transparensee_search.*        → Search results
-│   │   ├── transparensee_detail.*        → Drug detail + AI panel
-│   │   ├── transparensee_map.*           → Pharmacy map
-│   │   └── transparensee_report.*        → Printable report
-│   ├── business_rules/
-│   │   ├── ts_calculate_savings.js
-│   │   ├── ts_flag_overprice.js
-│   │   └── ts_pharmacy_approval_notify.js
-│   ├── ui_actions/
-│   │   ├── ts_generate_price_report.js
-│   │   ├── ts_find_pharmacies.js
-│   │   └── ts_approve_pharmacy.js
-│   └── style_sheets/
-│       └── transparensee_theme.css
-├── data/
-│   └── dpri_2025_sample.csv             → 30-drug import dataset
-├── scripts/
-│   └── seed_cebu_pharmacies.js          → Background script for pharmacy data
+├── now.config.json
+├── now.prebuild.mjs
+├── package.json
 ├── docs/
-│   ├── TransparenSee_Design_System.md   → Full UI/UX design spec
-│   ├── architecture_diagram.png         → System architecture visual
-│   └── process_flow_diagram.png         → Hackathon process flow
-├── assets/
-│   └── logo.png                         → TransparenSee brand logo
-└── README.md
+│   ├── assets/
+│   │   └── TransparenSee_Design_System.md
+│   ├── checklist/
+│   └── references/
+├── src/
+│   ├── assets
+│   ├── client/
+│   │   ├── app.css
+│   │   ├── app.jsx
+│   │   ├── index.html
+│   │   ├── main.jsx
+│   │   ├── css/
+│   │   └── ui-pages/
+│   │       ├── transparensee-home.html / transparensee-home.js
+│   │       ├── transparensee-search.html / transparensee-search.js
+│   │       ├── transparensee-detail.html / transparensee-detail.js
+│   │       ├── transparensee-map.html / transparensee-map.js
+│   │       └── transparensee-profile.html / transparensee-profile.js
+│   ├── server/
+│   │   ├── business-rules/
+│   │   │   └── calculate-savings.js
+│   │   └── script-includes/
+│   │       ├── dpri-price-engine.js
+│   │       ├── pharmacy-locator.js
+│   │       └── ai-concierge.js
+│   └── fluent/
+│       ├── index.now.ts
+│       ├── acls/
+│       │   └── table-security.now.ts
+│       ├── business-rules/
+│       │   └── calculate-savings.now.ts
+│       ├── roles/
+│       │   └── dpri-roles.now.ts
+│       ├── script-includes/
+│       │   ├── dpri-price-engine.now.ts
+│       │   ├── pharmacy-locator.now.ts
+│       │   └── ai-concierge.now.ts
+│       ├── tables/
+│       │   ├── medicine.now.ts
+│       │   ├── pharmacy.now.ts
+│       │   ├── category.now.ts
+│       │   ├── search-log.now.ts
+│       │   └── drug-facility-price.now.ts
+│       └── records/
+│           ├── medicines.now.ts
+│           ├── medicines-top.now.ts
+│           ├── categories.now.ts
+│           ├── pharmacies.now.ts
+│           └── drug-facility-prices.now.ts
+└── target/
 ```
 
 ---
