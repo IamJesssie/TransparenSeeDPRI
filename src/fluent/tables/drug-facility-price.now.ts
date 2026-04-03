@@ -9,45 +9,63 @@ export const x_1966129_transpar_drug_facility_price = Table({
         medicine: ReferenceColumn({
             label: 'Medicine',
             referenceTable: 'x_1966129_transpar_medicine',
-            mandatory: true
+            mandatory: true,
+            attributes: {
+                encode_utf8: false,
+            },
         }),
         pharmacy: ReferenceColumn({
             label: 'Pharmacy',
-            referenceTable: 'x_1966129_transpar_pharmacy'
+            referenceTable: 'x_1966129_transpar_pharmacy',
+            attributes: {
+                encode_utf8: false,
+            },
         }),
         facility_name: StringColumn({
             label: 'Facility Name',
             maxLength: 250,
-            mandatory: true
+            mandatory: true,
         }),
         acquisition_price: DecimalColumn({
             label: 'Acquisition Price (P)',
-            mandatory: true
+            mandatory: true,
         }),
         quantity: IntegerColumn({
-            label: 'Quantity'
+            label: 'Quantity',
         }),
         brand: StringColumn({
             label: 'Brand',
-            maxLength: 120
+            maxLength: 120,
         }),
         manufacturer: StringColumn({
             label: 'Manufacturer',
-            maxLength: 200
+            maxLength: 200,
         }),
         supplier: StringColumn({
             label: 'Supplier',
-            maxLength: 200
+            maxLength: 200,
         }),
         source_ref: StringColumn({
             label: 'Source Reference',
-            maxLength: 100
-        })
+            maxLength: 100,
+        }),
     },
     display: 'facility_name',
     extensible: false,
-    accessible_from: 'public',
-    actions: ['create', 'read', 'update', 'delete'],
-    allow_web_service_access: true,
-    text_index: true
+    accessibleFrom: 'public',
+    actions: ['read', 'update', 'delete', 'create'],
+    allowWebServiceAccess: true,
+    textIndex: true,
+    index: [
+        {
+            name: 'index',
+            unique: false,
+            element: 'medicine',
+        },
+        {
+            name: 'index2',
+            unique: false,
+            element: 'pharmacy',
+        },
+    ],
 })

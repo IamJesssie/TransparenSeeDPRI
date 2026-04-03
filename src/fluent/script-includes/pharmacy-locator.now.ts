@@ -7,4 +7,8 @@ ScriptInclude({
     description: 'Geolocation service for finding nearest pharmacies using Haversine formula',
     clientCallable: true,
     script: Now.include('./../../server/script-includes/pharmacy-locator.js'),
+    apiName: 'x_1966129_transpar.PharmacyLocator',
+    mobileCallable: false,
+    sandboxCallable: false,
+    active: true,
 })

@@ -7,4 +7,8 @@ ScriptInclude({
     description: 'Drug search and price comparison engine for DPRI data',
     clientCallable: true,
     script: Now.include('./../../server/script-includes/dpri-price-engine.js'),
+    apiName: 'x_1966129_transpar.DPRI_PriceEngine',
+    mobileCallable: false,
+    sandboxCallable: false,
+    active: true,
 })

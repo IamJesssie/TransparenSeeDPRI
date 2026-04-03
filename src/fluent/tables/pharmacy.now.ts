@@ -6,10 +6,10 @@ export const x_1966129_transpar_pharmacy = Table({
     name: 'x_1966129_transpar_pharmacy',
     label: 'Pharmacy Location',
     schema: {
-        name: StringColumn({ 
-            label: 'Pharmacy Name', 
+        name: StringColumn({
+            label: 'Pharmacy Name',
             maxLength: 200,
-            mandatory: true 
+            mandatory: true,
         }),
         chain: StringColumn({
             label: 'Pharmacy Chain',
@@ -20,61 +20,63 @@ export const x_1966129_transpar_pharmacy = Table({
                 southstar: { label: 'SouthStar Drug', sequence: 3 },
                 watsons: { label: 'Watsons', sequence: 4 },
                 generic_plus: { label: 'The Generics Pharmacy', sequence: 5 },
-                other: { label: 'Other', sequence: 6 }
+                other: { label: 'Other', sequence: 6 },
             },
-            default: 'other'
+            default: 'other',
+            dropdown: 'dropdown_with_none',
         }),
-        address: StringColumn({ 
-            label: 'Address', 
+        address: StringColumn({
+            label: 'Address',
             maxLength: 500,
-            mandatory: true 
+            mandatory: true,
         }),
-        city: StringColumn({ 
-            label: 'City', 
+        city: StringColumn({
+            label: 'City',
             maxLength: 100,
-            mandatory: true 
+            mandatory: true,
         }),
-        latitude: DecimalColumn({ 
+        latitude: DecimalColumn({
             label: 'Latitude',
-            mandatory: true 
+            mandatory: true,
         }),
-        longitude: DecimalColumn({ 
+        longitude: DecimalColumn({
             label: 'Longitude',
-            mandatory: true 
+            mandatory: true,
         }),
-        phone: StringColumn({ 
-            label: 'Phone Number', 
-            maxLength: 50 
+        phone: StringColumn({
+            label: 'Phone Number',
+            maxLength: 50,
         }),
-        is_accredited: BooleanColumn({ 
+        is_accredited: BooleanColumn({
             label: 'DOH Accredited',
-            default: 'false' 
+            default: false,
         }),
         accreditation_status: StringColumn({
             label: 'Accreditation Status',
             choices: {
                 pending: { label: 'Pending Approval', sequence: 0 },
                 approved: { label: 'Approved', sequence: 1 },
-                rejected: { label: 'Rejected', sequence: 2 }
+                rejected: { label: 'Rejected', sequence: 2 },
             },
-            default: 'pending'
+            default: 'pending',
+            dropdown: 'dropdown_with_none',
         }),
-        approved_by: StringColumn({ 
-            label: 'Approved By', 
-            maxLength: 200 
+        approved_by: StringColumn({
+            label: 'Approved By',
+            maxLength: 200,
         }),
-        approval_date: DateColumn({ 
-            label: 'Approval Date'
+        approval_date: DateColumn({
+            label: 'Approval Date',
         }),
-        is_active: BooleanColumn({ 
+        is_active: BooleanColumn({
             label: 'Active',
-            default: 'true' 
-        })
+            default: true,
+        }),
     },
     display: 'name',
     extensible: false,
-    accessible_from: 'public',
-    actions: ['create', 'read', 'update', 'delete'],
-    allow_web_service_access: true,
-    text_index: true
+    accessibleFrom: 'public',
+    actions: ['read', 'update', 'delete', 'create'],
+    allowWebServiceAccess: true,
+    textIndex: true,
 })
