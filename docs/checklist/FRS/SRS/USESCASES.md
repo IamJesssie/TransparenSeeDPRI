@@ -1,6 +1,6 @@
 # TransparenSee FRS/SRS/Use Cases Tracker
 
-Last updated: 2026-04-01  
+Last updated: 2026-04-04  
 Scope: Hackathon PRBCS00034 delivery tracking aligned to README claims and hackathon rubric.
 
 ## 1. Purpose
@@ -21,13 +21,19 @@ It links each requirement to repository evidence and defines next actions so the
 ## 3. Important Scope Note
 The rubric in docs/SKILL.md uses prefix x_snc_transparensee, while the active codebase uses x_1966129_transpar. This is a naming divergence only; requirement intent is equivalent.
 
+## 3.1 Validated Today (2026-04-04)
+- Home hero/search UX polish validated in instance: improved spacing, cleaned trust copy, removed redundant source/sync badges, and removed recent-search timestamps.
+- Home/Search autocomplete and suggestions validated, including typo-tolerant matching improvements for Salbutamol.
+- Canonical category normalization patched and validated in search/detail API responses (including Bronchodilator handling).
+- Search result cards validated with added savings-impact helper line.
+
 ## 4. Rubric Traceability Matrix
 
 ### 4.1 Development (45%)
 | Rubric Item | Status | Evidence | Gap / Next Action |
 |---|---|---|---|
 | Business Rule ts_flag_overprice | 🟡 Not Started | src/fluent/business-rules/calculate-savings.now.ts, src/server/business-rules/calculate-savings.js | Add new BR file for positive DPRI validation, wire in src/fluent/index.now.ts |
-| Client Script live autocomplete | ✅ Done | src/client/ui-pages/transparensee-home.js, src/client/ui-pages/transparensee-home.html | Validate in instance with >30 medicine records |
+| Client Script live autocomplete | ✅ Done | src/client/ui-pages/transparensee-home.js, src/client/ui-pages/transparensee-home.html, src/server/script-includes/dpri-price-engine.js | Validated in instance; continue smoke test after full data import |
 | Integration Hub spoke for AI Concierge | ❌ In Progress | src/server/script-includes/ai-concierge.js | Uses direct RESTMessageV2 to Gemini; add formal Integration Hub spoke or document accepted equivalent |
 | UI Action Generate Price Report | ❌ In Progress | src/client/ui-pages/transparensee-detail.js, src/client/ui-pages/transparensee-detail.html | Report endpoint/page artifact missing; implement report UI page and registration |
 | Notifications outbound (pharmacy approved) | 🟡 Not Started | docs/references/04_05_06_rules_scripts_actions.md | Implement event + notification records and add BR for approval event |
@@ -69,8 +75,8 @@ The rubric in docs/SKILL.md uses prefix x_snc_transparensee, while the active co
 
 | FR ID | Requirement | Status | Evidence | Acceptance Criteria | Gap / Next Action |
 |---|---|---|---|---|---|
-| FR-01 | Search drugs by generic/brand and return DPRI pricing context | ✅ Done | src/client/ui-pages/transparensee-search.js; src/server/script-includes/dpri-price-engine.js | 1) Query >=2 chars returns rows when data exists<br>2) Card shows DPRI and comparison fields<br>3) No server crash on malformed query | Add query performance logging |
-| FR-02 | Home live autocomplete suggestions | ✅ Done | src/client/ui-pages/transparensee-home.js; src/client/ui-pages/transparensee-home.html | 1) Debounce works (~500ms)<br>2) Selection routes correctly | Validate with full dataset in instance |
+| FR-01 | Search drugs by generic/brand and return DPRI pricing context | ✅ Done | src/client/ui-pages/transparensee-search.js; src/server/script-includes/dpri-price-engine.js | 1) Query >=2 chars returns rows when data exists<br>2) Card shows DPRI and comparison fields<br>3) No server crash on malformed query<br>4) Typo-tolerant fallback returns likely matches | Add query performance logging |
+| FR-02 | Home live autocomplete suggestions | ✅ Done | src/client/ui-pages/transparensee-home.js; src/client/ui-pages/transparensee-home.html; src/server/script-includes/dpri-price-engine.js | 1) Debounce works (~500ms)<br>2) Selection routes correctly<br>3) Suggestions remain readable and non-overlapping | Continue validation with full dataset import |
 | FR-03 | Drug detail + AI safety counsel | ✅ Done | src/client/ui-pages/transparensee-detail.js; src/server/script-includes/ai-concierge.js | 1) Detail loads by id<br>2) AI or fallback always displays | Add telemetry and prompt versioning |
 | FR-04 | Generate price report from detail page | ❌ In Progress | src/client/ui-pages/transparensee-detail.js | 1) Report page loads with medicine context<br>2) Printable layout available | Implement /x_1966129_transpar_report.do page and registration |
 | FR-05 | Map nearby approved pharmacies with geolocation | ⛔ Blocked | src/client/ui-pages/transparensee-map.js; src/server/script-includes/pharmacy-locator.js | 1) Tiles render<br>2) Location updates map and list | Replace blocked OSM tile endpoint with compliant provider |
@@ -97,7 +103,7 @@ The rubric in docs/SKILL.md uses prefix x_snc_transparensee, while the active co
 
 | UC ID | Use Case | Actor | Preconditions | Main Flow | Alternate Flow(s) | Postcondition | Status | Evidence | Gap / Next Action |
 |---|---|---|---|---|---|---|---|---|---|
-| UC-01 | Patient searches a drug | Patient | Medicine data exists; page access available | UI sends GlideAjax searchDrug -> backend query -> result render | A1: query <2 chars no search<br>A2: parse/server error -> safe stop | Search context shown and loggable | ✅ Done | src/client/ui-pages/transparensee-search.js; src/server/script-includes/dpri-price-engine.js | Improve explicit empty/error messaging |
+| UC-01 | Patient searches a drug | Patient | Medicine data exists; page access available | UI sends GlideAjax searchDrug -> backend query -> result render | A1: query <2 chars no search<br>A2: parse/server error -> safe stop<br>A3: minor typos use stem fallback | Search context shown and loggable | ✅ Done | src/client/ui-pages/transparensee-search.js; src/server/script-includes/dpri-price-engine.js; src/client/ui-pages/transparensee-home.js | Improve explicit empty/error messaging |
 | UC-02 | Patient views detail and AI counsel | Patient | Drug id exists | Load detail -> request AI counsel -> render AI/fallback | A1: missing API key -> fallback<br>A2: AI error -> fallback/error state | Patient receives safety + price guidance | ✅ Done | src/client/ui-pages/transparensee-detail.js; src/server/script-includes/ai-concierge.js | Add response-time and failure telemetry |
 | UC-03 | Patient finds nearest pharmacies | Patient | Pharmacy lat/lng data present | Geolocation -> findNearest -> map/sidebar update | A1: location denied -> default center<br>A2: tile provider blocked | Nearby options visible | ⛔ Blocked | src/client/ui-pages/transparensee-map.js; src/server/script-includes/pharmacy-locator.js | Replace tile provider and retest instance policy |
 | UC-04 | Patient identifies cheapest nearby pharmacy for selected drug | Patient | Selected drug + pharmacy pricing linkage | Not yet implemented | N/A | Lowest nearby price decision available | 🟡 Not Started | N/A | Build drug-pharmacy join + ranking endpoint and UI sorter |
@@ -126,8 +132,8 @@ The rubric in docs/SKILL.md uses prefix x_snc_transparensee, while the active co
 3. Observability dashboard for search/map/AI error rates.
 
 ## 9. Demo Readiness Checklist
-- [ ] Home: search + autocomplete works with real data
-- [ ] Search: results and filters work, no infinite loading
+- [x] Home: search + autocomplete works with real data
+- [x] Search: results and filters work, no infinite loading
 - [ ] Detail: AI response and fallback work
 - [ ] Map: tiles render, location works, nearest list updates
 - [ ] Report: generate/open printable report
@@ -139,5 +145,5 @@ The rubric in docs/SKILL.md uses prefix x_snc_transparensee, while the active co
 - Requirement owner: Jessie Noel Lapure
 - Technical owner: Jessie Noel Lapure
 - Target date: 2026-04-10
-- QA status: Not Tested / Passed / Failed
+- QA status: Passed (Home/Search smoke test on instance)
 - Notes: PADAYON PARA SA FUTURE

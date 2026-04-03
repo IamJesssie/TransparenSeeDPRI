@@ -295,11 +295,13 @@ Sample Data Preview:
 
 ## 🧪 Hackathon Requirements Coverage
 
+Validated snapshot (as of 2026-04-04): Home and Search flows are working and tested in-instance; remaining items below are tracked in docs/checklist/FRS/SRS/USESCASES.md.
+
 | Requirement | Component | Status |
 |---|---|---|
 | ⬜ Scoped Application | `x_snc_transparensee` | 🔧 In Progress |
 | ⬜ Stored in Update Set | TransparenSee v1.0 Update Set | 🔧 In Progress |
-| ⬜ Client Scripts | Live search autocomplete | 🔧 In Progress |
+| ✅ Client Scripts | Live search autocomplete | ✅ Done |
 | ⬜ Business Rules | Price validation + savings calc | 🔧 In Progress |
 | ⬜ UI Action | Generate Price Report button | 🔧 In Progress |
 | ⬜ Notifications (Outbound) | Pharmacy approval email | 🔧 In Progress |
@@ -309,7 +311,7 @@ Sample Data Preview:
 | ⬜ Flow Designer | Search → AI → Log → Notify | 🔧 In Progress |
 | ⬜ Service Portal | `/transparensee` portal | 🔧 In Progress |
 | ⬜ User Criteria & Roles | `dpri_patient` + `dpri_admin` | 🔧 In Progress |
-| ⬜ AI Integration | OpenAI pharmacist counsel | 🔧 In Progress |
+| ✅ AI Integration | Gemini pharmacist counsel | ✅ Done |
 
 ---
 
@@ -376,13 +378,13 @@ TransparenSeeDPRI/
 
 **TransparenSee · G6 · ALPS Batch 2**
 
-| Member | Role | GitHub |
-|---|---|---|
-| Jessie Noel Lapure | Lead Developer & Architect | [@IamJesssie](https://github.com/IamJesssie) |
-| Josephjames Banico | Frontend & Portal Developer | — |
-| Michaelgrant Libato | Backend & Script Includes | — |
-| Raymart Ruperez | Integration & Flow Designer | — |
-| Axcel Macansantos | Data & Presentation Lead | — |
+| Member | GitHub |
+|---|---|
+| Jessie Noel Lapure | [@IamJesssie](https://github.com/IamJesssie) |
+| Josephjames Banico | |
+| Michaelgrant Libato |  |
+| Raymart Ruperez |  |
+| Axcel Macansantos |  |
 
 > 📍 Cebu Institute of Technology - University · BS Information Technology  
 > 🏢 EY GDS × ServiceNow Hackathon · Health Sector · Case PRBCS00034
